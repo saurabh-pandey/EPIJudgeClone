@@ -1,3 +1,29 @@
+# EPI Judge Clone
+**This is clone of the original EPI Judge (https://github.com/adnanaziz/EPIJudge.git)**
+
+Reason to clone the repo are:
+- I don't intend to merge my changes to the original repo
+- I might do some changes to facilitate multiple attempts possibly using a different language
+
+## Commit Template
+
+A commit is always of the form "A[0-9][0-9]-Lang: commit message".
+- **A[0-9][0-9]** is the attempt number beginning with 1. I might add a .env file to track this attempt number.
+- **Lang** The langauge in which this commit is done. It would most likely be same for a particular attempt. Original EPI Judge only supports Python, C++ and Java but I might try to extend this to another language.
+
+One idea could be to write a pre-commit script that fetches this attempt number and finds the language from the files committed. Thereafter it adds A[0-9][0-9]-Lang: as a prefix to the commit.
+
+Another idea is to add a script that resets this branch and prepares it for a new attempt. The script might do the following:
+- Move all the changes from the previous attempt to a new branch.
+- Commit this branch.
+- Clean-up master to the original cloned state. I might tag this state for easier revert to a cleaned restart commit.
+- Next increment the attempt number in the .env file.
+
+Now we are ready for the new attempt.
+
+**_Next follows the original EPI Judge README._**
+
+
 # EPI Judge
 
 ## Beta 5
