@@ -4,6 +4,7 @@
 Reason to clone the repo are:
 - I don't intend to merge my changes to the original repo
 - I might do some changes to facilitate multiple attempts possibly using a different language
+- Also forked repo commits were not showing up on my contribution graph and for now I don't know if this can be fixed on github
 
 ## Commit Template
 
