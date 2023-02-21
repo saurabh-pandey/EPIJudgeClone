@@ -1,4 +1,5 @@
 from test_framework import generic_test
+from tests import test_runner
 
 
 def count_bits(x: int) -> int:
