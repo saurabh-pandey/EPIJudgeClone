@@ -1,12 +1,33 @@
 from test_framework import generic_test
 
+def clear_bit(n: int) -> int:
+    cleared_bit_n = 0
+    for i in range(64):
+        if i != n:
+            cleared_bit_n |= (1 << i)
+    return cleared_bit_n
+
 
 def swap_bits(x, i, j):
-    # TODO - you fill in here.
-    return 0
+    i_bit = x & (1 << i)
+    j_bit = x & (1 << j)
+    if i_bit and not j_bit:
+        i_bit_cleared = clear_bit(i)
+        x &= i_bit_cleared
+        x |= (1 << j)
+    elif not i_bit and j_bit:
+        j_bit_cleared = clear_bit(j)
+        x &= j_bit_cleared
+        x |= (1 << i)
+    return x
 
 
 if __name__ == '__main__':
-    exit(
-        generic_test.generic_test_main('swap_bits.py', 'swap_bits.tsv',
-                                       swap_bits))
+    print(f"swap_bits(2, 0, 1) = {swap_bits(2, 0, 1)}")
+    print(f"swap_bits(1, 0, 1) = {swap_bits(2, 0, 1)}")
+    print(f"swap_bits(3, 0, 1) = {swap_bits(3, 0, 1)}")
+    print(f"swap_bits(4, 0, 2) = {swap_bits(4, 0, 2)}")
+    print(f"swap_bits(5, 0, 2) = {swap_bits(5, 0, 2)}")
+    # exit(
+    #     generic_test.generic_test_main('swap_bits.py', 'swap_bits.tsv',
+    #                                    swap_bits))
