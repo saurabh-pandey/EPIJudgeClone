@@ -24,13 +24,7 @@ def swap_bits(x, i, j):
 
 
 if __name__ == '__main__':
-    print(f"swap_bits(2, 0, 1) = {swap_bits(2, 0, 1)}")
-    print(f"swap_bits(1, 0, 1) = {swap_bits(1, 0, 1)}")
-    print(f"swap_bits(3, 0, 1) = {swap_bits(3, 0, 1)}")
-    print(f"swap_bits(4, 0, 2) = {swap_bits(4, 0, 2)}")
-    print(f"swap_bits(5, 0, 2) = {swap_bits(5, 0, 2)}")
-    print(f"swap_bits(0, 0, 2) = {swap_bits(0, 0, 2)}")
-    test_swap_bits.TestSwapBits(swap_bits, "Swap bits").run_tests(True)
-    # exit(
-    #     generic_test.generic_test_main('swap_bits.py', 'swap_bits.tsv',
-    #                                    swap_bits))
+    test_swap_bits.TestSwapBits(swap_bits, "Swap bits").run_tests()
+    exit(
+        generic_test.generic_test_main('swap_bits.py', 'swap_bits.tsv',
+                                       swap_bits))

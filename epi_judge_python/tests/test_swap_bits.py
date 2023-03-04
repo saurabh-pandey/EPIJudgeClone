@@ -1,25 +1,44 @@
 from tests.test_base import TestBase
 
 class TestSwapBits(TestBase):
-    # def __init__(self, solve) -> None:
-    #     super(solve)
-
-    # def run_tests(self) -> None:
-    #     method_list = [func for func in dir(self) if callable(getattr(self, func)) and func.startswith("test_")]
-    #     print(method_list)
-
     def test_example1(self) -> None:
-        # print("Test Self = ", self)
         x = 2
+        i = 0
+        j = 1
+        expected = 1
+        assert self.solve(x, i, j) == expected
+
+    def test_example2(self) -> None:
+        x = 1
+        i = 0
+        j = 1
+        expected = 2
+        assert self.solve(x, i, j) == expected
+    
+    def test_example3(self) -> None:
+        x = 3
         i = 0
         j = 1
         expected = 3
         assert self.solve(x, i, j) == expected
-
-    def test_example2(self) -> None:
-        # print("None")
-        x = 1
+    
+    def test_example4(self) -> None:
+        x = 4
         i = 0
-        j = 1
-        expected = 3
+        j = 2
+        expected = 1
+        assert self.solve(x, i, j) == expected
+    
+    def test_example5(self) -> None:
+        x = 5
+        i = 0
+        j = 2
+        expected = 5
+        assert self.solve(x, i, j) == expected
+    
+    def test_example6(self) -> None:
+        x = 0
+        i = 0
+        j = 2
+        expected = 0
         assert self.solve(x, i, j) == expected
