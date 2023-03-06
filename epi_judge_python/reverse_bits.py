@@ -6,6 +6,9 @@ from swap_bits import swap_bits
 import math
 
 def reverse_bits_v1(x: int, num_bits: int = None) -> int:
+    '''
+    O(n) solution
+    '''
     if x == 0:
         return x
     if not num_bits:
@@ -18,12 +21,18 @@ def reverse_bits_v1(x: int, num_bits: int = None) -> int:
         j -= 1
     return x
 
+def reverse_bits_v2(x: int, num_bits: int = None) -> int:
+    '''
+    '''
+    pass
+
 def reverse_bits(x: int) -> int:
     return reverse_bits_v1(x, 63)
 
 
 if __name__ == '__main__':
     TestReverseBits(reverse_bits_v1, "My reverse bits").run_tests()
+    TestReverseBits(reverse_bits_v2, "Book reverse bits").run_tests()
     exit(
         generic_test.generic_test_main('reverse_bits.py', 'reverse_bits.tsv',
                                        reverse_bits))
