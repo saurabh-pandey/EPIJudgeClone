@@ -5,11 +5,13 @@ class TestBase:
         self.solve = solve
         self.message = message if message else solve.__name__
 
-    def run_tests(self, verbose: bool = False) -> None:
+    def run_tests(self, pattern: str = None, verbose: bool = False) -> None:
         print("Testing", self.message)
+        if not pattern:
+            pattern = "test_"
         failed_tests = []
         for func_name in dir(self):
-            if func_name.startswith("test_"):
+            if func_name.startswith(pattern):
                 func = getattr(self, func_name)
                 if callable(func):
                     if verbose:
