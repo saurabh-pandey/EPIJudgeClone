@@ -1,4 +1,5 @@
 from test_framework import generic_test
+from tests.test_parity import TestParity
 
 from typing import List
 
@@ -66,4 +67,8 @@ def parity(x: int) -> int:
 
 
 if __name__ == '__main__':
+    TestParity(parity_v1).run_tests()
+    TestParity(parity_v2).run_tests()
+    TestParity(parity_v4).run_tests()
+    
     exit(generic_test.generic_test_main('parity.py', 'parity.tsv', parity))
