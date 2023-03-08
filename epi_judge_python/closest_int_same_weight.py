@@ -1,5 +1,14 @@
 from test_framework import generic_test
 
+def closest_int_same_bit_count_v1(x: int) -> int:
+    '''
+    Brute-force version
+    '''
+    diff = 1
+    while True:
+        if x > diff:
+            new_x = x - diff
+
 
 def closest_int_same_bit_count(x: int) -> int:
     # TODO - you fill in here.
