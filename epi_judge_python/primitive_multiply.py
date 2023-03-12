@@ -36,13 +36,28 @@ def multiply_v1(x: int, y: int) -> int:
             product = add_primitive(product, rest_add)
     return product
 
+def multiply_v2(x: int, y: int) -> int:
+    '''
+    Book's fantastic O(n^2) solution
+    '''
+    def add(a: int, b: int) -> int:
+        return a if b == 0 else add(a ^ b, (a & b) << 1)
+    
+    running_sum = 0
+    while x:
+        if x & 1:
+            running_sum = add(running_sum, y)
+        x, y = x >> 1, y << 1
+    return running_sum
+
 def multiply(x: int, y: int) -> int:
-    return multiply_v1(x, y)
+    return multiply_v2(x, y)
 
 
 if __name__ == '__main__':
     TestPrimitiveAddition(add_primitive).run_tests()
     TestPrimitiveMultiply(multiply_v1).run_tests()
+    TestPrimitiveMultiply(multiply_v2).run_tests()
     exit(
         generic_test.generic_test_main('primitive_multiply.py',
                                        'primitive_multiply.tsv', multiply))
