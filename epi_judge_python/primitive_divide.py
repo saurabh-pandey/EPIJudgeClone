@@ -1,8 +1,6 @@
 from test_framework import generic_test
 from tests.test_primitive_divide import TestPrimitiveDivide
 
-import pdb
-
 def divide_v1(x: int, y: int) -> int:
     '''
     O(2^n) brute-force division
