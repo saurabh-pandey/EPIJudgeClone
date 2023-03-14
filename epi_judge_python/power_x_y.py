@@ -6,6 +6,8 @@ def power_v1(x: float, y: int) -> float:
         return 0.0
     if y == 0:
         return 1.0
+    if y < 0:
+        x, y = 1.0/x, -y
     x_power_half = power_v1(x, y // 2)
     if y & 1:
         return x * x_power_half * x_power_half

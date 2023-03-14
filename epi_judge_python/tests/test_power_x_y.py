@@ -15,3 +15,20 @@ class TestPowerXY(TestBase):
                 x = start + i
                 # print(f"{x}^{y} = {self.solve(x, y)}, {x ** y}, {math.isclose(self.solve(x, y), (x ** y))}")
                 assert math.isclose(self.solve(x, y), (x ** y))
+    
+    def test_example3(self):
+        start = 1.2
+        for i in range(1, 6):
+            for y in range(1, 11):
+                x = -(start + i)
+                # print(f"{x}^{y} = {self.solve(x, y)}, {x ** y}, {math.isclose(self.solve(x, y), (x ** y))}")
+                assert math.isclose(self.solve(x, y), (x ** y))
+    
+    def test_example4(self):
+        start = 1.2
+        for i in range(1, 6):
+            for y in range(-1, -11, -1):
+                x = start + i
+                # print(f"{x}^{y} = {self.solve(x, y)}, {x ** y}, {math.isclose(self.solve(x, y), (x ** y))}")
+                assert math.isclose(self.solve(x, y), (x ** y))
+
