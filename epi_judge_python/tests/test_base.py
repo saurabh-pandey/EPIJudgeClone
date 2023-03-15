@@ -20,7 +20,14 @@ class TestBase:
                         func()
                         if not verbose:
                             print(".", end="")
-                    except:
+                    except AssertionError as err:
+                        failed_tests.append(func_name)
+                        if verbose:
+                            print(f" Failed {func_name}")
+                        else:
+                            print("F", end="")
+                    except Exception as err:
+                        print(f"Exception class ={type(err)}")
                         failed_tests.append(func_name)
                         if verbose:
                             print(f" Failed {func_name}")
