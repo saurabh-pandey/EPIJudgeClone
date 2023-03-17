@@ -30,8 +30,24 @@ def uniform_random_v1(lower_bound: int, upper_bound: int) -> int:
     return result + lower_bound
 
 
+def uniform_random_v2(lower_bound: int, upper_bound: int) -> int:
+    '''
+    Book's version
+    '''
+    number_of_outcomes = upper_bound - lower_bound + 1
+    while True:
+        result, i = 0, 0
+        while (1 << i) < number_of_outcomes:
+            result = (result << 1) | zero_one_random()
+            i += 1
+        if result < number_of_outcomes:
+            break
+    return result + lower_bound
+
+
 def uniform_random(lower_bound: int, upper_bound: int) -> int:
-    return uniform_random_v1(lower_bound, upper_bound)
+    # return uniform_random_v1(lower_bound, upper_bound)
+    return uniform_random_v2(lower_bound, upper_bound)
 
 
 @enable_executor_hook
@@ -52,6 +68,7 @@ def uniform_random_wrapper(executor, lower_bound, upper_bound):
 
 if __name__ == '__main__':
     TestUniformRandomNumber(uniform_random_v1).run_tests()
+    TestUniformRandomNumber(uniform_random_v2).run_tests()
     exit(
         generic_test.generic_test_main('uniform_random_number.py',
                                        'uniform_random_number.tsv',
