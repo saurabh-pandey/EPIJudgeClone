@@ -28,9 +28,21 @@ def even_odd_v1(A: List[int]) -> None:
             even_index += 1
         i += 1
 
+def even_odd_v2(A: List[int]) -> None:
+    '''
+    Book's O(n) time and O(1) space implementation
+    '''
+    next_even, next_odd = 0, len(A) - 1
+    while next_even < next_odd:
+        if A[next_even] % 2 == 0:
+            next_even += 1
+        else:
+            A[next_even], A[next_odd] = A[next_odd], A[next_even]
+            next_odd -= 1
 
 def even_odd(A: List[int]) -> None:
-    even_odd_v1(A)
+    # even_odd_v1(A)
+    even_odd_v2(A)
     return
 
 
@@ -54,6 +66,7 @@ def even_odd_wrapper(executor, A):
 
 if __name__ == '__main__':
     TestEvenOddArray(even_odd_v1).run_tests()
+    TestEvenOddArray(even_odd_v2).run_tests()
     exit(
         generic_test.generic_test_main('even_odd_array.py',
                                        'even_odd_array.tsv', even_odd_wrapper))
