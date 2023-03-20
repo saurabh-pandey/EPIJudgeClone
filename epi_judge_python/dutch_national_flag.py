@@ -5,12 +5,31 @@ from test_framework import generic_test
 from test_framework.test_failure import TestFailure
 from test_framework.test_utils import enable_executor_hook
 
+from tests.test_dutch_national_flag import TestDutchNationalFlag
+
+
 RED, WHITE, BLUE = range(3)
+
+def dutch_flag_partition_v1(pivot_index: int, A: List[int]) -> None:
+    '''
+    My O(n) time and O(1) space version
+    '''
+    sz = len(A)
+    pivot = A[pivot_index]
+    next_less = 0
+    for i in range(sz):
+        if A[i] < pivot:
+            A[next_less], A[i] = A[i], A[next_less]
+            next_less += 1
+    next_greater = sz - 1
+    for i in reversed(range(sz)):
+        if A[i] > pivot:
+            A[next_greater], A[i] = A[i], A[next_greater]
+            next_greater -= 1
 
 
 def dutch_flag_partition(pivot_index: int, A: List[int]) -> None:
-    # TODO - you fill in here.
-    return
+    dutch_flag_partition_v1(pivot_index, A)
 
 
 @enable_executor_hook
@@ -40,6 +59,7 @@ def dutch_flag_partition_wrapper(executor, A, pivot_idx):
 
 
 if __name__ == '__main__':
+    TestDutchNationalFlag(dutch_flag_partition_v1).run_tests()
     exit(
         generic_test.generic_test_main('dutch_national_flag.py',
                                        'dutch_national_flag.tsv',
