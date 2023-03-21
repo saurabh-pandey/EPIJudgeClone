@@ -27,9 +27,30 @@ def dutch_flag_partition_v1(pivot_index: int, A: List[int]) -> None:
             A[next_greater], A[i] = A[i], A[next_greater]
             next_greater -= 1
 
+def dutch_flag_partition_v2(pivot_index: int, A: List[int]) -> None:
+    '''
+    Book's single pass O(n) time and O(1) space version
+    '''
+    sz = len(A)
+    pivot = A[pivot_index]
+    next_less = 0
+    next_greater = sz - 1
+    i = 0
+    while i <= next_greater:
+        if A[i] < pivot:
+            A[next_less], A[i] = A[i], A[next_less]
+            next_less += 1
+            i += 1
+        elif A[i] == pivot:
+            i += 1
+        else:
+            A[next_greater], A[i] = A[i], A[next_greater]
+            next_greater -= 1
+
 
 def dutch_flag_partition(pivot_index: int, A: List[int]) -> None:
-    dutch_flag_partition_v1(pivot_index, A)
+    # dutch_flag_partition_v1(pivot_index, A)
+    dutch_flag_partition_v2(pivot_index, A)
 
 
 @enable_executor_hook
@@ -60,6 +81,7 @@ def dutch_flag_partition_wrapper(executor, A, pivot_idx):
 
 if __name__ == '__main__':
     TestDutchNationalFlag(dutch_flag_partition_v1).run_tests()
+    TestDutchNationalFlag(dutch_flag_partition_v2).run_tests()
     exit(
         generic_test.generic_test_main('dutch_national_flag.py',
                                        'dutch_national_flag.tsv',
