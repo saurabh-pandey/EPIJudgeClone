@@ -1,8 +1,5 @@
 from tests.test_base import TestBase
-
 from tests.utils import int_as_array
-
-from typing import List
 
 
 class TestIntAsArrayIncrement(TestBase):
