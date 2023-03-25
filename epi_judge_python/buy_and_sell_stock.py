@@ -40,15 +40,28 @@ def buy_and_sell_stock_once_v2(prices: List[float],
     profit_from_crossover = crossover_profit(prices, start, mid, end)
     return max(profit_from_left, profit_from_right, profit_from_crossover)
 
+def buy_and_sell_stock_once_v3(prices: List[float],
+                               start = 0,
+                               end = None) -> float:
+    '''
+    O(n) time and O(1) space
+    '''
+    min_so_far = float("inf")
+    max_profit = 0.0
+    for price in prices:
+        min_so_far = min(min_so_far, price)
+        max_profit = max(max_profit, (price - min_so_far))
+    return max_profit
+
 def buy_and_sell_stock_once(prices: List[float]) -> float:
-    # TODO - you fill in here.
-    return 0.0
+    return buy_and_sell_stock_once_v3(prices)
 
 
 if __name__ == '__main__':
     TestBuySellStockOnce(buy_and_sell_stock_once_v1).run_tests()
     TestBuySellStockOnce(buy_and_sell_stock_once_v2).run_tests()
-    # exit(
-    #     generic_test.generic_test_main('buy_and_sell_stock.py',
-    #                                    'buy_and_sell_stock.tsv',
-    #                                    buy_and_sell_stock_once))
+    TestBuySellStockOnce(buy_and_sell_stock_once_v3).run_tests()
+    exit(
+        generic_test.generic_test_main('buy_and_sell_stock.py',
+                                       'buy_and_sell_stock.tsv',
+                                       buy_and_sell_stock_once))
