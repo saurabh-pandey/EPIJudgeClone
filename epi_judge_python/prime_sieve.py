@@ -28,14 +28,30 @@ def generate_primes_v1(n: int) -> List[int]:
             primes.append(i)
     return primes
 
+def generate_primes_v2(n: int) -> List[int]:
+    '''
+    Sieve version of the algorithm
+    '''
+    primes = []
+    # is_prime is true for all primes s.t. for every prime p is_prime[p - 1]
+    # should be true otherwise false
+    is_prime = [True for _ in range(n)]
+    is_prime[0] = False # 1 is not prime
+    for i in range(2, n + 1):
+        if is_prime[i - 1]:
+            primes.append(i)
+            for multiple in range(2 * i, n + 1, i):
+                is_prime[multiple - 1] = False
+    return primes
+
 # Given n, return all primes up to and including n.
 def generate_primes(n: int) -> List[int]:
-    # TODO - you fill in here.
-    return []
+    return generate_primes_v2(n)
 
 
 if __name__ == '__main__':
     TestEnumeratePrimes(generate_primes_v1).run_tests()
-    # exit(
-    #     generic_test.generic_test_main('prime_sieve.py', 'prime_sieve.tsv',
-    #                                    generate_primes))
+    TestEnumeratePrimes(generate_primes_v2).run_tests()
+    exit(
+        generic_test.generic_test_main('prime_sieve.py', 'prime_sieve.tsv',
+                                       generate_primes))
