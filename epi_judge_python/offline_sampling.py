@@ -19,8 +19,19 @@ def random_sampling_v1(k: int, A: List[int]) -> None:
     for i, x in enumerate(subset_idx):
         A[i], A[x] = A[x], A[i]
 
+
+def random_sampling_v2(k: int, A: List[int]) -> None:
+    '''
+    Book's version with O(k)
+    '''
+    for i in range(k):
+        r = randint(i, len(A) - 1)
+        A[i], A[r] = A[r], A[i]
+
+
 def random_sampling(k: int, A: List[int]) -> None:
-    random_sampling_v1(k, A)
+    # random_sampling_v1(k, A)
+    random_sampling_v2(k, A)
 
 
 @enable_executor_hook
