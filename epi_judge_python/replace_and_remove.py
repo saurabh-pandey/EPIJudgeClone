@@ -34,8 +34,36 @@ def replace_and_remove_v1(size: int, s: List[str]) -> int:
             start += 1
     return end
 
+def replace_and_remove_v2(size: int, s: List[str]) -> int:
+    '''
+    Book's O(n) version
+    '''
+    a_count = 0
+    write_idx = 0
+    for i in range(size):
+        if s[i] != "b":
+            s[write_idx] = s[i]
+            write_idx += 1
+        if s[i] == "a":
+            a_count += 1
+    read_idx = write_idx - 1
+    write_idx += a_count - 1
+    final_size = write_idx + 1
+    while read_idx >= 0:
+        if s[read_idx] == "a":
+            s[write_idx] = "d"
+            s[write_idx - 1] = "d"
+            write_idx -= 2
+        else:
+            s[write_idx] = s[read_idx]
+            write_idx -= 1
+        read_idx -= 1
+    return final_size
+
+
 def replace_and_remove(size: int, s: List[str]) -> int:
-    return replace_and_remove_v1(size, s)
+    # return replace_and_remove_v1(size, s)
+    return replace_and_remove_v2(size, s)
 
 
 @enable_executor_hook
@@ -46,6 +74,7 @@ def replace_and_remove_wrapper(executor, size, s):
 
 if __name__ == '__main__':
     TestReplaceAndRemove(replace_and_remove_v1).run_tests()
+    TestReplaceAndRemove(replace_and_remove_v2).run_tests()
     exit(
         generic_test.generic_test_main('replace_and_remove.py',
                                        'replace_and_remove.tsv',
