@@ -8,7 +8,7 @@ from tests.test_replace_and_remove import TestReplaceAndRemove
 
 def replace_and_remove_v1(size: int, s: List[str]) -> int:
     '''
-    My O(1) version
+    My O(n^2) version
     '''
     def right_shift(s, start, end):
         for i in range(end - 1, start, -1):
@@ -35,8 +35,7 @@ def replace_and_remove_v1(size: int, s: List[str]) -> int:
     return end
 
 def replace_and_remove(size: int, s: List[str]) -> int:
-    # TODO - you fill in here.
-    return 0
+    return replace_and_remove_v1(size, s)
 
 
 @enable_executor_hook
@@ -47,7 +46,7 @@ def replace_and_remove_wrapper(executor, size, s):
 
 if __name__ == '__main__':
     TestReplaceAndRemove(replace_and_remove_v1).run_tests()
-    # exit(
-    #     generic_test.generic_test_main('replace_and_remove.py',
-    #                                    'replace_and_remove.tsv',
-    #                                    replace_and_remove_wrapper))
+    exit(
+        generic_test.generic_test_main('replace_and_remove.py',
+                                       'replace_and_remove.tsv',
+                                       replace_and_remove_wrapper))

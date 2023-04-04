@@ -29,4 +29,11 @@ class TestReplaceAndRemove(TestBase):
         assert result == expected_size
         assert s[:result] == expected_s
     
-    # Might implement a randomized test here
+    def test_none_a_b(self):
+        s = ['c', 'c', 'd', 'e', 'f', 'g']
+        size = 6
+        expected_s = ['c', 'c', 'd', 'e', 'f', 'g']
+        expected_size = 6
+        result = self.solve(size, s)
+        assert result == expected_size
+        assert s[:result] == expected_s
