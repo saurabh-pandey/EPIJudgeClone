@@ -25,7 +25,7 @@ def is_palindrome_v1(s: str) -> bool:
 
 def is_palindrome_v2(s: str) -> bool:
     '''
-    Book's O(1) version
+    Book's O(n) version
     '''
     i, j = 0, len(s) - 1
     while i < j:

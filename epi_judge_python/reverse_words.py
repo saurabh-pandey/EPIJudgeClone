@@ -1,8 +1,17 @@
 import functools
 
+from typing import List
+
 from test_framework import generic_test
 from test_framework.test_utils import enable_executor_hook
+from tests.test_reverse_words import TestReverseWords
 
+
+def reverse_words_v1(s: List[str]) -> None:
+    '''
+    My version
+    '''
+    pass
 
 # Assume s is a list of strings, each of which is of length 1, e.g.,
 # ['r', 'a', 'm', ' ', 'i', 's', ' ', 'c', 'o', 's', 't', 'l', 'y'].
@@ -21,6 +30,7 @@ def reverse_words_wrapper(executor, s):
 
 
 if __name__ == '__main__':
+    TestReverseWords(reverse_words_v1).run_tests()
     exit(
         generic_test.generic_test_main('reverse_words.py', 'reverse_words.tsv',
                                        reverse_words_wrapper))
