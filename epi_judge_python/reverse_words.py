@@ -11,13 +11,29 @@ def reverse_words_v1(s: List[str]) -> None:
     '''
     My version
     '''
-    pass
+    def reverse_in_range(s: List[str], start: int, end: int) -> None:
+        x, y = start, end - 1
+        while x < y:
+            s[x], s[y] = s[y], s[x]
+            x += 1
+            y -= 1
+    
+    i, j = 0, len(s) - 1
+    while i < j:
+        s[i], s[j] = s[j], s[i]
+        i += 1
+        j -= 1
+    start = 0
+    for i in range(len(s)):
+        if s[i] == " ":
+            reverse_in_range(s, start, i)
+            start = i + 1
+    reverse_in_range(s, start, len(s))
 
 # Assume s is a list of strings, each of which is of length 1, e.g.,
 # ['r', 'a', 'm', ' ', 'i', 's', ' ', 'c', 'o', 's', 't', 'l', 'y'].
 def reverse_words(s):
-    # TODO - you fill in here.
-    return
+    reverse_words_v1(s)
 
 
 @enable_executor_hook

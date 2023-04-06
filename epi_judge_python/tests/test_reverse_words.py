@@ -8,3 +8,17 @@ class TestReverseWords(TestBase):
         self.solve(s_list)
         assert s_list == list(expected)
     
+    def test_single(self):
+        s = "Alice"
+        expected = "Alice"
+        s_list = list(s)
+        self.solve(s_list)
+        assert s_list == list(expected)
+    
+    def test_double(self):
+        s = "Alice Bob"
+        expected = "Bob Alice"
+        s_list = list(s)
+        self.solve(s_list)
+        assert s_list == list(expected)
+    
