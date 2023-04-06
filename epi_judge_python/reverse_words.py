@@ -9,7 +9,7 @@ from tests.test_reverse_words import TestReverseWords
 
 def reverse_words_v1(s: List[str]) -> None:
     '''
-    My version
+    My O(n) version
     '''
     def reverse_in_range(s: List[str], start: int, end: int) -> None:
         x, y = start, end - 1
@@ -18,11 +18,9 @@ def reverse_words_v1(s: List[str]) -> None:
             x += 1
             y -= 1
     
-    i, j = 0, len(s) - 1
-    while i < j:
-        s[i], s[j] = s[j], s[i]
-        i += 1
-        j -= 1
+    # Reverse the whole sentence
+    reverse_in_range(s, 0, len(s))
+    
     start = 0
     for i in range(len(s)):
         if s[i] == " ":
