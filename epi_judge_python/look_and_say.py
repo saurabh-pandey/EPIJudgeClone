@@ -6,11 +6,27 @@ def look_and_say_v1(n: int) -> str:
     '''
     My version
     '''
-    pass
+    digits = ["1"]
+    for _ in range(2, n + 1):
+        running_digit = digits[0]
+        count = 0
+        next_digits = []
+        for i in range(0, len(digits)):
+            if running_digit == digits[i]:
+                count += 1
+            else:
+                next_digits.append(str(count))
+                next_digits.append(running_digit)
+                running_digit = digits[i]
+                count = 1
+        next_digits.append(str(count))
+        next_digits.append(running_digit)
+        digits = next_digits[:]
+    return "".join(digits)
+
 
 def look_and_say(n: int) -> str:
-    # TODO - you fill in here.
-    return ''
+    return look_and_say_v1(n)
 
 
 if __name__ == '__main__':
