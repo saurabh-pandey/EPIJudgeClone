@@ -14,8 +14,17 @@ def search_list_v1(L: ListNode, key: int) -> ListNode:
         curr_node = curr_node.next
     return None
 
+def search_list_v2(L: ListNode, key: int) -> ListNode:
+    '''
+    Book's O(n) version
+    '''
+    while L and L.data != key:
+        L = L.next
+    return L
+
 def search_list(L: ListNode, key: int) -> ListNode:
-    return search_list_v1(L, key)
+    # return search_list_v1(L, key)
+    return search_list_v2(L, key)
 
 
 def search_list_wrapper(L, key):
@@ -25,6 +34,7 @@ def search_list_wrapper(L, key):
 
 if __name__ == '__main__':
     TestSearchInList(search_list_v1).run_tests()
+    TestSearchInList(search_list_v2).run_tests()
     exit(
         generic_test.generic_test_main('search_in_list.py',
                                        'search_in_list.tsv',
