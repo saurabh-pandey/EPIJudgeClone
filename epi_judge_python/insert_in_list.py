@@ -14,7 +14,6 @@ def insert_after_v1(node: ListNode, new_node: ListNode) -> None:
 
 # Insert new_node after node.
 def insert_after(node: ListNode, new_node: ListNode) -> None:
-    # TODO - you fill in here.
     insert_after_v1(node, new_node)
 
 @enable_executor_hook
