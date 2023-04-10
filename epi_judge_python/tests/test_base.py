@@ -27,7 +27,7 @@ class TestBase:
                         else:
                             print("F", end="")
                     except Exception as err:
-                        print(f"Exception class ={type(err)}")
+                        print(f"Exception class ={type(err)}, err = {err}")
                         failed_tests.append(func_name)
                         if verbose:
                             print(f" Failed {func_name}")
