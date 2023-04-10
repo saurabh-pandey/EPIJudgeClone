@@ -1,7 +1,6 @@
 from tests.test_base import TestBase
 from tests.utils import linked_list
 
-from list_node import ListNode
 from search_in_list import search_list
 
 class TestDeleteFromList(TestBase):
