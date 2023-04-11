@@ -55,11 +55,11 @@ class TestSortedListsMerge(TestBase):
         assert merged_l == expected
     
     def test_random(self):
-        for size1 in [10, 50, 100, 500, 1000]:
+        for size1 in [5, 10, 50, 100, 500, 1000]:
             arr1 = [randint(1, 2 * size1) for _ in range(size1)]
             arr1.sort()
-            l1 = linked_list.create(arr1)
-            for size2 in [10, 50, 100, 500, 1000]:
+            for size2 in [5, 10, 50, 100, 500, 1000]:
+                l1 = linked_list.create(arr1)
                 arr2 = [randint(1, 2 * size2) for _ in range(size2)]
                 arr2.sort()
                 result_arr = arr1 + arr2
