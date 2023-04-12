@@ -12,11 +12,17 @@ def reverse_sublist_v1(L: ListNode,
     My version with O(n) time and space
     '''
     def reverse(node: ListNode, depth: int) -> Tuple[ListNode, ListNode]:
-        if not node.next or depth == 1:
-            return node, node
-        new_head, _ = reverse(node.next, depth - 1)
-        node.next.next = node
-        return new_head, node
+        node_stack = []
+        for _ in range(depth):
+            node_stack.append(node)
+            node = node.next
+        curr_node = node_stack.pop()
+        new_head, new_tail = curr_node, curr_node
+        while node_stack:
+            curr_node = node_stack.pop()
+            curr_node.next.next = curr_node
+            new_tail = curr_node
+        return new_head, new_tail
     if not L:
         return L
     if start == finish:
@@ -43,7 +49,6 @@ def reverse_sublist_v1(L: ListNode,
 
 def reverse_sublist(L: ListNode, start: int,
                     finish: int) -> Optional[ListNode]:
-    # TODO - you fill in here.
     return reverse_sublist_v1(L, start, finish)
 
 
