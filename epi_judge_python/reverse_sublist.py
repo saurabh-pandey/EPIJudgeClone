@@ -46,14 +46,50 @@ def reverse_sublist_v1(L: ListNode,
     else:
         return rev_head
 
+def reverse_sublist_v2(L: ListNode,
+                       start: int,
+                       finish: int) -> Optional[ListNode]:
+    '''
+    My other O(n) time and O(1) space version
+    '''
+    if start == finish:
+        return L
+    head = L
+    start_pred_node = None
+    start_node = L
+    prev_node = None
+    curr_node = start_node
+    next_node = None
+    depth = 1
+    while curr_node:
+        next_node = curr_node.next
+        if depth == start:
+            start_pred_node = prev_node
+            start_node = curr_node
+        elif depth > start:
+            curr_node.next = prev_node
+            if depth == finish:
+                if start_pred_node:
+                    start_pred_node.next = curr_node
+                else:
+                    head = curr_node
+                start_node.next = next_node
+                break
+        prev_node = curr_node
+        curr_node = next_node
+        depth += 1
+    return head
+
 
 def reverse_sublist(L: ListNode, start: int,
                     finish: int) -> Optional[ListNode]:
-    return reverse_sublist_v1(L, start, finish)
+    # return reverse_sublist_v1(L, start, finish)
+    return reverse_sublist_v2(L, start, finish)
 
 
 if __name__ == '__main__':
     TestReverseSublist(reverse_sublist_v1).run_tests()
+    TestReverseSublist(reverse_sublist_v2).run_tests()
     exit(
         generic_test.generic_test_main('reverse_sublist.py',
                                        'reverse_sublist.tsv', reverse_sublist))
