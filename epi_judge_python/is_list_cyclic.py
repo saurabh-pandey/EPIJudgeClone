@@ -6,10 +6,33 @@ from test_framework import generic_test
 from test_framework.test_failure import TestFailure
 from test_framework.test_utils import enable_executor_hook
 
+from tests.test_is_list_cyclic import TestIsListCyclic
+
+
+def has_cycle_v1(head: ListNode) -> Optional[ListNode]:
+    '''
+    My version where once the cycle is found I check every node starting from
+    head node if it is on the cycle to detect beginning of a cycle
+    '''
+    slow = fast = head
+    while fast and fast.next and fast.next.next:
+        slow, fast = slow.next, fast.next.next
+        if slow is fast:
+            node_on_cycle = slow
+            slow = head
+            while True:
+                fast = node_on_cycle
+                while fast is not slow:
+                    fast = fast.next
+                    if fast is node_on_cycle:
+                        break
+                else:
+                    return slow
+                slow = slow.next
+    return None
 
 def has_cycle(head: ListNode) -> Optional[ListNode]:
-    # TODO - you fill in here.
-    return None
+    return has_cycle_v1(head)
 
 
 @enable_executor_hook
@@ -59,6 +82,7 @@ def has_cycle_wrapper(executor, head, cycle_idx):
 
 
 if __name__ == '__main__':
+    TestIsListCyclic(has_cycle_v1).run_tests()
     exit(
         generic_test.generic_test_main('is_list_cyclic.py',
                                        'is_list_cyclic.tsv',
