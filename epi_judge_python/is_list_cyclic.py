@@ -11,8 +11,8 @@ from tests.test_is_list_cyclic import TestIsListCyclic
 
 def has_cycle_v1(head: ListNode) -> Optional[ListNode]:
     '''
-    My version where once the cycle is found I check every node starting from
-    head node if it is on the cycle to detect beginning of a cycle
+    My O(n^2) version where once the cycle is found I check every node starting
+    from head node if it is on the cycle to detect beginning of a cycle
     '''
     slow = fast = head
     while fast and fast.next and fast.next.next:
@@ -31,8 +31,36 @@ def has_cycle_v1(head: ListNode) -> Optional[ListNode]:
                 slow = slow.next
     return None
 
+def has_cycle_v2(head: ListNode) -> Optional[ListNode]:
+    '''
+    Book's inspired O(n) version
+    '''
+    def cycle_length(node_on_cycle: ListNode) -> int:
+        begin = node_on_cycle.next
+        end = node_on_cycle
+        length = 1
+        while begin is not end:
+            length += 1
+            begin = begin.next
+        return length
+    slow = fast = head
+    while fast and fast.next and fast.next.next:
+        slow, fast = slow.next, fast.next.next
+        if slow is fast:
+            cycle_len = cycle_length(slow)
+            slow = head
+            cycle_len_apart = head
+            for _ in range(cycle_len):
+                cycle_len_apart = cycle_len_apart.next
+            while slow is not cycle_len_apart:
+                slow, cycle_len_apart = slow.next, cycle_len_apart.next
+            return slow
+    return None
+
+
 def has_cycle(head: ListNode) -> Optional[ListNode]:
-    return has_cycle_v1(head)
+    # return has_cycle_v1(head)
+    return has_cycle_v2(head)
 
 
 @enable_executor_hook
@@ -83,6 +111,7 @@ def has_cycle_wrapper(executor, head, cycle_idx):
 
 if __name__ == '__main__':
     TestIsListCyclic(has_cycle_v1).run_tests()
+    TestIsListCyclic(has_cycle_v2).run_tests()
     exit(
         generic_test.generic_test_main('is_list_cyclic.py',
                                        'is_list_cyclic.tsv',
