@@ -49,15 +49,31 @@ def remove_kth_last_v2(L: ListNode, k: int) -> Optional[ListNode]:
         return L.next
 
 
+def remove_kth_last_v3(L: ListNode, k: int) -> Optional[ListNode]:
+    '''
+    Book's O(n) time and O(1) space version
+    '''
+    dummy_head = ListNode(0, L)
+    first = dummy_head.next
+    for _ in range(k):
+        first = first.next
+    second = dummy_head
+    while first:
+        first, second = first.next, second.next
+    second.next = second.next.next
+    return dummy_head.next
+
 # Assumes L has at least k nodes, deletes the k-th last node in L.
 def remove_kth_last(L: ListNode, k: int) -> Optional[ListNode]:
     # return remove_kth_last_v1(L, k)
-    return remove_kth_last_v2(L, k)
+    # return remove_kth_last_v2(L, k)
+    return remove_kth_last_v3(L, k)
 
 
 if __name__ == '__main__':
     TestDeleteKthLastFromList(remove_kth_last_v1).run_tests()
     TestDeleteKthLastFromList(remove_kth_last_v2).run_tests()
+    TestDeleteKthLastFromList(remove_kth_last_v3).run_tests()
     exit(
         generic_test.generic_test_main('delete_kth_last_from_list.py',
                                        'delete_kth_last_from_list.tsv',
