@@ -9,7 +9,7 @@ class TestBase:
         print("Testing", self.message)
         if not pattern:
             pattern = "test_"
-        failed_tests = []
+        failed_tests = {}
         for func_name in dir(self):
             if func_name.startswith(pattern):
                 func = getattr(self, func_name)
@@ -21,7 +21,7 @@ class TestBase:
                         if not verbose:
                             print(".", end="")
                     except AssertionError as err:
-                        failed_tests.append(func_name)
+                        failed_tests[func_name] = err
                         if verbose:
                             print(f" Failed {func_name}")
                         else:
@@ -35,8 +35,8 @@ class TestBase:
                             print("F", end="")
         print()
         if failed_tests:
-            print("Following tests failed:")
-            for t in failed_tests:
-                print(f"  - {t}")
+            print("Summary of test failure (test name => error message):")
+            for t, e in failed_tests.items():
+                print(f" - {t} => {e}")
         else:
             print("All tests passed")
