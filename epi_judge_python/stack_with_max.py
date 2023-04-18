@@ -1,23 +1,29 @@
 from test_framework import generic_test
 from test_framework.test_failure import TestFailure
 
+from tests.test_stack_with_max import TestStackWithMax
 
 class Stack:
+    def __init__(self) -> None:
+        self._stack = []
+        self._max = []
+    
     def empty(self) -> bool:
-        # TODO - you fill in here.
-        return True
+        return True if not self._stack else False
 
     def max(self) -> int:
-        # TODO - you fill in here.
-        return 0
+        return self._max[-1]
 
     def pop(self) -> int:
-        # TODO - you fill in here.
-        return 0
+        value = self._stack.pop()
+        if self._max[-1] == value:
+            self._max.pop()
+        return value
 
     def push(self, x: int) -> None:
-        # TODO - you fill in here.
-        return
+        self._stack.append(x)
+        if not self._max or x >= self._max[-1]:
+            self._max.append(x)
 
 
 def stack_tester(ops):
@@ -51,6 +57,7 @@ def stack_tester(ops):
 
 
 if __name__ == '__main__':
+    TestStackWithMax(stack_tester).run_tests()
     exit(
         generic_test.generic_test_main('stack_with_max.py',
                                        'stack_with_max.tsv', stack_tester))
