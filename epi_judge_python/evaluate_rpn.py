@@ -34,12 +34,32 @@ def evaluate_v1(expression: str) -> int:
     return eval_stack[0]
 
 
+def evaluate_v2(expression: str) -> int:
+    '''
+    Book's version
+    '''
+    delimiter = ","
+    operators = {'+': lambda y, x: x + y, '-': lambda y, x: x - y,
+                 '*': lambda y, x: x * y, '/': lambda y, x: x // y}
+    intermediate_results = []
+    for token in expression.split(delimiter):
+        if token in operators:
+            intermediate_results.append(operators[token](
+                intermediate_results.pop(), intermediate_results.pop()
+            ))
+        else:
+            intermediate_results.append(int(token))
+    return intermediate_results[-1]
+
+
 def evaluate(expression: str) -> int:
-    return evaluate_v1(expression)
+    # return evaluate_v1(expression)
+    return evaluate_v2(expression)
 
 
 if __name__ == '__main__':
     TestEvaluateRPN(evaluate_v1).run_tests()
+    TestEvaluateRPN(evaluate_v2).run_tests()
     exit(
         generic_test.generic_test_main('evaluate_rpn.py', 'evaluate_rpn.tsv',
                                        evaluate))
