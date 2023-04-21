@@ -8,7 +8,7 @@ from tests.test_tree_level_order import TestTreeLevelOrder
 
 def binary_tree_depth_order_v1(tree: BinaryTreeNode) -> List[List[int]]:
     '''
-    My version
+    My O(n) space and time version
     '''
     if not tree:
         return []
