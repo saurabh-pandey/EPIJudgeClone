@@ -56,36 +56,26 @@ def queue_tester(ops):
     q = Queue(1)
 
     for (op, arg) in ops:
-        # if (op, arg) == ("size", 5):
-        #     print("BREAK")
-        #     breakpoint()
-        # if (op, arg) == ("size", 0):
-        #     print("BREAK")
-        #     breakpoint()
-        # print(f"Running op = {op}, arg = {arg}", end="")
         if op == 'Queue':
             q = Queue(arg)
         elif op == 'enqueue':
             q.enqueue(arg)
         elif op == 'dequeue':
             result = q.dequeue()
-            # print(f", result = {result}", end="")
             if result != arg:
                 raise TestFailure('Dequeue: expected ' + str(arg) + ', got ' +
                                   str(result))
         elif op == 'size':
             result = q.size()
-            # print(f", result = {result}", end="")
             if result != arg:
                 raise TestFailure('Size: expected ' + str(arg) + ', got ' +
                                   str(result))
         else:
             raise RuntimeError('Unsupported queue operation: ' + op)
-        # print(f", DONE")
 
 
 if __name__ == '__main__':
     TestCircularQueue(queue_tester).run_tests()
-    # exit(
-    #     generic_test.generic_test_main('circular_queue.py',
-    #                                    'circular_queue.tsv', queue_tester))
+    exit(
+        generic_test.generic_test_main('circular_queue.py',
+                                       'circular_queue.tsv', queue_tester))
