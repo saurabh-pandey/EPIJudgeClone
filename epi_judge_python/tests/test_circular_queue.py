@@ -1,5 +1,7 @@
 from tests.test_base import TestBase
 
+# import pdb
+
 class TestCircularQueue(TestBase):
     def test_example1(self):
         operations = [("Queue", 1), ("size", 0), ("enqueue", 0), ("size", 1),
@@ -7,6 +9,7 @@ class TestCircularQueue(TestBase):
                       ("enqueue", 1), ("size", 2), ("enqueue", 2), ("size", 3),
                       ("enqueue", 3), ("dequeue", 0), ("dequeue", 1),
                       ("size", 2), ("dequeue", 2), ("dequeue", 3), ("size", 0)]
+        # pdb.set_trace()
         self.solve(operations)
     
     def test_example2(self):
@@ -19,4 +22,5 @@ class TestCircularQueue(TestBase):
                       ("size", 0), ("enqueue", 7), ("enqueue", 8),
                       ("enqueue", 9), ("enqueue", 10), ("enqueue", 11),
                       ("size", 5)]
+        # pdb.set_trace()
         self.solve(operations)

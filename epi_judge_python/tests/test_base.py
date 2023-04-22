@@ -1,3 +1,5 @@
+from test_framework.test_failure import TestFailure
+
 from typing import Callable
 
 class TestBase:
@@ -26,9 +28,15 @@ class TestBase:
                             print(f" Failed {func_name}")
                         else:
                             print("F", end="")
+                    except TestFailure as err:
+                        failed_tests[func_name] = err.get_description()
+                        if verbose:
+                            print(f" Failed {func_name}")
+                        else:
+                            print("F", end="")
                     except Exception as err:
                         print(f"Exception class ={type(err)}, err = {err}")
-                        failed_tests.append(func_name)
+                        failed_tests[func_name] = err
                         if verbose:
                             print(f" Failed {func_name}")
                         else:
