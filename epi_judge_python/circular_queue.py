@@ -56,12 +56,49 @@ class Queue_V1:
         self._end = new_it
 
 
+class Queue_V2:
+    '''
+    Books version
+    '''
+    SCALE_FACTOR = 2
+    
+    def __init__(self, capacity) -> None:
+        self._entities = [0] * capacity
+        self._head = 0
+        self._tail = 0
+        self._num_entities = 0
+    
+    def enqueue(self, x: int) -> None:
+        if self._num_entities == len(self._entities):
+            self._entities = (self._entities[self._head:]
+                            + self._entities[:self._head])
+            self._entities += [0] * (
+                len(self._entities) * (Queue_V2.SCALE_FACTOR - 1)
+            )
+            self._head = 0
+            self._tail = self._num_entities
+        self._entities[self._tail] = x
+        self._tail = (self._tail + 1) % len(self._entities)
+        self._num_entities += 1
+    
+    def dequeue(self) -> int:
+        result = self._entities[self._head]
+        self._head = (self._head + 1) % len(self._entities)
+        self._num_entities -= 1
+        return result
+
+    def size(self) -> int:
+        return self._num_entities
+
+
 def queue_tester(ops):
-    q = Queue_V1(1)
+    # q = Queue_V1(1)
+    q = Queue_V2(1)
 
     for (op, arg) in ops:
         if op == 'Queue':
-            q = Queue_V1(arg)
+            # q = Queue_V1(arg)
+            q = Queue_V2(arg)
         elif op == 'enqueue':
             q.enqueue(arg)
         elif op == 'dequeue':
