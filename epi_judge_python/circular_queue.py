@@ -4,7 +4,10 @@ from test_framework.test_failure import TestFailure
 from tests.test_circular_queue import TestCircularQueue
 
 
-class Queue:
+class Queue_V1:
+    '''
+    My version of circular queue with O(1) time
+    '''
     def __init__(self, capacity: int) -> None:
         self._begin = None
         self._end = 0
@@ -52,12 +55,13 @@ class Queue:
         self._begin = 0
         self._end = new_it
 
+
 def queue_tester(ops):
-    q = Queue(1)
+    q = Queue_V1(1)
 
     for (op, arg) in ops:
         if op == 'Queue':
-            q = Queue(arg)
+            q = Queue_V1(arg)
         elif op == 'enqueue':
             q.enqueue(arg)
         elif op == 'dequeue':
