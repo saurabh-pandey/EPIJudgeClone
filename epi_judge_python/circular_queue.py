@@ -91,7 +91,7 @@ class Queue_V2:
         return self._num_entities
 
 
-def queue_tester(ops, queue_cls = Queue_V1):
+def queue_tester(ops, queue_cls = Queue_V2):
     q = queue_cls(1)
 
     for (op, arg) in ops:

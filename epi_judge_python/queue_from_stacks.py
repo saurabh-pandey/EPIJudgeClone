@@ -3,7 +3,10 @@ from test_framework.test_failure import TestFailure
 
 from tests.test_queue_from_stacks import TestQueueFromStack
 
-class Queue:
+class QueueV1:
+    '''
+    My version with O(1) enqueue and O(n) dequeue
+    '''
     def __init__(self) -> None:
         self._push_stack = []
         self._pop_stack = []
@@ -20,13 +23,30 @@ class Queue:
         return value
 
 
-def queue_tester(ops):
+class QueueV2:
+    '''
+    Book's version with O(1) enqueue and O(m) dequeue for m dequeue ops
+    '''
+    def __init__(self) -> None:
+        self._enqueue_stack = []
+        self._dequeue_stack = []
+    
+    def enqueue(self, x: int) -> None:
+        self._enqueue_stack.append(x)
+    
+    def dequeue(self) -> int:
+        if not self._dequeue_stack:
+            while self._enqueue_stack:
+                self._dequeue_stack.append(self._enqueue_stack.pop())
+        return self._dequeue_stack.pop()
+
+def queue_tester(ops, queue_cls = QueueV2):
     try:
-        q = Queue()
+        q = queue_cls()
 
         for (op, arg) in ops:
             if op == 'Queue':
-                q = Queue()
+                q = queue_cls()
             elif op == 'enqueue':
                 q.enqueue(arg)
             elif op == 'dequeue':
@@ -40,8 +60,17 @@ def queue_tester(ops):
         raise TestFailure('Unexpected IndexError exception')
 
 
+def v1_queue_tester(ops):
+    queue_tester(ops, QueueV1)
+
+
+def v2_queue_tester(ops):
+    queue_tester(ops, QueueV1)
+
+
 if __name__ == '__main__':
-    TestQueueFromStack(queue_tester).run_tests()
-    # exit(
-    #     generic_test.generic_test_main('queue_from_stacks.py',
-    #                                    'queue_from_stacks.tsv', queue_tester))
+    TestQueueFromStack(v1_queue_tester).run_tests()
+    TestQueueFromStack(v2_queue_tester).run_tests()
+    exit(
+        generic_test.generic_test_main('queue_from_stacks.py',
+                                       'queue_from_stacks.tsv', queue_tester))
