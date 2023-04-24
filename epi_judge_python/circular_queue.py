@@ -91,14 +91,12 @@ class Queue_V2:
         return self._num_entities
 
 
-def queue_tester(ops):
-    # q = Queue_V1(1)
-    q = Queue_V2(1)
+def queue_tester(ops, queue_cls = Queue_V1):
+    q = queue_cls(1)
 
     for (op, arg) in ops:
         if op == 'Queue':
-            # q = Queue_V1(arg)
-            q = Queue_V2(arg)
+            q = queue_cls(arg)
         elif op == 'enqueue':
             q.enqueue(arg)
         elif op == 'dequeue':
@@ -115,8 +113,16 @@ def queue_tester(ops):
             raise RuntimeError('Unsupported queue operation: ' + op)
 
 
+def v1_queue_tester(ops):
+    queue_tester(ops, Queue_V1)
+
+
+def v2_queue_tester(ops):
+    queue_tester(ops, Queue_V2)
+
 if __name__ == '__main__':
-    TestCircularQueue(queue_tester).run_tests()
+    TestCircularQueue(v1_queue_tester).run_tests()
+    TestCircularQueue(v2_queue_tester).run_tests()
     exit(
         generic_test.generic_test_main('circular_queue.py',
                                        'circular_queue.tsv', queue_tester))
