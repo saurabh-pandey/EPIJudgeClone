@@ -22,3 +22,39 @@ class TestLowestCommonAncestor(TestBase):
         result = self.solve(tree, node0, node1)
         assert result is expected, (
             f"expected = {expected.data}, result = {result.data}")
+    
+    def test_example2(self):
+        tree = N(1,
+                N(2,
+                  N(4,
+                    N(7)),
+                  N(5)
+                ),
+                N(3,
+                  N(6)
+                ),
+               )
+        node0 = binary_tree.find_node(tree, 7)
+        node1 = binary_tree.find_node(tree, 6)
+        expected = binary_tree.find_node(tree, 1)
+        result = self.solve(tree, node0, node1)
+        assert result is expected, (
+            f"expected = {expected.data}, result = {result.data}")
+    
+    def test_example3(self):
+        tree = N(1,
+                N(2,
+                  N(4,
+                    N(7)),
+                  N(5)
+                ),
+                N(3,
+                  N(6)
+                ),
+               )
+        node0 = binary_tree.find_node(tree, 7)
+        node1 = binary_tree.find_node(tree, 4)
+        expected = binary_tree.find_node(tree, 4)
+        result = self.solve(tree, node0, node1)
+        assert result is expected, (
+            f"expected = {expected.data}, result = {result.data}")

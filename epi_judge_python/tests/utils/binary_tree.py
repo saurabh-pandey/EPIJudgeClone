@@ -11,10 +11,10 @@ def find_node(node: BinaryTreeNode, key: int) -> Optional[BinaryTreeNode]:
         return None
     if node.data == key:
         return node
-    found_node = find_node(node.left)
+    found_node = find_node(node.left, key)
     if found_node:
         return found_node
-    found_node = find_node(node.right)
+    found_node = find_node(node.right, key)
     if found_node:
         return found_node
     return None

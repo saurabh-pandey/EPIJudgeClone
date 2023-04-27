@@ -1,5 +1,5 @@
 import functools
-from typing import Optional
+from typing import List, Optional, Dict
 
 from binary_tree_node import BinaryTreeNode
 from test_framework import generic_test
@@ -14,15 +14,44 @@ def lca_v1(tree: BinaryTreeNode,
            node0: BinaryTreeNode,
            node1: BinaryTreeNode) -> Optional[BinaryTreeNode]:
     '''
-    My version of LCA
+    My version of LCA with O(n) time and O(h) space bounds
     '''
-    pass
+    def search_lca(node: BinaryTreeNode,
+                   node0: BinaryTreeNode,
+                   node1: BinaryTreeNode,
+                   path: List[BinaryTreeNode],
+                   ancestry: Dict[int, List[BinaryTreeNode]]) -> Optional[BinaryTreeNode]:
+        if node is None:
+            return None
+        path.append(node)
+        if node is node0:
+            ancestry[0] = path[:]
+        if node is node1:
+            ancestry[1] = path[:]
+        if all([i in ancestry for i in [0, 1]]):
+            last_match = ancestry[0][0]
+            for i in range(1, min(len(ancestry[0]), len(ancestry[1]))):
+                if ancestry[0][i] is ancestry[1][i]:
+                    last_match = ancestry[0][i]
+                else:
+                    break
+            return last_match
+        lca_node = search_lca(node.left, node0, node1, path, ancestry)
+        if lca_node:
+            return lca_node
+        lca_node = search_lca(node.right, node0, node1, path, ancestry)
+        if lca_node:
+            return lca_node
+        path.pop()
+        return None
+    path = []
+    ancestry = {}
+    return search_lca(tree, node0, node1, path, ancestry)
 
 
 def lca(tree: BinaryTreeNode, node0: BinaryTreeNode,
         node1: BinaryTreeNode) -> Optional[BinaryTreeNode]:
-    # TODO - you fill in here.
-    return None
+    return lca_v1(tree, node0, node1)
 
 
 @enable_executor_hook
