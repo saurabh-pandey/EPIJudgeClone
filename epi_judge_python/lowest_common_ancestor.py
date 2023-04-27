@@ -7,6 +7,17 @@ from test_framework.binary_tree_utils import must_find_node, strip_parent_link
 from test_framework.test_failure import TestFailure
 from test_framework.test_utils import enable_executor_hook
 
+from tests.test_lowest_common_ancestor import TestLowestCommonAncestor
+
+
+def lca_v1(tree: BinaryTreeNode,
+           node0: BinaryTreeNode,
+           node1: BinaryTreeNode) -> Optional[BinaryTreeNode]:
+    '''
+    My version of LCA
+    '''
+    pass
+
 
 def lca(tree: BinaryTreeNode, node0: BinaryTreeNode,
         node1: BinaryTreeNode) -> Optional[BinaryTreeNode]:
@@ -27,6 +38,7 @@ def lca_wrapper(executor, tree, key1, key2):
 
 
 if __name__ == '__main__':
+    TestLowestCommonAncestor(lca_v1).run_tests()
     exit(
         generic_test.generic_test_main('lowest_common_ancestor.py',
                                        'lowest_common_ancestor.tsv',
