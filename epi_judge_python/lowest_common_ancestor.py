@@ -1,7 +1,7 @@
 import functools
 
 from collections import namedtuple
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Tuple
 
 from binary_tree_node import BinaryTreeNode
 from test_framework import generic_test
@@ -78,10 +78,37 @@ def lca_v2(tree: BinaryTreeNode,
     return lca_helper(tree, node0, node1).ancestor
 
 
+def lca_v3(tree: BinaryTreeNode,
+           node0: BinaryTreeNode,
+           node1: BinaryTreeNode) -> Optional[BinaryTreeNode]:
+    '''
+    Book's version with same time and space bounds but replacing namedtuples 
+    with tuples. This is very fast compared to the namedtuple version.
+    '''
+    def lca_helper(node: BinaryTreeNode,
+                   node0: BinaryTreeNode,
+                   node1: BinaryTreeNode) -> Tuple[int,
+                                                   Optional[BinaryTreeNode]]:
+        if not node:
+            return (0, None)
+        left_status = lca_helper(node.left, node0, node1)
+        if left_status[0] == 2:
+            return left_status
+        right_status = lca_helper(node.right, node0, node1)
+        if right_status[0] == 2:
+            return right_status
+        num_target_nodes = (left_status[0]
+                            + right_status[0]
+                            + (node0, node1).count(node))
+        return (num_target_nodes, node if num_target_nodes == 2 else None)
+    return lca_helper(tree, node0, node1)[1]
+
+
 def lca(tree: BinaryTreeNode, node0: BinaryTreeNode,
         node1: BinaryTreeNode) -> Optional[BinaryTreeNode]:
     # return lca_v1(tree, node0, node1)
-    return lca_v2(tree, node0, node1)
+    # return lca_v2(tree, node0, node1)
+    return lca_v3(tree, node0, node1)
 
 
 @enable_executor_hook
@@ -99,6 +126,7 @@ def lca_wrapper(executor, tree, key1, key2):
 if __name__ == '__main__':
     TestLowestCommonAncestor(lca_v1).run_tests()
     TestLowestCommonAncestor(lca_v2).run_tests()
+    TestLowestCommonAncestor(lca_v3).run_tests()
     exit(
         generic_test.generic_test_main('lowest_common_ancestor.py',
                                        'lowest_common_ancestor.tsv',
