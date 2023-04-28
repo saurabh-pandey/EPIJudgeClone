@@ -1,4 +1,6 @@
 import functools
+
+from collections import namedtuple
 from typing import List, Optional, Dict
 
 from binary_tree_node import BinaryTreeNode
@@ -49,9 +51,37 @@ def lca_v1(tree: BinaryTreeNode,
     return search_lca(tree, node0, node1, path, ancestry)
 
 
+def lca_v2(tree: BinaryTreeNode,
+           node0: BinaryTreeNode,
+           node1: BinaryTreeNode) -> Optional[BinaryTreeNode]:
+    '''
+    Book's version with same time and space bounds
+    '''
+    Status = namedtuple("Status", ("num_target_nodes", "ancestor"))
+
+    def lca_helper(node: BinaryTreeNode,
+                   node0: BinaryTreeNode,
+                   node1: BinaryTreeNode) -> Status:
+        if not node:
+            return Status(0, None)
+        left_status = lca_helper(node.left, node0, node1)
+        if left_status.num_target_nodes == 2:
+            return left_status
+        right_status = lca_helper(node.right, node0, node1)
+        if right_status.num_target_nodes == 2:
+            return right_status
+        num_target_nodes = (left_status.num_target_nodes
+                            + right_status.num_target_nodes
+                            + (node0, node1).count(node))
+        return Status(num_target_nodes,
+                      node if num_target_nodes == 2 else None)
+    return lca_helper(tree, node0, node1).ancestor
+
+
 def lca(tree: BinaryTreeNode, node0: BinaryTreeNode,
         node1: BinaryTreeNode) -> Optional[BinaryTreeNode]:
-    return lca_v1(tree, node0, node1)
+    # return lca_v1(tree, node0, node1)
+    return lca_v2(tree, node0, node1)
 
 
 @enable_executor_hook
@@ -68,6 +98,7 @@ def lca_wrapper(executor, tree, key1, key2):
 
 if __name__ == '__main__':
     TestLowestCommonAncestor(lca_v1).run_tests()
+    TestLowestCommonAncestor(lca_v2).run_tests()
     exit(
         generic_test.generic_test_main('lowest_common_ancestor.py',
                                        'lowest_common_ancestor.tsv',
