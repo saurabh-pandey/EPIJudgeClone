@@ -3,9 +3,11 @@ from test_framework.test_failure import TestFailure
 from typing import Callable
 
 class TestBase:
-    def __init__(self, solve: Callable[[], None], message: str = None) -> None:
+    def __init__(self, solve: Callable[[], None] = None,
+                 message: str = None) -> None:
         self.solve = solve
-        self.message = message if message else solve.__name__
+        self.message = (
+            message if message else solve.__name__ if solve else "None")
 
     def run_tests(self, pattern: str = None, verbose: bool = False) -> None:
         print("Testing", self.message)
