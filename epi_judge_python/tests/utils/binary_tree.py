@@ -68,6 +68,8 @@ class PreOrder(SerializeDeserialize):
                 serialized_tree.extend(
                     serialize_helper(node.right))
             return serialized_tree
+        if not tree:
+            return []
         serialized_tree = serialize_helper(tree)
         while serialized_tree[-1] is None:
             serialized_tree.pop()
