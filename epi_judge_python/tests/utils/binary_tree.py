@@ -46,10 +46,16 @@ class LevelOrder(SerializeDeserialize):
                 left_child_key = cloned_nodes.pop(0)
                 right_child_key = cloned_nodes.pop(0) if cloned_nodes else None
                 if left_child_key:
-                    parent_node.left = BinaryTreeNode(left_child_key)
+                    left_child_node = BinaryTreeNode(left_child_key)
+                    parent_node.left = left_child_node
+                    if hasattr(left_child_node, "parent"):
+                        left_child_node.parent = parent_node
                     nodes_queue.append(parent_node.left)
                 if right_child_key:
-                    parent_node.right = BinaryTreeNode(right_child_key)
+                    right_child_node = BinaryTreeNode(right_child_key)
+                    parent_node.right = right_child_node
+                    if hasattr(right_child_node, "parent"):
+                        right_child_node.parent = parent_node
                     nodes_queue.append(parent_node.right)
         return root
 
@@ -85,7 +91,11 @@ class PreOrder(SerializeDeserialize):
             if key:
                 node = BinaryTreeNode(key)
                 node.left = deserialize_helper(nodes)
+                if hasattr(node.left, "parent"):
+                    node.left.parent = node
                 node.right = deserialize_helper(nodes)
+                if hasattr(node.right, "parent"):
+                    node.right.parent = node
             return node
         cloned_nodes = nodes[:]
         return deserialize_helper(cloned_nodes)
