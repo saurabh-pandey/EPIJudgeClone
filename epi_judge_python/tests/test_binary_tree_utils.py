@@ -1,33 +1,18 @@
+from typing import Optional
+
 from tests.test_base import TestBase
 from tests.utils import binary_tree
 
 from binary_tree_node import BinaryTreeNode as N
+from binary_tree_with_parent_prototype import BinaryTreeNode as NodeWithParent
 
 
 class TestBinaryTreeUtils(TestBase):
+    def _check_tree(self, tree: Optional[N], max_key: Optional[int]):
+        pass
+    
     def test_tree1(self):
-        tree = N(1,
-                 N(2,
-                   N(4),
-                   N(5,
-                     N(8),
-                     None
-                    )
-                 ),
-                 N(3,
-                   N(6,
-                     None,
-                     N(9)
-                    ),
-                   N(7,
-                     None,
-                     N(10,
-                       N(11),
-                       N(12)
-                      )
-                    )
-                 )
-                )
+        tree = binary_tree.BinaryTreeFactory.tree1()
         lo_serial_tree = binary_tree.LevelOrder.serialize(tree)
         lo_deserial_tree = binary_tree.LevelOrder.deserialize(lo_serial_tree)
         lo_reserial_tree = binary_tree.LevelOrder.serialize(lo_deserial_tree)
@@ -43,24 +28,7 @@ class TestBinaryTreeUtils(TestBase):
             assert binary_tree.find_node(tree, i) == None
     
     def test_tree2(self):
-        tree = N(1,
-                 N(2,
-                   N(4,
-                     None,
-                     N(7)
-                    ),
-                    N(5,
-                      N(8),
-                      N(9,
-                        N(10)
-                       )
-                     )
-                  ),
-                 N(3,
-                   None,
-                   N(6)
-                  )
-                )
+        tree = binary_tree.BinaryTreeFactory.tree2()
         lo_serial_tree = binary_tree.LevelOrder.serialize(tree)
         lo_deserial_tree = binary_tree.LevelOrder.deserialize(lo_serial_tree)
         lo_reserial_tree = binary_tree.LevelOrder.serialize(lo_deserial_tree)
@@ -76,7 +44,7 @@ class TestBinaryTreeUtils(TestBase):
             assert binary_tree.find_node(tree, i) == None
     
     def test_single(self):
-        tree = N(1)
+        tree = binary_tree.BinaryTreeFactory.single_node()
         lo_serial_tree = binary_tree.LevelOrder.serialize(tree)
         lo_deserial_tree = binary_tree.LevelOrder.deserialize(lo_serial_tree)
         lo_reserial_tree = binary_tree.LevelOrder.serialize(lo_deserial_tree)
@@ -92,15 +60,7 @@ class TestBinaryTreeUtils(TestBase):
             assert binary_tree.find_node(tree, i) == None
     
     def test_tree3(self):
-        tree = N(1,
-                 N(2,
-                   None,
-                   N(4)
-                  ),
-                 N(3,
-                   N(5)
-                  )
-                )
+        tree = binary_tree.BinaryTreeFactory.tree3()
         lo_serial_tree = binary_tree.LevelOrder.serialize(tree)
         lo_deserial_tree = binary_tree.LevelOrder.deserialize(lo_serial_tree)
         lo_reserial_tree = binary_tree.LevelOrder.serialize(lo_deserial_tree)

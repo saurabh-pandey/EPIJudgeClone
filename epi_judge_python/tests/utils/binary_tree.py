@@ -6,7 +6,77 @@ from binary_tree_with_parent_prototype import BinaryTreeNode as NodeWithParent
 
 BinTreeNode = Union[SimpleNode, NodeWithParent]
 
+
+class BinaryTreeFactory:
+    '''
+    Factory for some standard binary trees used in tests
+    '''
+    @staticmethod
+    def single_node() -> SimpleNode:
+        return SimpleNode(1)
+    
+    @staticmethod
+    def tree1() -> SimpleNode:
+        return SimpleNode(1,
+            SimpleNode(2,
+                SimpleNode(4),
+                SimpleNode(5,
+                    SimpleNode(8),
+                    None)
+                ),
+            SimpleNode(3,
+                SimpleNode(6,
+                    None,
+                    SimpleNode(9)
+                ),
+                SimpleNode(7,
+                    None,
+                    SimpleNode(10,
+                        SimpleNode(11),
+                        SimpleNode(12)
+                    )
+                )
+            )
+        )
+    
+    @staticmethod
+    def tree2() -> SimpleNode:
+        return SimpleNode(1,
+            SimpleNode(2,
+                SimpleNode(4,
+                    None,
+                    SimpleNode(7)
+                ),
+                SimpleNode(5,
+                    SimpleNode(8),
+                    SimpleNode(9,
+                        SimpleNode(10)
+                    )
+                )
+            ),
+            SimpleNode(3,
+                None,
+                SimpleNode(6)
+            )
+        )
+    
+    @staticmethod
+    def tree3() -> SimpleNode:
+        return SimpleNode(1,
+            SimpleNode(2,
+                None,
+                SimpleNode(4)
+            ),
+            SimpleNode(3,
+                SimpleNode(5)
+            )
+        )
+
+
 class SerializeDeserialize(ABC):
+    '''
+    Binary tree serializers and deserializers
+    '''
     @abstractmethod
     def serialize(tree: Optional[BinTreeNode]) -> List[Optional[int]]:
         pass
