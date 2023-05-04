@@ -1,21 +1,23 @@
 from abc import ABC, abstractmethod
-from typing import List, Optional
+from typing import List, Optional, Type, Union
 
-from binary_tree_node import BinaryTreeNode
+from binary_tree_node import BinaryTreeNode as SimpleNode
+from binary_tree_with_parent_prototype import BinaryTreeNode as NodeWithParent
 
+BinTreeNode = Union[SimpleNode, NodeWithParent]
 
 class SerializeDeserialize(ABC):
     @abstractmethod
-    def serialize(tree: Optional[BinaryTreeNode]) -> List[Optional[int]]:
+    def serialize(tree: Optional[BinTreeNode]) -> List[Optional[int]]:
         pass
 
     @abstractmethod
-    def deserialize(nodes: List[Optional[int]]) -> Optional[BinaryTreeNode]:
+    def deserialize(nodes: List[Optional[int]]) -> Optional[BinTreeNode]:
         pass
 
 
 class LevelOrder(SerializeDeserialize):
-    def serialize(tree: Optional[BinaryTreeNode]) -> List[Optional[int]]:
+    def serialize(tree: Optional[BinTreeNode]) -> List[Optional[int]]:
         if tree is None:
             return []
         nodes_queue = [tree]
@@ -31,14 +33,16 @@ class LevelOrder(SerializeDeserialize):
             serialized_tree.pop()
         return serialized_tree
     
-    def deserialize( nodes: List[Optional[int]]) -> Optional[BinaryTreeNode]:
+    def deserialize(nodes: List[Optional[int]],
+                    NodeCls: Type[BinTreeNode] = SimpleNode
+                    ) -> Optional[BinTreeNode]:
         if not nodes:
             return None
         cloned_nodes = nodes[:]
         root_key = None
         while root_key is None:
             root_key = cloned_nodes.pop(0)
-        root = BinaryTreeNode(root_key)
+        root = NodeCls(root_key)
         nodes_queue = [root]
         while cloned_nodes:
             parent_node = nodes_queue.pop(0)
@@ -46,13 +50,13 @@ class LevelOrder(SerializeDeserialize):
                 left_child_key = cloned_nodes.pop(0)
                 right_child_key = cloned_nodes.pop(0) if cloned_nodes else None
                 if left_child_key:
-                    left_child_node = BinaryTreeNode(left_child_key)
+                    left_child_node = NodeCls(left_child_key)
                     parent_node.left = left_child_node
                     if hasattr(left_child_node, "parent"):
                         left_child_node.parent = parent_node
                     nodes_queue.append(parent_node.left)
                 if right_child_key:
-                    right_child_node = BinaryTreeNode(right_child_key)
+                    right_child_node = NodeCls(right_child_key)
                     parent_node.right = right_child_node
                     if hasattr(right_child_node, "parent"):
                         right_child_node.parent = parent_node
@@ -61,9 +65,9 @@ class LevelOrder(SerializeDeserialize):
 
 
 class PreOrder(SerializeDeserialize):
-    def serialize(tree: Optional[BinaryTreeNode]) -> List[Optional[int]]:
+    def serialize(tree: Optional[BinTreeNode]) -> List[Optional[int]]:
         def serialize_helper(
-                node: Optional[BinaryTreeNode]) -> List[Optional[int]]:
+                node: Optional[BinTreeNode]) -> List[Optional[int]]:
             serialized_tree = []
             if not node:
                 serialized_tree.append(None)
@@ -81,15 +85,19 @@ class PreOrder(SerializeDeserialize):
             serialized_tree.pop()
         return serialized_tree
 
-    def deserialize(nodes: List[Optional[int]]) -> Optional[BinaryTreeNode]:
+    def deserialize(nodes: List[Optional[int]],
+                    NodeCls: Type[BinTreeNode] = SimpleNode
+                    ) -> Optional[BinTreeNode]:
         def deserialize_helper(
-                nodes: List[Optional[int]]) -> Optional[BinaryTreeNode]:
+                nodes: List[Optional[int]],
+                NodeCls: Type[BinTreeNode] = SimpleNode
+                ) -> Optional[BinTreeNode]:
             if not nodes:
                 return None
             node = None
             key = nodes.pop(0)
             if key:
-                node = BinaryTreeNode(key)
+                node = NodeCls(key)
                 node.left = deserialize_helper(nodes)
                 if hasattr(node.left, "parent"):
                     node.left.parent = node
@@ -98,10 +106,10 @@ class PreOrder(SerializeDeserialize):
                     node.right.parent = node
             return node
         cloned_nodes = nodes[:]
-        return deserialize_helper(cloned_nodes)
+        return deserialize_helper(cloned_nodes, NodeCls)
 
 
-def find_node(node: BinaryTreeNode, key: int) -> Optional[BinaryTreeNode]:
+def find_node(node: Optional[BinTreeNode], key: int) -> Optional[BinTreeNode]:
     '''
     Find node with key in a binary tree
     '''
