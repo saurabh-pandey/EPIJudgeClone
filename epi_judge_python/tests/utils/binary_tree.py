@@ -7,7 +7,7 @@ from binary_tree_with_parent_prototype import BinaryTreeNode as NodeWithParent
 BinTreeNode = Union[SimpleNode, NodeWithParent]
 
 
-class BinaryTreeFactory:
+class Factory:
     '''
     Factory for some standard binary trees used in tests
     '''

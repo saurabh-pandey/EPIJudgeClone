@@ -8,6 +8,31 @@ from binary_tree_with_parent_prototype import BinaryTreeNode as NodeWithParent
 
 
 class TestBinaryTreeUtils(TestBase):
+    def test_tree1(self):
+        tree = bt.Factory.tree1()
+        self._check_tree(tree, 12)
+        self._check_tree_with_parent(tree, 12)
+    
+    def test_tree2(self):
+        tree = bt.Factory.tree2()
+        self._check_tree(tree, 10)
+        self._check_tree_with_parent(tree, 10)
+    
+    def test_single(self):
+        tree = bt.Factory.single_node()
+        self._check_tree(tree, 1)
+        self._check_tree_with_parent(tree, 1)
+    
+    def test_tree3(self):
+        tree = bt.Factory.tree3()
+        self._check_tree(tree, 5)
+        self._check_tree_with_parent(tree, 5)
+    
+    def test_empty(self):
+        tree = None
+        self._check_tree(tree, None)
+        self._check_tree_with_parent(tree, None)
+    
     def _check_tree(self, tree: Optional[N], max_key: Optional[int]):
         lo_serial_tree = bt.LevelOrder.serialize(tree)
         lo_deserial_tree = bt.LevelOrder.deserialize(lo_serial_tree)
@@ -52,28 +77,3 @@ class TestBinaryTreeUtils(TestBase):
         else:
             for i in range(0, 20):
                 assert bt.find_node(tree, i) == None
-    
-    def test_tree1(self):
-        tree = bt.BinaryTreeFactory.tree1()
-        self._check_tree(tree, 12)
-        self._check_tree_with_parent(tree, 12)
-    
-    def test_tree2(self):
-        tree = bt.BinaryTreeFactory.tree2()
-        self._check_tree(tree, 10)
-        self._check_tree_with_parent(tree, 10)
-    
-    def test_single(self):
-        tree = bt.BinaryTreeFactory.single_node()
-        self._check_tree(tree, 1)
-        self._check_tree_with_parent(tree, 1)
-    
-    def test_tree3(self):
-        tree = bt.BinaryTreeFactory.tree3()
-        self._check_tree(tree, 5)
-        self._check_tree_with_parent(tree, 5)
-    
-    def test_empty(self):
-        tree = None
-        self._check_tree(tree, None)
-        self._check_tree_with_parent(tree, None)
