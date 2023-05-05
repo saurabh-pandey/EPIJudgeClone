@@ -1,5 +1,5 @@
 import functools
-from typing import Optional
+from typing import List, Optional
 
 from binary_tree_with_parent_prototype import BinaryTreeNode
 from test_framework import generic_test
@@ -10,10 +10,30 @@ from tests.test_lowest_common_ancestor_with_parent import (
     TestLowestCommonAncestorWithParent)
 
 
+def lca_v1(node0: BinaryTreeNode,
+           node1: BinaryTreeNode) -> Optional[BinaryTreeNode]:
+    '''
+    This version uses stack and path intersection to find LCA. O(h) in time and 
+    space
+    '''
+    def get_root_path(node: BinaryTreeNode) -> List[BinaryTreeNode]:
+        path = []
+        while node:
+            path.append(node)
+            node = node.parent
+        return path
+    path0 = get_root_path(node0)
+    path1 = get_root_path(node1)
+    matching = None
+    while path0 and path1 and (path0[-1] is path1[-1]):
+        matching = path0[-1]
+        path0.pop()
+        path1.pop()
+    return matching
+
 def lca(node0: BinaryTreeNode,
         node1: BinaryTreeNode) -> Optional[BinaryTreeNode]:
-    # TODO - you fill in here.
-    return None
+    return lca_v1(node0, node1)
 
 
 @enable_executor_hook
@@ -28,8 +48,8 @@ def lca_wrapper(executor, tree, node0, node1):
 
 
 if __name__ == '__main__':
-    TestLowestCommonAncestorWithParent(lca).run_tests()
-    # exit(
-    #     generic_test.generic_test_main('lowest_common_ancestor_with_parent.py',
-    #                                    'lowest_common_ancestor.tsv',
-    #                                    lca_wrapper))
+    TestLowestCommonAncestorWithParent(lca_v1).run_tests()
+    exit(
+        generic_test.generic_test_main('lowest_common_ancestor_with_parent.py',
+                                       'lowest_common_ancestor.tsv',
+                                       lca_wrapper))

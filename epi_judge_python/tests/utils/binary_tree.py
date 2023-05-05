@@ -12,12 +12,13 @@ class Factory:
     Factory for some standard binary trees used in tests
     '''
     @staticmethod
-    def single_node() -> SimpleNode:
-        return SimpleNode(1)
+    def single_node(with_parent: bool = False) -> SimpleNode:
+        tree = SimpleNode(1)
+        return Factory._fetch_tree(tree, with_parent)
     
     @staticmethod
-    def tree1() -> SimpleNode:
-        return SimpleNode(1,
+    def tree1(with_parent: bool = False) -> SimpleNode:
+        tree = SimpleNode(1,
             SimpleNode(2,
                 SimpleNode(4),
                 SimpleNode(5,
@@ -38,10 +39,11 @@ class Factory:
                 )
             )
         )
+        return Factory._fetch_tree(tree, with_parent)
     
     @staticmethod
-    def tree2() -> SimpleNode:
-        return SimpleNode(1,
+    def tree2(with_parent: bool = False) -> SimpleNode:
+        tree = SimpleNode(1,
             SimpleNode(2,
                 SimpleNode(4,
                     None,
@@ -59,10 +61,11 @@ class Factory:
                 SimpleNode(6)
             )
         )
+        return Factory._fetch_tree(tree, with_parent)
     
     @staticmethod
-    def tree3() -> SimpleNode:
-        return SimpleNode(1,
+    def tree3(with_parent: bool = False) -> SimpleNode:
+        tree = SimpleNode(1,
             SimpleNode(2,
                 None,
                 SimpleNode(4)
@@ -71,6 +74,16 @@ class Factory:
                 SimpleNode(5)
             )
         )
+        return Factory._fetch_tree(tree, with_parent)
+    
+    @staticmethod
+    def _fetch_tree(tree: SimpleNode, with_parent: bool = False) -> BinTreeNode:
+        if with_parent:
+            return LevelOrder.deserialize(
+                LevelOrder.serialize(tree), NodeWithParent)
+        else:
+            return tree
+
 
 
 class SerializeDeserialize(ABC):

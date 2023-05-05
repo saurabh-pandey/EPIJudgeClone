@@ -3,11 +3,30 @@ from tests.utils import binary_tree
 
 from binary_tree_with_parent_prototype import BinaryTreeNode as N
 
-import pdb
 
 class TestLowestCommonAncestorWithParent(TestBase):
     def test_example1(self):
-        nodes = [1, 2, 3, 4, 5, None, 6, None, 7, 8, 9, None, None, None, None, None, None, 10]
-        print(f"Original nodes = {nodes}")
-        tree = binary_tree.LevelOrder.deserialize(nodes)
+        tree = binary_tree.Factory.tree2(True)
+        node0 = binary_tree.find_node(tree, 7)
+        node1 = binary_tree.find_node(tree, 10)
+        lca_node = binary_tree.find_node(tree, 2)
+        result = self.solve(node0, node1)
+        assert result is lca_node, (
+            f"Expected = {lca_node.data}, result = {result.data}")
+        node0 = binary_tree.find_node(tree, 10)
+        node1 = binary_tree.find_node(tree, 6)
+        lca_node = binary_tree.find_node(tree, 1)
+        result = self.solve(node0, node1)
+        assert result is lca_node, (
+            f"Expected = {lca_node.data}, result = {result.data}")
+    
+    def test_single(self):
+        tree = binary_tree.Factory.single_node(True)
+        node0 = binary_tree.find_node(tree, 1)
+        node1 = binary_tree.find_node(tree, 1)
+        lca_node = binary_tree.find_node(tree, 1)
+        result = self.solve(node0, node1)
+        assert result is lca_node, (
+            f"Expected = {lca_node.data}, result = {result.data}")
+
 

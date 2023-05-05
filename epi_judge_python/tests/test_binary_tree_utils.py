@@ -10,7 +10,7 @@ from binary_tree_with_parent_prototype import BinaryTreeNode as NodeWithParent
 class TestBinaryTreeUtils(TestBase):
     def test_tree1(self):
         tree = bt.Factory.tree1()
-        self._check_tree(tree, 12)
+        self._check_tree(bt.Factory.tree1(), 12)
         self._check_tree_with_parent(tree, 12)
     
     def test_tree2(self):
