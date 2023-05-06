@@ -207,3 +207,13 @@ def find_node(node: Optional[BinTreeNode], key: int) -> Optional[BinTreeNode]:
     if found_node:
         return found_node
     return None
+
+
+def generate_inorder(tree: BinTreeNode) -> List[int]:
+    if tree is None:
+        return []
+    inorder = []
+    inorder.extend(generate_inorder(tree.left))
+    inorder.append(tree.data)
+    inorder.extend(generate_inorder(tree.right))
+    return inorder
