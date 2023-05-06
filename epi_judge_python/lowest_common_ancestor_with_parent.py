@@ -31,9 +31,27 @@ def lca_v1(node0: BinaryTreeNode,
         path1.pop()
     return matching
 
+
+def lca_v2(node0: BinaryTreeNode,
+           node1: BinaryTreeNode) -> Optional[BinaryTreeNode]:
+    '''
+    This version use a hash table and again has O(h) time and space complexity
+    '''
+    node = node0
+    nodes_in_path = set()
+    while node:
+        nodes_in_path.add(node)
+        node = node.parent
+    node = node1
+    while node not in nodes_in_path:
+        node = node.parent
+    return node
+
+
 def lca(node0: BinaryTreeNode,
         node1: BinaryTreeNode) -> Optional[BinaryTreeNode]:
-    return lca_v1(node0, node1)
+    # return lca_v1(node0, node1)
+    return lca_v2(node0, node1)
 
 
 @enable_executor_hook
@@ -49,6 +67,7 @@ def lca_wrapper(executor, tree, node0, node1):
 
 if __name__ == '__main__':
     TestLowestCommonAncestorWithParent(lca_v1).run_tests()
+    TestLowestCommonAncestorWithParent(lca_v2).run_tests()
     exit(
         generic_test.generic_test_main('lowest_common_ancestor_with_parent.py',
                                        'lowest_common_ancestor.tsv',
