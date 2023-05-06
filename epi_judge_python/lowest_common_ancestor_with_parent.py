@@ -35,7 +35,8 @@ def lca_v1(node0: BinaryTreeNode,
 def lca_v2(node0: BinaryTreeNode,
            node1: BinaryTreeNode) -> Optional[BinaryTreeNode]:
     '''
-    This version use a hash table and again has O(h) time and space complexity
+    This version uses a hash table and again has O(h) time and space complexity
+    but with better constants
     '''
     node = node0
     nodes_in_path = set()
@@ -48,10 +49,34 @@ def lca_v2(node0: BinaryTreeNode,
     return node
 
 
+def lca_v3(node0: BinaryTreeNode,
+           node1: BinaryTreeNode) -> Optional[BinaryTreeNode]:
+    '''
+    Book's O(1) space and O(h) time version
+    '''
+    def get_depth(node: BinaryTreeNode) -> int:
+        depth = 0
+        while node:
+            node = node.parent
+            depth += 1
+        return depth
+    depth0, depth1 = get_depth(node0), get_depth(node1)
+    deeper, shallower = node0, node1
+    if depth1 > depth0:
+        deeper, shallower = shallower, deeper
+    diff_depth = abs(depth0 - depth1)
+    for _ in range(diff_depth):
+        deeper = deeper.parent
+    while deeper is not shallower:
+        deeper, shallower = deeper.parent, shallower.parent
+    return deeper
+
+
 def lca(node0: BinaryTreeNode,
         node1: BinaryTreeNode) -> Optional[BinaryTreeNode]:
     # return lca_v1(node0, node1)
-    return lca_v2(node0, node1)
+    # return lca_v2(node0, node1)
+    return lca_v3(node0, node1)
 
 
 @enable_executor_hook
@@ -68,6 +93,7 @@ def lca_wrapper(executor, tree, node0, node1):
 if __name__ == '__main__':
     TestLowestCommonAncestorWithParent(lca_v1).run_tests()
     TestLowestCommonAncestorWithParent(lca_v2).run_tests()
+    TestLowestCommonAncestorWithParent(lca_v3).run_tests()
     exit(
         generic_test.generic_test_main('lowest_common_ancestor_with_parent.py',
                                        'lowest_common_ancestor.tsv',
