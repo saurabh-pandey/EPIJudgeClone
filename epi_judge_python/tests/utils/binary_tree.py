@@ -75,6 +75,31 @@ class Factory:
             )
         )
         return Factory._fetch_tree(tree, with_parent)
+
+    @staticmethod
+    def left_only(with_parent: bool = False) -> SimpleNode:
+        tree = SimpleNode(1,
+            SimpleNode(2,
+                SimpleNode(3,
+                    SimpleNode(4)
+                )
+            )
+        )
+        return Factory._fetch_tree(tree, with_parent)
+    
+    @staticmethod
+    def right_only(with_parent: bool = False) -> SimpleNode:
+        tree = SimpleNode(1,
+            None,
+            SimpleNode(2,
+                None,
+                SimpleNode(3,
+                    None,
+                    SimpleNode(4)
+                )
+            )
+        )
+        return Factory._fetch_tree(tree, with_parent)
     
     @staticmethod
     def _fetch_tree(tree: SimpleNode, with_parent: bool = False) -> BinTreeNode:

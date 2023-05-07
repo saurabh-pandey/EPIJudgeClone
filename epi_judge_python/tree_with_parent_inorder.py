@@ -7,14 +7,42 @@ from tests.test_tree_with_parent_inorder import TestTreeWithParentInorder
 
 
 def inorder_traversal_v1(tree: BinaryTreeNode) -> List[int]:
-    pass
+    '''
+    Constant space and O(n) time version
+    '''
+    node = tree
+    prev = None
+    inorder = []
+    while node:
+        if prev and (prev is node.right):
+            prev = node
+            node = node.parent
+        elif node.left is prev:
+            prev = node
+            inorder.append(node.data)
+            if node.right:
+                node = node.right
+            else:
+                node = node.parent
+        elif node.left:
+            prev = node
+            node = node.left
+        else:
+            inorder.append(node.data)
+            prev = node
+            if node.right:
+                node = node.right
+            else:
+                node = node.parent
+    return inorder
+
 
 def inorder_traversal(tree: BinaryTreeNode) -> List[int]:
-    # TODO - you fill in here.
-    return []
+    return inorder_traversal_v1(tree)
 
 
 if __name__ == '__main__':
+    TestTreeWithParentInorder(inorder_traversal_v1).run_tests()
     exit(
         generic_test.generic_test_main('tree_with_parent_inorder.py',
                                        'tree_with_parent_inorder.tsv',
