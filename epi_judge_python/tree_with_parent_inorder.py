@@ -17,14 +17,7 @@ def inorder_traversal_v1(tree: BinaryTreeNode) -> List[int]:
         if prev and (prev is node.right):
             prev = node
             node = node.parent
-        elif node.left is prev:
-            prev = node
-            inorder.append(node.data)
-            if node.right:
-                node = node.right
-            else:
-                node = node.parent
-        elif node.left:
+        elif prev is node.parent and node.left:
             prev = node
             node = node.left
         else:
