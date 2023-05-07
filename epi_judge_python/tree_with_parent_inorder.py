@@ -8,7 +8,7 @@ from tests.test_tree_with_parent_inorder import TestTreeWithParentInorder
 
 def inorder_traversal_v1(tree: BinaryTreeNode) -> List[int]:
     '''
-    Constant space and O(n) time version
+    O(1) space and O(n) time version
     '''
     node = tree
     prev = None
@@ -30,12 +30,36 @@ def inorder_traversal_v1(tree: BinaryTreeNode) -> List[int]:
     return inorder
 
 
+def inorder_traversal_v2(tree: BinaryTreeNode) -> List[int]:
+    '''
+    Book's O(1) space and O(n) time version
+    '''
+    prev = None
+    result = []
+    while tree:
+        if prev is tree.parent:
+            if tree.left:
+                next = tree.left
+            else:
+                result.append(tree.data)
+                next = tree.right or tree.parent
+        elif prev is tree.left:
+            result.append(tree.data)
+            next = tree.right or tree.parent
+        else:
+            next = tree.parent
+        prev, tree = tree, next
+    return result
+
+
 def inorder_traversal(tree: BinaryTreeNode) -> List[int]:
-    return inorder_traversal_v1(tree)
+    # return inorder_traversal_v1(tree)
+    return inorder_traversal_v2(tree)
 
 
 if __name__ == '__main__':
     TestTreeWithParentInorder(inorder_traversal_v1).run_tests()
+    TestTreeWithParentInorder(inorder_traversal_v2).run_tests()
     exit(
         generic_test.generic_test_main('tree_with_parent_inorder.py',
                                        'tree_with_parent_inorder.tsv',
