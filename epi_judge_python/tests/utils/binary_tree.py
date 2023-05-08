@@ -234,6 +234,16 @@ def find_node(node: Optional[BinTreeNode], key: int) -> Optional[BinTreeNode]:
     return None
 
 
+def generate_preorder(tree: BinTreeNode) -> List[int]:
+    if tree is None:
+        return []
+    preorder = []
+    preorder.append(tree.data)
+    preorder.extend(generate_preorder(tree.left))
+    preorder.extend(generate_preorder(tree.right))
+    return preorder
+
+
 def generate_inorder(tree: BinTreeNode) -> List[int]:
     if tree is None:
         return []
@@ -242,3 +252,16 @@ def generate_inorder(tree: BinTreeNode) -> List[int]:
     inorder.append(tree.data)
     inorder.extend(generate_inorder(tree.right))
     return inorder
+
+
+def are_equal(tree1: Optional[BinTreeNode],
+              tree2: Optional[BinTreeNode]) -> bool:
+    if tree1 is None and tree2 is None:
+        return True
+    elif tree1 and tree2:
+        return (are_equal(tree1.left, tree2.left)
+                and are_equal(tree1.right, tree2.right))
+    else:
+        return False
+
+

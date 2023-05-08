@@ -33,6 +33,25 @@ class TestBinaryTreeUtils(TestBase):
         self._check_tree(tree, None)
         self._check_tree_with_parent(tree, None)
     
+    def test_equal_trees(self):
+        assert bt.are_equal(bt.Factory.tree1(), bt.Factory.tree1()), (
+            "Tree equality check failed for tree 1")
+        assert not bt.are_equal(bt.Factory.tree1(), bt.Factory.tree2()), (
+            "Tree inequality check failed for tree 1")
+        assert bt.are_equal(bt.Factory.tree2(), bt.Factory.tree2()), (
+            "Tree equality check failed for tree 2")
+        assert not bt.are_equal(bt.Factory.tree2(), bt.Factory.tree3()), (
+            "Tree inequality check failed for tree 2")
+        assert bt.are_equal(bt.Factory.tree3(), bt.Factory.tree3()), (
+            "Tree equality check failed for tree 3")
+        assert not bt.are_equal(bt.Factory.tree3(), bt.Factory.single_node()), (
+            "Tree inequality check failed for tree 3")
+        assert bt.are_equal(bt.Factory.left_only(), bt.Factory.left_only()), (
+            "Tree equality check failed for left only tree")
+        assert not bt.are_equal(bt.Factory.left_only(),
+                                bt.Factory.right_only()), (
+            "Tree inequality check failed for left only")
+    
     def _check_tree(self, tree: Optional[N], max_key: Optional[int]):
         lo_serial_tree = bt.LevelOrder.serialize(tree)
         lo_deserial_tree = bt.LevelOrder.deserialize(lo_serial_tree)
