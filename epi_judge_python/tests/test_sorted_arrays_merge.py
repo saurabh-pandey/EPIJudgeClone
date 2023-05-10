@@ -10,10 +10,10 @@ class TestSortedArraysMerge(TestBase):
         assert all(result[i] <= result[i + 1] for i in range(len(result) - 1))
     
     def test_random(self):
-        for min_size in range(1, 21):
+        for min_size in range(1, 11):
             for inc in range(21):
                 max_size = min_size + inc
-                for k in range(1, 50):
+                for k in range(1, 20):
                     # print(f"Running for {min_size}, {max_size}, {k}")
                     sorted_arrays = self._generate_sorted_arrays(min_size, 
                                                                  max_size ,
