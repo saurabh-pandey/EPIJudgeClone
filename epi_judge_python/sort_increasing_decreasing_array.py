@@ -66,13 +66,70 @@ def sort_k_increasing_decreasing_array_v1(A: List[int]) -> List[int]:
     return result
 
 
+def sort_k_increasing_decreasing_array_v2(A: List[int]) -> List[int]:
+    '''
+    Book inspired version with O(nlog(k)) runtime
+    '''
+    if not A:
+        return []
+    if len(A) == 1:
+        return A[:]
+    increasing, decreasing = range(2)
+    array_bounds = {
+        increasing: [],
+        decreasing: []
+    }
+    array_bounds_index = increasing if A[0] <= A[1] else decreasing
+    array_bounds[array_bounds_index].append(0)
+    for i in range(len(A) - 1):
+        if array_bounds_index == increasing and A[i] > A[i + 1]:
+            array_bounds_index = decreasing
+            array_bounds[increasing].append(i)
+            array_bounds[decreasing].append(i + 1)
+        elif array_bounds_index == decreasing and A[i] <= A[i + 1]:
+            array_bounds_index = increasing
+            array_bounds[decreasing].append(i)
+            array_bounds[increasing].append(i + 1)
+    array_bounds[array_bounds_index].append(len(A) - 1)
+    result = []
+    min_heap = []
+    for i in range(0, len(array_bounds[increasing]), 2):
+        index = array_bounds[increasing][i]
+        heapq.heappush(min_heap, (A[index], increasing, i, index))
+    for i in range(1, len(array_bounds[decreasing]), 2):
+        index = array_bounds[decreasing][i]
+        heapq.heappush(min_heap,
+                       (A[index], decreasing, i, index))
+    while min_heap:
+        valve, arr_type, arr_index, index = heapq.heappop(min_heap)
+        result.append(valve)
+        if arr_type == increasing:
+            bounds_arr = array_bounds[increasing]
+            max_i = bounds_arr[arr_index + 1]
+            if index + 1 <= max_i:
+                heapq.heappush(min_heap,
+                               (A[index + 1], increasing, arr_index, index + 1))
+        elif arr_type == decreasing:
+            bounds_arr = array_bounds[decreasing]
+            min_i = bounds_arr[arr_index - 1]
+            if index - 1 >= min_i:
+                heapq.heappush(min_heap,
+                               (A[index - 1], decreasing, arr_index, index - 1))
+        else:
+            assert False, f"Unrecognised array type {arr_type}"
+    return result
+
+
 def sort_k_increasing_decreasing_array(A: List[int]) -> List[int]:
-    return sort_k_increasing_decreasing_array_v1(A)
+    # return sort_k_increasing_decreasing_array_v1(A)
+    return sort_k_increasing_decreasing_array_v2(A)
 
 
 if __name__ == '__main__':
     TestSortIncreasingDecreasingArray(
         sort_k_increasing_decreasing_array_v1).run_tests()
+    TestSortIncreasingDecreasingArray(
+        sort_k_increasing_decreasing_array_v2).run_tests()
     exit(
         generic_test.generic_test_main('sort_increasing_decreasing_array.py',
                                        'sort_increasing_decreasing_array.tsv',
