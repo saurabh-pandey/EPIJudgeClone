@@ -1,12 +1,36 @@
+import heapq
+
 from typing import Iterator, List
 
 from test_framework import generic_test
+from tests.test_sort_almost_sorted_array import TestSortAlmostSortedArray
+
+
+def sort_approximately_sorted_array_v1(sequence: Iterator[int],
+                                       k: int) -> List[int]:
+    '''
+    My version with O(n) space and O(nlog(k)) runtime
+    '''
+    min_heap = []
+    for _ in range(k + 1):
+        value = next(sequence, None)
+        if value is not None:
+            heapq.heappush(min_heap, value)
+        else:
+            break
+    result = []
+    while min_heap:
+        min_so_far = heapq.heappop(min_heap)
+        result.append(min_so_far)
+        value = next(sequence, None)
+        if value is not None:
+            heapq.heappush(min_heap, value)
+    return result
 
 
 def sort_approximately_sorted_array(sequence: Iterator[int],
                                     k: int) -> List[int]:
-    # TODO - you fill in here.
-    return []
+    return sort_approximately_sorted_array_v1(sequence, k)
 
 
 def sort_approximately_sorted_array_wrapper(sequence, k):
@@ -14,6 +38,7 @@ def sort_approximately_sorted_array_wrapper(sequence, k):
 
 
 if __name__ == '__main__':
+    TestSortAlmostSortedArray(sort_approximately_sorted_array_v1).run_tests()
     exit(
         generic_test.generic_test_main(
             'sort_almost_sorted_array.py', 'sort_almost_sorted_array.tsv',
