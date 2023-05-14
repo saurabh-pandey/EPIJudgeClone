@@ -1,4 +1,5 @@
 import heapq
+import itertools
 
 from typing import Iterator, List
 
@@ -51,10 +52,27 @@ def sort_approximately_sorted_array_v2(sequence: Iterator[int],
     return result
 
 
+def sort_approximately_sorted_array_v3(sequence: Iterator[int],
+                                       k: int) -> List[int]:
+    '''
+    Even better book's version
+    '''
+    min_heap = []
+    for value in itertools.islice(sequence, k):
+        heapq.heappush(min_heap, value)
+    result = []
+    for value in sequence:
+        result.append(heapq.heappushpop(min_heap, value))
+    while min_heap:
+        result.append(heapq.heappop(min_heap))
+    return result
+
+
 def sort_approximately_sorted_array(sequence: Iterator[int],
                                     k: int) -> List[int]:
     # return sort_approximately_sorted_array_v1(sequence, k)
-    return sort_approximately_sorted_array_v2(sequence, k)
+    # return sort_approximately_sorted_array_v2(sequence, k)
+    return sort_approximately_sorted_array_v3(sequence, k)
 
 
 def sort_approximately_sorted_array_wrapper(sequence, k):
@@ -64,6 +82,7 @@ def sort_approximately_sorted_array_wrapper(sequence, k):
 if __name__ == '__main__':
     TestSortAlmostSortedArray(sort_approximately_sorted_array_v1).run_tests()
     TestSortAlmostSortedArray(sort_approximately_sorted_array_v2).run_tests()
+    TestSortAlmostSortedArray(sort_approximately_sorted_array_v3).run_tests()
     exit(
         generic_test.generic_test_main(
             'sort_almost_sorted_array.py', 'sort_almost_sorted_array.tsv',
