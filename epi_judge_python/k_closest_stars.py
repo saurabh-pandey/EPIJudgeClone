@@ -5,6 +5,8 @@ from typing import Iterator, List
 from test_framework import generic_test
 from test_framework.test_utils import enable_executor_hook
 
+from tests.test_k_closest_stars import TestKClosestStars
+
 
 class Star:
     def __init__(self, x: float, y: float, z: float) -> None:
@@ -25,6 +27,13 @@ class Star:
 
     def __eq__(self, rhs):
         return math.isclose(self.distance, rhs.distance)
+
+
+def find_closest_k_stars_v1(stars: Iterator[Star], k: int) -> List[Star]:
+    '''
+    My version
+    '''
+    pass
 
 
 def find_closest_k_stars(stars: Iterator[Star], k: int) -> List[Star]:
@@ -48,6 +57,7 @@ def find_closest_k_stars_wrapper(executor, stars, k):
 
 
 if __name__ == '__main__':
+    TestKClosestStars(find_closest_k_stars_v1).run_tests()
     exit(
         generic_test.generic_test_main('k_closest_stars.py',
                                        'k_closest_stars.tsv',
