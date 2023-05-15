@@ -1,47 +1,51 @@
+import math
+
 from tests.test_base import TestBase
 
-from k_closest_stars import Star
+import pdb
 
 class TestKClosestStars(TestBase):
     def test_example1(self):
-        stars = [Star(1, 0, 0), Star(2, 0, 0), Star(3, 0, 0), Star(4, 0, 0)]
+        stars = [(1, 0, 0), (2, 0, 0), (3, 0, 0), (4, 0, 0)]
         k = 2
-        k_closest_stars = self.solve(iter(stars), k)
-        expected = [Star(1, 0, 0), Star(2, 0, 0)]
-        assert k_closest_stars == expected, (
-            f"Expected = {expected}, result = {k_closest_stars}")
+        # pdb.set_trace()
+        k_closest_stars = self.solve(stars, k)
+        expected = [(1, 0, 0), (2, 0, 0)]
+        self._check(expected, k_closest_stars)
     
     def test_example2(self):
-        stars = [Star(1, 0, 0), Star(2, 0, 0), Star(3, 0, 0), Star(4, 0, 0)]
+        stars = [(1, 0, 0), (2, 0, 0), (3, 0, 0), (4, 0, 0)]
         k = 3
-        k_closest_stars = self.solve(iter(stars), k)
-        expected = [Star(1, 0, 0), Star(2, 0, 0), Star(3, 0, 0)]
-        assert k_closest_stars == expected, (
-            f"Expected = {expected}, result = {k_closest_stars}")
+        k_closest_stars = self.solve(stars, k)
+        expected = [(1, 0, 0), (2, 0, 0), (3, 0, 0)]
+        self._check(expected, k_closest_stars)
     
     def test_example3(self):
-        stars = [Star(1, 0, 0), Star(2, 0, 0), Star(3, 0, 0), Star(4, 0, 0)]
+        stars = [(1, 0, 0), (2, 0, 0), (3, 0, 0), (4, 0, 0)]
         k = 4
         k_closest_stars = self.solve(iter(stars), k)
-        expected = [Star(1, 0, 0), Star(2, 0, 0), Star(3, 0, 0), Star(3, 0, 0)]
-        assert k_closest_stars == expected, (
-            f"Expected = {expected}, result = {k_closest_stars}")
+        expected = [(1, 0, 0), (2, 0, 0), (3, 0, 0), (4, 0, 0)]
+        self._check(expected, k_closest_stars)
     
     def test_example4(self):
-        stars = [Star(-1, 0, 0), Star(-2, 0, 0), Star(-3, 0, 0), Star(-4, 0, 0),
-                 Star(1, 0, 0), Star(2, 0, 0), Star(3, 0, 0), Star(4, 0, 0)]
+        stars = [(-1, 0, 0), (-2, 0, 0), (-3, 0, 0), (-4, 0, 0),
+                 (1, 0, 0), (2, 0, 0), (3, 0, 0), (4, 0, 0)]
         k = 2
         k_closest_stars = self.solve(iter(stars), k)
-        expected = [Star(-1, 0, 0), Star(1, 0, 0)]
-        assert k_closest_stars == expected, (
-            f"Expected = {expected}, result = {k_closest_stars}")
+        expected = [(-1, 0, 0), (1, 0, 0)]
+        self._check(expected, k_closest_stars)
     
     def test_example5(self):
-        stars = [Star(-1, 0, 0), Star(-2, 0, 0), Star(-3, 0, 0), Star(-4, 0, 0),
-                 Star(1, 0, 0), Star(2, 0, 0), Star(3, 0, 0), Star(4, 0, 0)]
+        stars = [(-1, 0, 0), (-2, 0, 0), (-3, 0, 0), (-4, 0, 0),
+                 (1, 0, 0), (2, 0, 0), (3, 0, 0), (4, 0, 0)]
         k = 4
         k_closest_stars = self.solve(iter(stars), k)
-        expected = [Star(-1, 0, 0), Star(-2, 0, 0), Star(1, 0, 0),
-                    Star(2, 0, 0)]
-        assert k_closest_stars == expected, (
-            f"Expected = {expected}, result = {k_closest_stars}")
+        expected = [(-2, 0, 0), (-1, 0, 0), (1, 0, 0), (2, 0, 0)]
+        self._check(expected, k_closest_stars)
+
+    def _check(self, expected, result) -> None:
+        assert len(expected) == len(result), f"Length mismatch"
+        for coord1, coord2 in zip(expected, sorted(result)):
+            assert all(math.isclose(c1, c2) for c1, c2 in zip(coord1,
+                                                              coord2)), (
+                f"Mismatch in coords")
