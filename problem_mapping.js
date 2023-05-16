@@ -1278,7 +1278,7 @@ problem_mapping = {
                 "total": 55
             },
             "Python: online_median.py": {
-                "passed": 6,
+                "passed": 55,
                 "total": 55
             }
         },

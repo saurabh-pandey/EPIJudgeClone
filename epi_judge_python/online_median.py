@@ -26,16 +26,21 @@ def online_median_v1(sequence: Iterator[int]) -> List[float]:
                 max_val = -heapq.heapreplace(max_heap, -value)
                 heapq.heappush(min_heap, max_val)
         else:
-            if value <= min_heap[0]:
+            if value <= -max_heap[0]:
                 if len(max_heap) == len(min_heap):
                     heapq.heappush(max_heap, -value)
                 else:
                     max_val = -heapq.heapreplace(max_heap, -value)
                     heapq.heappush(min_heap, max_val)
-            else:
+            elif value >= min_heap[0]:
                 if len(max_heap) == len(min_heap):
                     min_val = heapq.heapreplace(min_heap, value)
                     heapq.heappush(max_heap, -min_val)
+                else:
+                    heapq.heappush(min_heap, value)
+            else:
+                if len(max_heap) == len(min_heap):
+                    heapq.heappush(max_heap, -value)
                 else:
                     heapq.heappush(min_heap, value)
         if len(max_heap) == len(min_heap):
@@ -55,6 +60,6 @@ def online_median_wrapper(sequence):
 
 if __name__ == '__main__':
     TestOnlineMedian(online_median_v1).run_tests()
-    # exit(
-    #     generic_test.generic_test_main('online_median.py', 'online_median.tsv',
-    #                                    online_median_wrapper))
+    exit(
+        generic_test.generic_test_main('online_median.py', 'online_median.tsv',
+                                       online_median_wrapper))
