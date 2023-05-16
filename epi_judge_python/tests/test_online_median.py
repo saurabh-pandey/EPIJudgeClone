@@ -1,3 +1,6 @@
+import bisect
+import random
+
 from tests.test_base import TestBase
 
 import pdb
@@ -9,3 +12,24 @@ class TestOnlineMedian(TestBase):
         # pdb.set_trace()
         result = self.solve(iter(data))
         assert result == expected, f"Expected = {expected}, result = {result}"
+    
+    def test_random(self):
+        for size in range(1, 21):
+            data = []
+            sorted_data = []
+            expected = []
+            for _ in range(size):
+                value = random.randint(0, 2 * size)
+                data.append(value)
+                bisect.insort_left(sorted_data, value)
+                if len(sorted_data) % 2 == 0:
+                    mid = len(sorted_data)//2
+                    expected.append(
+                        (sorted_data[mid - 1] + sorted_data[mid])/2)
+                else:
+                    mid = len(sorted_data)//2
+                    expected.append(sorted_data[mid])
+            result = self.solve(iter(data))
+            assert result == expected, (
+                f"data = {data}, Expected = {expected}, result = {result}")
+

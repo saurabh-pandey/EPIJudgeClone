@@ -55,6 +55,6 @@ def online_median_wrapper(sequence):
 
 if __name__ == '__main__':
     TestOnlineMedian(online_median_v1).run_tests()
-    exit(
-        generic_test.generic_test_main('online_median.py', 'online_median.tsv',
-                                       online_median_wrapper))
+    # exit(
+    #     generic_test.generic_test_main('online_median.py', 'online_median.tsv',
+    #                                    online_median_wrapper))
