@@ -75,9 +75,28 @@ def online_median_v2(sequence: Iterator[int]) -> List[float]:
     return medians
 
 
+def online_median_v3(sequence: Iterator[int]) -> List[float]:
+    '''
+    Book inspired solution with same performance
+    '''
+    max_heap = []
+    min_heap = []
+    medians = []
+    for data in sequence:
+        heapq.heappush(min_heap, -heapq.heappushpop(max_heap, -data))
+        if len(min_heap) > len(max_heap):
+            heapq.heappush(max_heap, -heapq.heappop(min_heap))
+        medians.append(
+            (min_heap[0] - max_heap[0])/2
+            if len(min_heap) == len(max_heap) 
+            else -max_heap[0])
+    return medians
+
+
 def online_median(sequence: Iterator[int]) -> List[float]:
     # return online_median_v1(sequence)
-    return online_median_v2(sequence)
+    # return online_median_v2(sequence)
+    return online_median_v3(sequence)
 
 
 def online_median_wrapper(sequence):
@@ -87,6 +106,7 @@ def online_median_wrapper(sequence):
 if __name__ == '__main__':
     TestOnlineMedian(online_median_v1).run_tests()
     TestOnlineMedian(online_median_v2).run_tests()
+    TestOnlineMedian(online_median_v3).run_tests()
     exit(
         generic_test.generic_test_main('online_median.py', 'online_median.tsv',
                                        online_median_wrapper))
