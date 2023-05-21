@@ -5,6 +5,14 @@ from test_framework import generic_test
 from test_framework.test_failure import TestFailure
 from test_framework.test_utils import enable_executor_hook
 
+from tests.test_search_entry_equal_to_index import TestSearchEntryEqualToIndex
+
+
+def search_entry_equal_to_its_index_v1(A: List[int]) -> int:
+    '''
+    My version
+    '''
+    return 0
 
 def search_entry_equal_to_its_index(A: List[int]) -> int:
     # TODO - you fill in here.
@@ -24,6 +32,7 @@ def search_entry_equal_to_its_index_wrapper(executor, A):
 
 
 if __name__ == '__main__':
+    TestSearchEntryEqualToIndex(search_entry_equal_to_its_index_v1).run_tests()
     exit(
         generic_test.generic_test_main(
             'search_entry_equal_to_index.py',
