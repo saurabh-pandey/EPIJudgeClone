@@ -10,13 +10,21 @@ from tests.test_search_entry_equal_to_index import TestSearchEntryEqualToIndex
 
 def search_entry_equal_to_its_index_v1(A: List[int]) -> int:
     '''
-    My version
+    My O(log(n)) version
     '''
-    return 0
+    begin, end = 0, len(A) - 1
+    while begin <= end:
+        mid = begin + (end - begin)//2
+        if mid < A[mid]:
+            end = mid - 1
+        elif mid == A[mid]:
+            return mid
+        else:
+            begin = mid + 1
+    return -1
 
 def search_entry_equal_to_its_index(A: List[int]) -> int:
-    # TODO - you fill in here.
-    return 0
+    return search_entry_equal_to_its_index_v1(A)
 
 
 @enable_executor_hook
