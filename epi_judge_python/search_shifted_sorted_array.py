@@ -9,12 +9,18 @@ def search_smallest_v1(A: List[int]) -> int:
     '''
     My version
     '''
-    return 0
+    begin, end = 0, len(A) - 1
+    while begin < end:
+        mid = begin + (end - begin) // 2
+        if A[mid] < A[end]:
+            end = mid
+        elif A[mid] >= A[begin]:
+            begin = mid + 1
+    return begin
 
 
 def search_smallest(A: List[int]) -> int:
-    # TODO - you fill in here.
-    return 0
+    return search_smallest_v1(A)
 
 
 if __name__ == '__main__':

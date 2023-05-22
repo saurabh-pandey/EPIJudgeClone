@@ -10,8 +10,14 @@ class TestSearchShiftedSortedArray(TestBase):
         result = self.solve(A)
         assert result == expected, f"Expected = {expected}, result = {result}"
     
+    def test_single(self):
+        A = [1]
+        expected = 0
+        result = self.solve(A)
+        assert result == expected, f"Expected = {expected}, result = {result}"
+    
     def test_random(self):
-        for size in range(11):
+        for size in range(2, 101):
             shift_right_by = random.randint(0, size - 1)
             unique_nums = set()
             while len(unique_nums) < shift_right_by:
