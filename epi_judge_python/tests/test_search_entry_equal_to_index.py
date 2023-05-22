@@ -17,14 +17,14 @@ class TestSearchEntryEqualToIndex(TestBase):
             unique_nums = set()
             while len(unique_nums) < size1:
                 unique_nums.add(random.randint(-2 * size1, size1 - 1))
-            first_half = sorted(unique_nums)
+            first_part = sorted(unique_nums)
             for size2 in range(21):
                 unique_nums.clear()
                 while len(unique_nums) < size2:
                     unique_nums.add(
                         random.randint(size1 + size2 + 1, 5 * (size1 + size2)))
-                second_half = sorted(unique_nums)
-                A = first_half + [size1] + second_half
+                second_part = sorted(unique_nums)
+                A = first_part + [size1] + second_part
                 result = self.solve(A)
                 assert self._check(A, result), (
                     f"Failed for A = {A} with result = {result}")
