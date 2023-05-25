@@ -9,7 +9,7 @@ from tests.test_kth_largest_in_array import TestKthLargestInArray
 
 def find_kth_largest_v1(k: int, A: List[int]) -> int:
     '''
-    My version with O(n) time and O(1) space complexity
+    My version with O(n) time and O(log(n)) space complexity
     '''
     def find_kth(A: List[int], begin: int, end: int, k: int) -> int:
         i, j = begin, end
