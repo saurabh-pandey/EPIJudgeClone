@@ -3,6 +3,15 @@ from typing import Iterator
 from test_framework import generic_test
 from test_framework.test_failure import TestFailure
 
+from tests.test_absent_value_array import TestAbsentValue
+
+
+def find_missing_element_v1(stream: Iterator[int]) -> int:
+    '''
+    Book's first solution
+    '''
+    return 0
+
 
 def find_missing_element(stream: Iterator[int]) -> int:
     # TODO - you fill in here.
@@ -19,6 +28,7 @@ def find_missing_element_wrapper(stream):
 
 
 if __name__ == '__main__':
+    TestAbsentValue(find_missing_element_v1).run_tests()
     exit(
         generic_test.generic_test_main('absent_value_array.py',
                                        'absent_value_array.tsv',
