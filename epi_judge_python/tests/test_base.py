@@ -1,6 +1,9 @@
-from test_framework.test_failure import TestFailure
+import traceback
 
 from typing import Callable
+
+from test_framework.test_failure import TestFailure
+
 
 class TestBase:
     def __init__(self, solve: Callable[[], None] = None,
@@ -43,6 +46,8 @@ class TestBase:
                             print(f" Failed {func_name}")
                         else:
                             print("F", end="")
+                        print("\nTraceback:")
+                        print(traceback.format_exc())
         print()
         if failed_tests:
             print("Summary of test failure (test name => error message):")
