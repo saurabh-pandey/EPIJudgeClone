@@ -4,6 +4,9 @@ from typing import List
 from test_framework import generic_test
 from test_framework.test_failure import PropertyName
 
+from tests.test_search_for_missing_element import TestSearchMissingElement
+
+
 DuplicateAndMissing = collections.namedtuple('DuplicateAndMissing',
                                              ('duplicate', 'missing'))
 
