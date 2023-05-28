@@ -25,8 +25,33 @@ def find_missing_element_v1(stream: Iterator[int]) -> int:
     return missing_ip
 
 
+def find_missing_element_v2(stream: Iterator[int]) -> int:
+    '''
+    Book's better solution O(n) time and O(1) space complexity
+    '''
+    num_buckets = 1 << 16
+    counter = [0] * num_buckets
+    stream1, stream2 = itertools.tee(stream)
+    for ip in stream1:
+        upper_part_ip = ip >> 16
+        counter[upper_part_ip] += 1
+    bucket_capacity = 1 << 16
+    missing_ip_upper_part = next(i for i, c in enumerate(counter)
+                                 if c < bucket_capacity)
+    candidates = [0] * bucket_capacity
+    for ip in stream2:
+        upper_part_ip = ip >> 16
+        if upper_part_ip == missing_ip_upper_part:
+            lower_part_ip = ((1 << 16) - 1) & ip
+            candidates[lower_part_ip] = 1
+    for i, c in enumerate(candidates):
+        if c == 0:
+            return (missing_ip_upper_part << 16) | i
+
+
 def find_missing_element(stream: Iterator[int]) -> int:
-    return find_missing_element_v1(stream)
+    # return find_missing_element_v1(stream)
+    return find_missing_element_v2(stream)
 
 
 def find_missing_element_wrapper(stream):
@@ -40,6 +65,7 @@ def find_missing_element_wrapper(stream):
 
 if __name__ == '__main__':
     TestAbsentValue(find_missing_element_v1).run_tests()
+    TestAbsentValue(find_missing_element_v2).run_tests()
     exit(
         generic_test.generic_test_main('absent_value_array.py',
                                        'absent_value_array.tsv',
