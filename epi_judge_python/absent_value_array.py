@@ -1,3 +1,5 @@
+import itertools
+
 from typing import Iterator
 
 from test_framework import generic_test
@@ -11,10 +13,11 @@ def find_missing_element_v1(stream: Iterator[int]) -> int:
     Book's first solution O(n) time and O(1) space complexity
     '''
     missing_ip = 0
+    streams = itertools.tee(stream, 32)
     for bit in range(32):
         bit_count = [0, 0]
         max_ip_count = 1 << (31 - bit)
-        for ip in stream:
+        for ip in streams[bit]:
             bit_count[ip >> (31 - bit) & 1] += 1
         if bit_count[1] < max_ip_count:
             # max_ip_count also acts as on bit
