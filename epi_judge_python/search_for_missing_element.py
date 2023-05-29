@@ -11,9 +11,25 @@ DuplicateAndMissing = collections.namedtuple('DuplicateAndMissing',
                                              ('duplicate', 'missing'))
 
 
+def find_duplicate_missing_v1(A: List[int]) -> DuplicateAndMissing:
+    '''
+    My brute-force version with O(n) time and space
+    '''
+    counter = [0] * len(A)
+    for a in A:
+        counter[a] += 1
+    duplicate = None
+    missing = None
+    for i, c in enumerate(counter):
+        if c == 2:
+            duplicate = i
+        if c == 0:
+            missing = i
+    return DuplicateAndMissing(duplicate, missing)
+
+
 def find_duplicate_missing(A: List[int]) -> DuplicateAndMissing:
-    # TODO - you fill in here.
-    return DuplicateAndMissing(0, 0)
+    return find_duplicate_missing_v1(A)
 
 
 def res_printer(prop, value):
@@ -25,6 +41,7 @@ def res_printer(prop, value):
 
 
 if __name__ == '__main__':
+    TestSearchMissingElement(find_duplicate_missing_v1).run_tests()
     exit(
         generic_test.generic_test_main('search_for_missing_element.py',
                                        'find_missing_and_duplicate.tsv',
