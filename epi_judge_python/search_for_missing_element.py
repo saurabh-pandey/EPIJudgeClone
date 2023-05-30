@@ -28,8 +28,37 @@ def find_duplicate_missing_v1(A: List[int]) -> DuplicateAndMissing:
     return DuplicateAndMissing(duplicate, missing)
 
 
+def find_duplicate_missing_v2(A: List[int]) -> DuplicateAndMissing:
+    '''
+    Book's explanation based solution in O(n) time and O(1) space
+    '''
+    xor = 0
+    for i, a in enumerate(A):
+        xor ^= i ^ a
+    on_lsb_xor = xor & ~(xor - 1)
+    missing_or_duplicate = 0
+    for i, a in enumerate(A):
+        if on_lsb_xor & i:
+            missing_or_duplicate ^= i
+        if on_lsb_xor & a:
+            missing_or_duplicate ^= a
+    other = missing_or_duplicate
+    for i, a in enumerate(A):
+        other ^= i ^ a
+    is_duplicate = False
+    for a in A:
+        if missing_or_duplicate == a:
+            is_duplicate = True
+            break
+    duplicate, missing = missing_or_duplicate, other
+    if not is_duplicate:
+        duplicate, missing = missing, duplicate
+    return DuplicateAndMissing(duplicate, missing)
+
+
 def find_duplicate_missing(A: List[int]) -> DuplicateAndMissing:
-    return find_duplicate_missing_v1(A)
+    # return find_duplicate_missing_v1(A)
+    return find_duplicate_missing_v2(A)
 
 
 def res_printer(prop, value):
@@ -42,6 +71,7 @@ def res_printer(prop, value):
 
 if __name__ == '__main__':
     TestSearchMissingElement(find_duplicate_missing_v1).run_tests()
+    TestSearchMissingElement(find_duplicate_missing_v2).run_tests()
     exit(
         generic_test.generic_test_main('search_for_missing_element.py',
                                        'find_missing_and_duplicate.tsv',
