@@ -1,4 +1,6 @@
 import collections
+import functools
+
 from typing import List
 
 from test_framework import generic_test
@@ -56,9 +58,29 @@ def find_duplicate_missing_v2(A: List[int]) -> DuplicateAndMissing:
     return DuplicateAndMissing(duplicate, missing)
 
 
+def find_duplicate_missing_v3(A: List[int]) -> DuplicateAndMissing:
+    '''
+    Book's solution in O(n) time and O(1) space
+    '''
+    miss_xor_dup = functools.reduce(lambda v, i: v ^ i[0] ^ i[1],
+                                    enumerate(A),
+                                    0)
+    differ_bit, miss_or_dup = miss_xor_dup & (~(miss_xor_dup - 1)), 0
+    for i, a in enumerate(A):
+        if i & differ_bit:
+            miss_or_dup ^= i
+        if a & differ_bit:
+            miss_or_dup ^= a
+    return (DuplicateAndMissing(miss_or_dup, miss_or_dup ^ miss_xor_dup)
+            if miss_or_dup in A else
+            DuplicateAndMissing(miss_or_dup ^ miss_xor_dup, miss_or_dup))
+
+
+
 def find_duplicate_missing(A: List[int]) -> DuplicateAndMissing:
     # return find_duplicate_missing_v1(A)
-    return find_duplicate_missing_v2(A)
+    # return find_duplicate_missing_v2(A)
+    return find_duplicate_missing_v3(A)
 
 
 def res_printer(prop, value):
@@ -72,6 +94,7 @@ def res_printer(prop, value):
 if __name__ == '__main__':
     TestSearchMissingElement(find_duplicate_missing_v1).run_tests()
     TestSearchMissingElement(find_duplicate_missing_v2).run_tests()
+    TestSearchMissingElement(find_duplicate_missing_v3).run_tests()
     exit(
         generic_test.generic_test_main('search_for_missing_element.py',
                                        'find_missing_and_duplicate.tsv',
