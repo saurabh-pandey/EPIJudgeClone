@@ -1,4 +1,6 @@
-from typing import Dict, List
+import collections
+
+from typing import DefaultDict, Dict, List
 
 from test_framework import generic_test, test_utils
 
@@ -57,15 +59,29 @@ def find_anagrams_v2(dictionary: List[str]) -> List[List[str]]:
     return [group for group in anagrams.values() if len(group) > 1]
 
 
+def find_anagrams_v3(dictionary: List[str]) -> List[List[str]]:
+    '''
+    Book's version with same complexity
+    '''
+    sorted_strings_to_anagrams: DefaultDict[
+        str, List[str]] = collections.defaultdict(list)
+    for word in dictionary:
+        sorted_strings_to_anagrams["".join(sorted(word))].append(word)
+    
+    return [group for group in sorted_strings_to_anagrams.values()
+            if len(group) > 1]
+
 
 def find_anagrams(dictionary: List[str]) -> List[List[str]]:
     # return find_anagrams_v1(dictionary)
-    return find_anagrams_v2(dictionary)
+    # return find_anagrams_v2(dictionary)
+    return find_anagrams_v3(dictionary)
 
 
 if __name__ == '__main__':
     TestAnagrams(find_anagrams_v1).run_tests()
     TestAnagrams(find_anagrams_v2).run_tests()
+    TestAnagrams(find_anagrams_v3).run_tests()
     exit(
         generic_test.generic_test_main(
             'anagrams.py',
