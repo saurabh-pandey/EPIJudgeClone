@@ -24,12 +24,21 @@ def can_form_palindrome_v1(s: str) -> bool:
     return True
 
 
+def can_form_palindrome_v2(s: str) -> bool:
+    '''
+    Book's version with same complexity but using Counter
+    '''
+    return sum(count % 2 for count in collections.Counter(s).values()) <= 1
+
+
 def can_form_palindrome(s: str) -> bool:
-    return can_form_palindrome_v1(s)
+    # return can_form_palindrome_v1(s)
+    return can_form_palindrome_v2(s)
 
 
 if __name__ == '__main__':
     TestIsStringPermutableToPalindrome(can_form_palindrome_v1).run_tests()
+    TestIsStringPermutableToPalindrome(can_form_palindrome_v2).run_tests()
     exit(
         generic_test.generic_test_main(
             'is_string_permutable_to_palindrome.py',
