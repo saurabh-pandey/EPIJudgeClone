@@ -1,3 +1,5 @@
+import collections
+
 from test_framework import generic_test
 
 
