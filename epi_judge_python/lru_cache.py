@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import Dict, List, Optional, Union
 
 from test_framework import generic_test
 from test_framework.test_failure import TestFailure
@@ -6,18 +6,47 @@ from test_framework.test_failure import TestFailure
 from tests.test_lru_cache import TestLruCache
 
 
+class Node:
+    def __init__(self, price) -> None:
+        self.price = price
+        self.prev = None
+        self.next = None
+
+
 class LruCacheV1:
+    '''
+    My version of the LRU Cache using Hash Table and Doubly Linked List
+    '''
     def __init__(self, capacity: int) -> None:
-        # TODO - you fill in here.
-        return
+        self._capacity: int = capacity
+        self._table: Dict[str, Node] = {}
+        self._head: Optional[Node] = None
+        self._tail: Optional[Node] = None
 
     def lookup(self, isbn: int) -> int:
         # TODO - you fill in here.
         return 0
 
     def insert(self, isbn: int, price: int) -> None:
-        # TODO - you fill in here.
-        return
+        if isbn in self._table:
+            node = self._table[isbn]
+            node.price = price
+            node.next = self._head
+            if self._head:
+                self._head.prev = node
+            self._head = node
+        else:
+            node = Node(price)
+            self._table[isbn] = node
+            node.next = self._head
+            if self._head:
+                self._head.prev = node
+            self._head = node
+            if self._head is self._tail:
+                self._tail = self._head.next
+            elif not self._tail:
+                self._tail = node
+            
 
     def erase(self, isbn: int) -> bool:
         # TODO - you fill in here.
