@@ -1,8 +1,12 @@
+from typing import List, Union
+
 from test_framework import generic_test
 from test_framework.test_failure import TestFailure
 
+from tests.test_lru_cache import TestLruCache
 
-class LruCache:
+
+class LruCacheV1:
     def __init__(self, capacity: int) -> None:
         # TODO - you fill in here.
         return
@@ -20,11 +24,11 @@ class LruCache:
         return True
 
 
-def lru_cache_tester(commands):
+def lru_cache_tester(commands, lru_cache_cls = LruCacheV1):
     if len(commands) < 1 or commands[0][0] != 'LruCache':
         raise RuntimeError('Expected LruCache as first command')
 
-    cache = LruCache(commands[0][1])
+    cache = lru_cache_cls(commands[0][1])
 
     for cmd in commands[1:]:
         if cmd[0] == 'lookup':
@@ -43,7 +47,12 @@ def lru_cache_tester(commands):
             raise RuntimeError('Unexpected command ' + cmd[0])
 
 
+def v1_lru_cache_tester(commands: List[List[Union[str, int]]]) -> None:
+    lru_cache_tester(commands, LruCacheV1)
+
+
 if __name__ == '__main__':
+    TestLruCache(v1_lru_cache_tester).run_tests()
     exit(
         generic_test.generic_test_main('lru_cache.py', 'lru_cache.tsv',
                                        lru_cache_tester))

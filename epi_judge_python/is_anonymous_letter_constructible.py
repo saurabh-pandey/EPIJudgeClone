@@ -46,8 +46,8 @@ def is_letter_constructible_from_magazine_v2(letter_text: str,
 
 def is_letter_constructible_from_magazine(letter_text: str,
                                           magazine_text: str) -> bool:
-    return is_letter_constructible_from_magazine_v1(letter_text, magazine_text)
-    # return is_letter_constructible_from_magazine_v2(letter_text, magazine_text)
+    # return is_letter_constructible_from_magazine_v1(letter_text, magazine_text)
+    return is_letter_constructible_from_magazine_v2(letter_text, magazine_text)
 
 
 if __name__ == '__main__':
