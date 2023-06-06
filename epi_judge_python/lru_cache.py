@@ -7,8 +7,9 @@ from tests.test_lru_cache import TestLruCache
 
 
 class Node:
-    def __init__(self, price) -> None:
-        self.price = price
+    def __init__(self, isbn: int, price: int) -> None:
+        self.isbn: int = isbn
+        self.price: int = price
         self.prev: Optional['Node'] = None
         self.next: Optional['Node'] = None
 
@@ -48,13 +49,18 @@ class DoublyLinkedList:
         '''
         Remove an existing node
         '''
+        if node.prev:
+            node.prev.next = node.next
+        if node.next:
+            node.next.prev = node.prev
         if node is self._head:
             self._head = node.next
-        elif node is self._tail:
+        if node is self._tail:
             self._tail = node.prev
-        else:
-            node.prev.next = node.next
-            node.next.prev = node.prev
+        # else:
+        #     print(f"  node = {node.price}")
+        #     node.prev.next = node.next
+        #     node.next.prev = node.prev
     
     def promote(self, node: Node) -> None:
         '''
@@ -78,6 +84,7 @@ class DoublyLinkedList:
             node.prev.next = node.next
             node.next.prev = node.prev
             node.next = self._head
+            self._head.prev = node
             node.prev = None
             self._head = node
     
@@ -99,11 +106,13 @@ class DoublyLinkedList:
         return (head_str + ", " + tail_str + ", forward = " + forward_str
                 + ", reverse = " + reverse_str )
     
-    def evict(self) -> None:
+    def evict(self) -> Optional[Node]:
         '''
         Remove last item in the list
         '''
+        tail = self._tail
         self.remove(self._tail)
+        return tail
 
 
 class LruCacheV1:
@@ -136,8 +145,9 @@ class LruCacheV1:
             print("  case 2")
             if len(self._table) == self._capacity:
                 print("    case 2.1 evicted")
-                self._list.evict()
-            node = Node(price)
+                tail = self._list.evict()
+                del self._table[tail.isbn]
+            node = Node(isbn, price)
             self._table[isbn] = node
             self._list.add(node)
         print("end insert => ", self._list)
