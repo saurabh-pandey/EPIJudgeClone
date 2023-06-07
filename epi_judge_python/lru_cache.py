@@ -23,26 +23,11 @@ class DoublyLinkedList:
         '''
         Add a new Node
         '''
-        print(f"  node {node.price}, prev = {node.prev}, next = {node.next} ")
-        print(f"  head {self._head}, tail = {self._tail}")
         node.next = self._head
         if self._head:
-            print(f"  head {self._head.price}")
-            print(f"  head.prev {self._head.prev}")
             self._head.prev = node
         self._head = node
-        n = self._head
-        while n:
-            print(f"Forward {n} -> {n.price}")
-            n = n.next
-        n = self._tail
-        while n:
-            print(f"Reverse {n} -> {n.price}")
-            n = n.prev
-        print("  so far = ", self)
-        if self._head is self._tail:
-            self._tail = self._head.next
-        elif not self._tail:
+        if not self._tail:
             self._tail = node
     
     def remove(self, node: Node) -> None:
@@ -57,22 +42,14 @@ class DoublyLinkedList:
             self._head = node.next
         if node is self._tail:
             self._tail = node.prev
-        # else:
-        #     print(f"  node = {node.price}")
-        #     node.prev.next = node.next
-        #     node.next.prev = node.prev
     
     def promote(self, node: Node) -> None:
         '''
         Promote a node to the head of list
         '''
         if (node is self._head) or (self._head is self._tail):
-            # print("  promote case 1")
             return
         if node is self._tail:
-            # print("  promote case 2")
-            # print("  1 ", self)
-            # print(f"  node {node.price}, prev = {node.prev}, next = {node.next} ")
             self._tail = node.prev
             node.prev.next = None
             node.next = self._head
@@ -80,13 +57,20 @@ class DoublyLinkedList:
             node.prev = None
             self._head = node
         else:
-            # print("  promote case 3")
             node.prev.next = node.next
             node.next.prev = node.prev
             node.next = self._head
             self._head.prev = node
             node.prev = None
             self._head = node
+    
+    def evict(self) -> Optional[Node]:
+        '''
+        Remove last item in the list
+        '''
+        tail = self._tail
+        self.remove(self._tail)
+        return tail
     
     def __str__(self) -> str:
         forward_cache_order = []
@@ -105,14 +89,6 @@ class DoublyLinkedList:
         reverse_str = ",".join(reverse_cache_order)
         return (head_str + ", " + tail_str + ", forward = " + forward_str
                 + ", reverse = " + reverse_str )
-    
-    def evict(self) -> Optional[Node]:
-        '''
-        Remove last item in the list
-        '''
-        tail = self._tail
-        self.remove(self._tail)
-        return tail
 
 
 class LruCacheV1:
@@ -125,43 +101,38 @@ class LruCacheV1:
         self._list: DoublyLinkedList = DoublyLinkedList()
     
     def lookup(self, isbn: int) -> int:
-        print("begin lookup => ", self._list)
         if isbn in self._table:
             node = self._table[isbn]
             self._list.promote(node)
-            print("end lookup => ", self._list)
             return node.price
-        print("end lookup => ", self._list)
         return -1
     
     def insert(self, isbn: int, price: int) -> None:
-        print("begin insert => ", self._list)
         if isbn in self._table:
-            print("  case 1")
             node = self._table[isbn]
-            node.price = price
             self._list.promote(node)
         else:
-            print("  case 2")
             if len(self._table) == self._capacity:
-                print("    case 2.1 evicted")
                 tail = self._list.evict()
                 del self._table[tail.isbn]
             node = Node(isbn, price)
             self._table[isbn] = node
             self._list.add(node)
-        print("end insert => ", self._list)
             
     def erase(self, isbn: int) -> bool:
-        print("begin erase => ", self._list)
         if isbn in self._table:
             node = self._table[isbn]
             self._list.remove(node)
             del self._table[isbn]
-            print("end erase => ", self._list)
             return True
-        print("end erase => ", self._list)
         return False
+    
+    def __str__(self) -> str:
+        list_str = str(self._list)
+        dict_str = []
+        for isbn, node in self._table.items():
+            dict_str.append(f"({isbn}, {node.price})")
+        return f"List = {list_str}\nDict = {dict_str}"
 
 
 def lru_cache_tester(commands, lru_cache_cls = LruCacheV1):
@@ -171,7 +142,6 @@ def lru_cache_tester(commands, lru_cache_cls = LruCacheV1):
     cache = lru_cache_cls(commands[0][1])
 
     for cmd in commands[1:]:
-        print(cmd)
         if cmd[0] == 'lookup':
             result = cache.lookup(cmd[1])
             if result != cmd[2]:
@@ -194,6 +164,6 @@ def v1_lru_cache_tester(commands: List[List[Union[str, int]]]) -> None:
 
 if __name__ == '__main__':
     TestLruCache(v1_lru_cache_tester).run_tests()
-    # exit(
-    #     generic_test.generic_test_main('lru_cache.py', 'lru_cache.tsv',
-    #                                    lru_cache_tester))
+    exit(
+        generic_test.generic_test_main('lru_cache.py', 'lru_cache.tsv',
+                                       lru_cache_tester))

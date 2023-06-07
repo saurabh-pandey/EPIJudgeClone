@@ -14,3 +14,10 @@ class TestLruCache(TestBase):
                     ["erase", 3, 1], ["erase", 5, 0], ["lookup", 1, 11],
                     ["lookup", 2, -1], ["lookup", 3, -1], ["lookup", 4, -1]]
         self.solve(commands)
+    
+    def test_attempt1(self):
+        commands = [["LruCache", 3, 0], ["insert", 5, 623], ["lookup", 5, 623], 
+                    ["erase", 1, 0], ["lookup", 4, -1], ["lookup", 6, -1], 
+                    ["insert", 4, 981], ["insert", 5, 550], ["lookup", 2, -1], 
+                    ["lookup", 5, 623], ["erase", 3, 0]]
+        self.solve(commands)
