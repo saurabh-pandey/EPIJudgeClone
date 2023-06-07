@@ -42,6 +42,8 @@ class DoublyLinkedList:
             self._head = node.next
         if node is self._tail:
             self._tail = node.prev
+        node.next = None
+        node.prev = None
     
     def promote(self, node: Node) -> None:
         '''
@@ -49,20 +51,8 @@ class DoublyLinkedList:
         '''
         if (node is self._head) or (self._head is self._tail):
             return
-        if node is self._tail:
-            self._tail = node.prev
-            node.prev.next = None
-            node.next = self._head
-            self._head.prev = node
-            node.prev = None
-            self._head = node
-        else:
-            node.prev.next = node.next
-            node.next.prev = node.prev
-            node.next = self._head
-            self._head.prev = node
-            node.prev = None
-            self._head = node
+        self.remove(node)
+        self.add(node)
     
     def evict(self) -> Optional[Node]:
         '''
