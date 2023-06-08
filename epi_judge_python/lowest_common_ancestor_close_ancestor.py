@@ -7,11 +7,30 @@ from test_framework.binary_tree_utils import must_find_node
 from test_framework.test_failure import TestFailure
 from test_framework.test_utils import enable_executor_hook
 
+from tests.test_lowest_common_ancestor_close_ancestor import (
+    TestLowestCommonAncestorCloseAncestor
+)
+
+
+def lca_v1(node0: BinaryTreeNode,
+           node1: BinaryTreeNode) -> Optional[BinaryTreeNode]:
+    '''
+    Find LCA using a hash table with O(h) time and space complexity
+    '''
+    nodes_in_path = set()
+    it = node0
+    while it:
+        nodes_in_path.add(it)
+        it = it.parent
+    it = node1
+    while it not in nodes_in_path:
+        it = it.parent
+    return it
+
 
 def lca(node0: BinaryTreeNode,
         node1: BinaryTreeNode) -> Optional[BinaryTreeNode]:
-    # TODO - you fill in here.
-    return None
+    return lca_v1(node0, node1)
 
 
 @enable_executor_hook
@@ -26,6 +45,7 @@ def lca_wrapper(executor, tree, node0, node1):
 
 
 if __name__ == '__main__':
+    TestLowestCommonAncestorCloseAncestor(lca_v1).run_tests()
     exit(
         generic_test.generic_test_main(
             'lowest_common_ancestor_close_ancestor.py',
