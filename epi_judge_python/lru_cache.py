@@ -1,4 +1,6 @@
-from typing import Dict, List, Optional, Union
+import collections
+
+from typing import Dict, List, Optional, OrderedDict, Union
 
 from test_framework import generic_test
 from test_framework.test_failure import TestFailure
@@ -125,7 +127,34 @@ class LruCacheV1:
         return f"List = {list_str}\nDict = {dict_str}"
 
 
-def lru_cache_tester(commands, lru_cache_cls = LruCacheV1):
+class LruCacheV2:
+    '''
+    Book's version of LRU Cache using OrderedDict
+    '''
+    def __init__(self, capacity: int) -> None:
+        self._isbn_price_table: OrderedDict[
+            int, int] = collections.OrderedDict()
+        self._capacity: int = capacity
+    
+    def insert(self, isbn: int, price: int) -> None:
+        if isbn in self._isbn_price_table:
+            price = self._isbn_price_table.pop(isbn)
+        elif len(self._isbn_price_table) == self._capacity:
+            self._isbn_price_table.popitem(last=False)
+        self._isbn_price_table[isbn] = price
+    
+    def erase(self, isbn: int) -> bool:
+        return self._isbn_price_table.pop(isbn, None) is not None
+    
+    def lookup(self, isbn: int) -> int:
+        if isbn not in self._isbn_price_table:
+            return -1
+        price = self._isbn_price_table.pop(isbn)
+        self._isbn_price_table[isbn] = price
+        return price
+
+
+def lru_cache_tester(commands, lru_cache_cls = LruCacheV2):
     if len(commands) < 1 or commands[0][0] != 'LruCache':
         raise RuntimeError('Expected LruCache as first command')
 
@@ -151,9 +180,13 @@ def lru_cache_tester(commands, lru_cache_cls = LruCacheV1):
 def v1_lru_cache_tester(commands: List[List[Union[str, int]]]) -> None:
     lru_cache_tester(commands, LruCacheV1)
 
+def v2_lru_cache_tester(commands: List[List[Union[str, int]]]) -> None:
+    lru_cache_tester(commands, LruCacheV2)
+
 
 if __name__ == '__main__':
     TestLruCache(v1_lru_cache_tester).run_tests()
+    TestLruCache(v2_lru_cache_tester).run_tests()
     exit(
         generic_test.generic_test_main('lru_cache.py', 'lru_cache.tsv',
                                        lru_cache_tester))
