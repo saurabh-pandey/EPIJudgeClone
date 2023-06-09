@@ -28,9 +28,32 @@ def lca_v1(node0: BinaryTreeNode,
     return it
 
 
+def lca_v2(node0: BinaryTreeNode,
+           node1: BinaryTreeNode) -> Optional[BinaryTreeNode]:
+    '''
+    Book's version O(D0 + D1) time and space complexity where D0 and D1 are
+    distance from each node to LCA
+    '''
+    visited_nodes = set()
+    it0, it1 = node0, node1
+    while it0 or it1:
+        if it0:
+            if it0 in visited_nodes:
+                return it0
+            visited_nodes.add(it0)
+            it0 = it0.parent
+        if it1:
+            if it1 in visited_nodes:
+                return it1
+            visited_nodes.add(it1)
+            it1 = it1.parent
+    raise ValueError("Node0 and Node1 don't belong to the same tree")
+
+
 def lca(node0: BinaryTreeNode,
         node1: BinaryTreeNode) -> Optional[BinaryTreeNode]:
-    return lca_v1(node0, node1)
+    # return lca_v1(node0, node1)
+    return lca_v2(node0, node1)
 
 
 @enable_executor_hook
@@ -46,6 +69,7 @@ def lca_wrapper(executor, tree, node0, node1):
 
 if __name__ == '__main__':
     TestLowestCommonAncestorCloseAncestor(lca_v1).run_tests()
+    TestLowestCommonAncestorCloseAncestor(lca_v2).run_tests()
     exit(
         generic_test.generic_test_main(
             'lowest_common_ancestor_close_ancestor.py',
