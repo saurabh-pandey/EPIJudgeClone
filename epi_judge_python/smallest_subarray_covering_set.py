@@ -6,7 +6,18 @@ from test_framework import generic_test
 from test_framework.test_failure import TestFailure
 from test_framework.test_utils import enable_executor_hook
 
+from tests.test_smallest_subarray_covering_set import (
+    TestSmallestSubarrayCoveringSet)
+
 Subarray = collections.namedtuple('Subarray', ('start', 'end'))
+
+
+def find_smallest_subarray_covering_set_v1(paragraph: List[str],
+                                           keywords: Set[str]) -> Subarray:
+    '''
+    My version
+    '''
+    return Subarray(-1, -1)
 
 
 def find_smallest_subarray_covering_set(paragraph: List[str],
@@ -37,6 +48,8 @@ def find_smallest_subarray_covering_set_wrapper(executor, paragraph, keywords):
 
 
 if __name__ == '__main__':
+    TestSmallestSubarrayCoveringSet(
+        find_smallest_subarray_covering_set_v1).run_tests()
     exit(
         generic_test.generic_test_main(
             'smallest_subarray_covering_set.py',
