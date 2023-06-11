@@ -1,6 +1,5 @@
 from tests.test_base import TestBase
 
-import pdb
 
 class TestSmallestSubarrayCoveringSet(TestBase):
     def test_example1(self):
@@ -16,6 +15,13 @@ class TestSmallestSubarrayCoveringSet(TestBase):
         keywords = {"b", "c", "e"}
         result = self.solve(paragraph, keywords)
         expected = (3, 8)
+        assert result == expected, f"Expected {expected} != {result} result"
+    
+    def test_example3(self):
+        paragraph = ["a", "b"]
+        keywords = {"a", "b"}
+        result = self.solve(paragraph, keywords)
+        expected = (0, 1)
         assert result == expected, f"Expected {expected} != {result} result"
     
     # def test_one_not_present(self):
