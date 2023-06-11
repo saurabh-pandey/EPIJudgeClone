@@ -15,7 +15,8 @@ Subarray = collections.namedtuple('Subarray', ('start', 'end'))
 def find_smallest_subarray_covering_set_v1(paragraph: List[str],
                                            keywords: Set[str]) -> Subarray:
     '''
-    Book inspired version O(n) version
+    Book inspired version with O(n) time and O(k) space where n is length of
+    paragraph and k is length of keywords
     '''
     start, end = -1, len(paragraph)
     left = 0
@@ -43,9 +44,38 @@ def find_smallest_subarray_covering_set_v1(paragraph: List[str],
     return (start, end)
 
 
+def find_smallest_subarray_covering_set_v2(paragraph: List[str],
+                                           keywords: Set[str]) -> Subarray:
+    '''
+    Book's solution with same complexity
+    '''
+    start, end = -1, -1
+    left = 0
+    keywords_counter = collections.Counter(keywords)
+    num_keywords_left = len(keywords_counter)
+    for right, word in enumerate(paragraph):
+        if num_keywords_left > 0:
+            if word in keywords_counter:
+                keywords_counter[word] -= 1
+                if keywords_counter[word] >= 0:
+                    num_keywords_left -= 1
+        while num_keywords_left == 0:
+            if (start, end) == (-1, -1):
+                start, end = left, right
+            elif right - left < end - start:
+                start, end = left, right
+            if paragraph[left] in keywords_counter:
+                keywords_counter[paragraph[left]] += 1
+                if keywords_counter[paragraph[left]] > 0:
+                    num_keywords_left += 1
+            left += 1
+    return start, end
+
+
 def find_smallest_subarray_covering_set(paragraph: List[str],
                                         keywords: Set[str]) -> Subarray:
-    return find_smallest_subarray_covering_set_v1(paragraph, keywords)
+    # return find_smallest_subarray_covering_set_v1(paragraph, keywords)
+    return find_smallest_subarray_covering_set_v2(paragraph, keywords)
 
 
 @enable_executor_hook
@@ -72,6 +102,8 @@ def find_smallest_subarray_covering_set_wrapper(executor, paragraph, keywords):
 if __name__ == '__main__':
     TestSmallestSubarrayCoveringSet(
         find_smallest_subarray_covering_set_v1).run_tests()
+    TestSmallestSubarrayCoveringSet(
+        find_smallest_subarray_covering_set_v2).run_tests()
     exit(
         generic_test.generic_test_main(
             'smallest_subarray_covering_set.py',
