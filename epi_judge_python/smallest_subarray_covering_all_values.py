@@ -5,7 +5,19 @@ from typing import List
 from test_framework import generic_test
 from test_framework.test_utils import enable_executor_hook
 
+from tests.test_smallest_subarray_covering_all_values import (
+    TestSmallestSubarrayCoveringAllValues)
+
 Subarray = collections.namedtuple('Subarray', ('start', 'end'))
+
+
+def find_smallest_sequentially_covering_subset_v1(paragraph: List[str],
+                                                  keywords: List[str]
+                                                  ) -> Subarray:
+    '''
+    My version
+    '''
+    return (-1, -1)
 
 
 def find_smallest_sequentially_covering_subset(paragraph: List[str],
@@ -40,6 +52,8 @@ def find_smallest_sequentially_covering_subset_wrapper(executor, paragraph,
 
 
 if __name__ == '__main__':
+    TestSmallestSubarrayCoveringAllValues(
+        find_smallest_sequentially_covering_subset_v1).run_tests()
     exit(
         generic_test.generic_test_main(
             'smallest_subarray_covering_all_values.py',
