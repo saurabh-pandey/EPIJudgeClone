@@ -1,5 +1,7 @@
 from tests.test_base import TestBase
 
+import pdb
+
 class TestSmallestSubarrayCoveringAllValues(TestBase):
     def test_example1(self):
         paragraph = ["a", "b", "c", "a"]
@@ -11,6 +13,7 @@ class TestSmallestSubarrayCoveringAllValues(TestBase):
     def test_example2(self):
         paragraph = ["a", "c", "b", "a", "c", "a", "b"]
         keywords = ["a", "b"]
+        # pdb.set_trace()
         result = self.solve(paragraph, keywords)
         expected = (5, 6)
         assert result == expected, f"Expected {expected} != {result} result"
@@ -42,3 +45,12 @@ class TestSmallestSubarrayCoveringAllValues(TestBase):
         result = self.solve(paragraph, keywords)
         expected = (-1, -1)
         assert result == expected, f"Expected {expected} != {result} result"
+    
+    def test_attempt1(self):
+        paragraph =  ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '2',
+                      '4', '6', '1', '0', '1', '0', '1', '0', '3', '2', '1',
+                      '0']
+        keywords = ['0', '2', '9', '4', '6']
+        # pdb.set_trace()
+        result = self.solve(paragraph, keywords)
+        print("Res = ", result)
