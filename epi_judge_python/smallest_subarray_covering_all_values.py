@@ -47,10 +47,37 @@ def find_smallest_sequentially_covering_subset_v1(paragraph: List[str],
     return start, end
 
 
+def find_smallest_sequentially_covering_subset_v2(paragraph: List[str],
+                                                  keywords: List[str]
+                                                  ) -> Subarray:
+    '''
+    A brute-force O(n^2) version with O(1) space
+    '''
+    start, end = -1, -1
+    for left, word in enumerate(paragraph):
+        if word == keywords[0]:
+            # Since first keyword is found, now find the subset anchored at this
+            # starting point
+            right = left + 1
+            kw_found = 1
+            while kw_found < len(keywords) and right < len(paragraph):
+                if keywords[kw_found] == paragraph[right]:
+                    kw_found += 1
+                right += 1
+            if kw_found == len(keywords):
+                if (start, end) == (-1, -1):
+                    start, end = left, right - 1
+                elif right - left -1 < end - start:
+                    start, end = left, right - 1
+    return start, end
+
+
 def find_smallest_sequentially_covering_subset(paragraph: List[str],
                                                keywords: List[str]
                                                ) -> Subarray:
-    start, end = find_smallest_sequentially_covering_subset_v1(paragraph, 
+    # start, end = find_smallest_sequentially_covering_subset_v1(paragraph, 
+    #                                                            keywords)
+    start, end = find_smallest_sequentially_covering_subset_v2(paragraph, 
                                                                keywords)
     return Subarray(start, end)
 
@@ -65,8 +92,6 @@ def find_smallest_sequentially_covering_subset_wrapper(executor, paragraph,
     kw_idx = 0
     para_idx = result.start
     if para_idx < 0:
-        print(f"paragraph = {paragraph}")
-        print(f"keywords = {keywords}")
         raise RuntimeError('Subarray start index is negative')
 
     while kw_idx < len(keywords):
@@ -84,6 +109,8 @@ def find_smallest_sequentially_covering_subset_wrapper(executor, paragraph,
 if __name__ == '__main__':
     TestSmallestSubarrayCoveringAllValues(
         find_smallest_sequentially_covering_subset_v1).run_tests()
+    TestSmallestSubarrayCoveringAllValues(
+        find_smallest_sequentially_covering_subset_v2).run_tests()
     exit(
         generic_test.generic_test_main(
             'smallest_subarray_covering_all_values.py',
