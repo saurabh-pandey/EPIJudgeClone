@@ -1,6 +1,7 @@
 import bisect
 import collections
 import functools
+import sys
 
 from typing import List
 
@@ -72,12 +73,40 @@ def find_smallest_sequentially_covering_subset_v2(paragraph: List[str],
     return start, end
 
 
+def find_smallest_sequentially_covering_subset_v3(paragraph: List[str],
+                                                  keywords: List[str]
+                                                  ) -> Subarray:
+    '''
+    Books O(n) version with O(k) space where k is size of keywords
+    '''
+    start, end = -1, -1
+    keyword_to_index = {k : i for i, k in enumerate(keywords)}
+    latest_index = [-1] * len(keywords)
+    shortest_subarray_length = [sys.maxsize] * len(keywords)
+    shortest_distance = sys.maxsize
+    for i, word in enumerate(paragraph):
+        if word in keyword_to_index:
+            kw_index = keyword_to_index[word]
+            if kw_index == 0:
+                shortest_subarray_length[0] = 1
+            elif shortest_subarray_length[kw_index - 1] != sys.maxsize:
+                shortest_subarray_length[kw_index] = shortest_subarray_length[kw_index - 1]  + i - latest_index[kw_index - 1]
+            latest_index[kw_index] = i
+            if (kw_index == len(keywords) - 1
+                    and shortest_subarray_length[-1] < shortest_distance):
+                shortest_distance = shortest_subarray_length[-1]
+                start, end = i - shortest_distance + 1, i
+    return start, end
+
+
 def find_smallest_sequentially_covering_subset(paragraph: List[str],
                                                keywords: List[str]
                                                ) -> Subarray:
     # start, end = find_smallest_sequentially_covering_subset_v1(paragraph, 
     #                                                            keywords)
-    start, end = find_smallest_sequentially_covering_subset_v2(paragraph, 
+    # start, end = find_smallest_sequentially_covering_subset_v2(paragraph, 
+    #                                                            keywords)
+    start, end = find_smallest_sequentially_covering_subset_v3(paragraph, 
                                                                keywords)
     return Subarray(start, end)
 
@@ -111,6 +140,8 @@ if __name__ == '__main__':
         find_smallest_sequentially_covering_subset_v1).run_tests()
     TestSmallestSubarrayCoveringAllValues(
         find_smallest_sequentially_covering_subset_v2).run_tests()
+    TestSmallestSubarrayCoveringAllValues(
+        find_smallest_sequentially_covering_subset_v3).run_tests()
     exit(
         generic_test.generic_test_main(
             'smallest_subarray_covering_all_values.py',
