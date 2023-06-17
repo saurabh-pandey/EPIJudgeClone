@@ -1,3 +1,5 @@
+import bisect
+
 from typing import List
 
 from test_framework import generic_test
@@ -7,13 +9,27 @@ from tests.test_intersect_sorted_arrays import TestIntersectSortedArrays
 
 def intersect_two_sorted_arrays_v1(A: List[int], B: List[int]) -> List[int]:
     '''
-    My version
+    My version with O(nlog(m)) runtime where n is size of smaller array and m is
+    size of bigger array
     '''
-    return []
+    smaller, bigger = A, B
+    if len(smaller) > len(bigger):
+        smaller, bigger = bigger, smaller
+    result = []
+    unique = set()
+    for s in smaller:
+        if s in unique or s < bigger[0] or s > bigger[-1]:
+            continue
+        else:
+            index = bisect.bisect_left(bigger, s)
+            if bigger[index] == s:
+                result.append(s)
+                unique.add(s)
+    return result
+
 
 def intersect_two_sorted_arrays(A: List[int], B: List[int]) -> List[int]:
-    # TODO - you fill in here.
-    return []
+    return intersect_two_sorted_arrays_v1(A, B)
 
 
 if __name__ == '__main__':
