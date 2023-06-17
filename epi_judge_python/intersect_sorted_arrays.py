@@ -28,12 +28,36 @@ def intersect_two_sorted_arrays_v1(A: List[int], B: List[int]) -> List[int]:
     return result
 
 
+def intersect_two_sorted_arrays_v2(A: List[int], B: List[int]) -> List[int]:
+    '''
+    Better version with O(m + n) runtime
+    '''
+    intersection = []
+    i = 0
+    j = 0
+    k = 0
+    while i < len(A) and j < len(B):
+        if A[i] < B[j]:
+            i += 1
+        elif A[i] == B[j]:
+            if k == 0 or intersection[k - 1] != A[i]:
+                intersection.append(A[i])
+                k += 1
+            i += 1
+            j += 1
+        else:
+            j += 1
+    return intersection
+
+
 def intersect_two_sorted_arrays(A: List[int], B: List[int]) -> List[int]:
-    return intersect_two_sorted_arrays_v1(A, B)
+    # return intersect_two_sorted_arrays_v1(A, B)
+    return intersect_two_sorted_arrays_v2(A, B)
 
 
 if __name__ == '__main__':
     TestIntersectSortedArrays(intersect_two_sorted_arrays_v1).run_tests()
+    TestIntersectSortedArrays(intersect_two_sorted_arrays_v2).run_tests()
     exit(
         generic_test.generic_test_main('intersect_sorted_arrays.py',
                                        'intersect_sorted_arrays.tsv',
