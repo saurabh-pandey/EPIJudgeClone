@@ -10,15 +10,32 @@ def merge_two_sorted_arrays_v1(A: List[int],
                                B: List[int],
                                n: int) -> None:
     '''
-    My version
+    My version with O(m + n) time and O(1) space
     '''
-    return
+    i = m - 1
+    j = n - 1
+    k = m + n - 1
+    while i >= 0 and j >= 0 and k >= 0:
+        if A[i] >= B[j]:
+            A[k] = A[i]
+            i -= 1
+        else:
+            A[k] = B[j]
+            j -= 1
+        k -= 1
+    while i >= 0 and k >= 0:
+        A[k] = A[i]
+        i -= 1
+        k -= 1
+    while j >= 0 and k >= 0:
+        A[k] = B[j]
+        j -= 1
+        k -= 1
 
 
 def merge_two_sorted_arrays(A: List[int], m: int, B: List[int],
                             n: int) -> None:
-    # TODO - you fill in here.
-    return
+    merge_two_sorted_arrays_v1(A, m, B, n)
 
 
 def merge_two_sorted_arrays_wrapper(A, m, B, n):
