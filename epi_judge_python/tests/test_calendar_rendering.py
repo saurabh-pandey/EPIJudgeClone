@@ -33,3 +33,11 @@ class TestCalendarRendering(TestBase):
         result = self.solve(events)
         expected = 5
         assert result == expected, f"Expected {expected} != {result} result"
+    
+    def test_attempt1(self):
+        events_copy = [[1, 5], [2, 7], [4, 5], [6, 10], [8, 9], [9, 17],
+                       [11, 13], [12, 15], [14, 15]]
+        events = [(e[0], e[1]) for e in events_copy]
+        result = self.solve(events)
+        expected = 5
+        assert result == expected, f"Expected {expected} != {result} result"
