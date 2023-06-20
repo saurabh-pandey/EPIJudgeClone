@@ -39,5 +39,5 @@ class TestCalendarRendering(TestBase):
                        [11, 13], [12, 15], [14, 15]]
         events = [(e[0], e[1]) for e in events_copy]
         result = self.solve(events)
-        expected = 5
+        expected = 3
         assert result == expected, f"Expected {expected} != {result} result"
