@@ -12,6 +12,9 @@ from tests.test_intervals_union import TestIntervalUnion
 Endpoint = collections.namedtuple('Endpoint', ('is_closed', 'val'))
 Interval = collections.namedtuple('Interval', ('left', 'right'))
 
+left_interval_map = {"(": False, "[": True}
+right_interval_map = {")": False, "]": True}
+
 
 def union_of_intervals_v1(intervals: List[Interval]) -> List[Interval]:
     '''
@@ -41,14 +44,32 @@ def str_to_interval(intervals: List[str]) -> List[Interval]:
     '''
     Parse intervals in string and convert to Interval
     '''
-    return []
+    parsed_intervals: List[Interval] = []
+    for interval in intervals:
+        assert interval[0] in left_interval_map, f"Incorrect left braces"
+        assert interval[-1] in right_interval_map, f"Incorrect right braces"
+        is_left_bracket_closed = left_interval_map[interval[0]]
+        is_right_bracket_closed = right_interval_map[interval[-1]]
+        num_pair_strs = interval[1:-1].split(",")
+        assert len(num_pair_strs) == 2, f"Expecting 2 num pairs as interval"
+        left_num = int(num_pair_strs[0].strip())
+        right_num = int(num_pair_strs[1].strip())
+        left_endpoint = Endpoint(is_left_bracket_closed, left_num)
+        right_endpoint = Endpoint(is_right_bracket_closed, right_num)
+        parsed_intervals.append(Interval(left_endpoint, right_endpoint))
+    return parsed_intervals
 
 def interval_to_str(intervals: List[Interval]) -> List[str]:
     '''
     Parse intervals in string and convert to Interval
     '''
-    return []
-
+    str_intervals: List[str] = []
+    for interval in intervals:
+        left_bracket = "[" if interval.left.is_closed else "("
+        right_bracket = "]" if interval.right.is_closed else ")"
+        str_intervals.append(f"{left_bracket}{str(interval.left.val)}, "
+                             f"{str(interval.right.val)}{right_bracket}")
+    return str_intervals
 
 
 def wrapper_union_of_intervals_v1(intervals: List[str]) -> List[str]:
@@ -56,14 +77,20 @@ def wrapper_union_of_intervals_v1(intervals: List[str]) -> List[str]:
     Parse intervals in string and convert to Interval
     '''
     # TODO: Is a good place to use decorators?
+    # print(intervals)
     parsed_intervals: List[Interval] = str_to_interval(intervals)
-    result: List[Interval] = union_of_intervals_v1(parsed_intervals)
-    return interval_to_str(result)
+    # print(parsed_intervals)
+    # result: List[Interval] = union_of_intervals_v1(parsed_intervals)
+    original_intervals = interval_to_str(parsed_intervals)
+    # print(original_intervals)
+    if any(i != j for i, j in zip(intervals, original_intervals)):
+        print("#### Mismatch ####")
+    # return interval_to_str(parsed_intervals)
 
 
 if __name__ == '__main__':
     TestIntervalUnion(wrapper_union_of_intervals_v1).run_tests()
-    exit(
-        generic_test.generic_test_main('intervals_union.py',
-                                       'intervals_union.tsv',
-                                       union_of_intervals_wrapper))
+    # exit(
+    #     generic_test.generic_test_main('intervals_union.py',
+    #                                    'intervals_union.tsv',
+    #                                    union_of_intervals_wrapper))
