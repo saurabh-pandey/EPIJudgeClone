@@ -10,11 +10,11 @@ from test_framework.test_utils import enable_executor_hook
 from tests.test_intervals_union import TestIntervalUnion
 
 
-Endpoint = collections.namedtuple('Endpoint', ('is_closed', 'val'))
+OldEndpoint = collections.namedtuple('Endpoint', ('is_closed', 'val'))
 Interval = collections.namedtuple('Interval', ('left', 'right'))
 
 @dataclass
-class NewEndpoint:
+class Endpoint:
     is_closed: bool
     val: int
 
@@ -37,7 +37,7 @@ def union_of_intervals_v1(intervals: List[Interval]) -> List[Interval]:
     def is_equal(ep0: Endpoint, ep1: Endpoint) -> bool:
         if ep0.val != ep1.val:
             return False
-        if ep0.is_closed != ep1.is_closed:
+        if not ep0.is_closed and not ep1.is_closed:
             return False
         return True
     
@@ -55,23 +55,48 @@ def union_of_intervals_v1(intervals: List[Interval]) -> List[Interval]:
     ]
     for interval in intervals[1:]:
         curr_interval = union_intervals[-1]
-        if (is_less(curr_interval.right, interval.left)
-        or  is_equal(curr_interval.right, interval.left)):
+        debg = False
+        if curr_interval.left.val == 176 and curr_interval.left.is_closed == False and curr_interval.right.val == 183 and curr_interval.right.is_closed == False:
+            debg = True
+            print("FOUND!!")
+            print(f"curr = {to_str(curr_interval)}")
+            print(f"interval = {to_str(interval)}")
+            print(f"is_less = {is_less(interval.left, curr_interval.right)}")
+            print(f"is_equal = {is_equal(interval.left, curr_interval.right)}")
+        if (curr_interval.left.val == interval.left.val
+        and (curr_interval.left.is_closed or interval.left.is_closed)):
+            curr_interval.left.is_closed = True
+            if debg:
+                print("Case 1")
+        if (is_less(interval.left, curr_interval.right)
+        or  is_equal(interval.left, curr_interval.right)):
+            if debg:
+                print("Case 2")
             if is_less(curr_interval.right, interval.right):
+                if debg:
+                    print(" Case 2.1")
                 curr_interval.right.val = interval.right.val
                 curr_interval.right.is_closed = interval.right.is_closed
         else:
-            new_union_interval = Interval(
-                Endpoint(intervals[0].left.is_closed, intervals[0].left.val),
-                Endpoint(intervals[0].right.is_closed, intervals[0].right.val)
-            )
-            union_intervals.append(new_union_interval)
+            if debg:
+                print("Case 3")
+            while (curr_interval.right.val == interval.left.val
+                   and curr_interval.right.is_closed == False
+                   and interval.left.is_closed == True):
+                curr_interval.right.val = interval.right.val
+                curr_interval.right.is_closed = interval.right.is_closed
+            else:
+                new_union_interval = Interval(
+                    Endpoint(interval.left.is_closed, interval.left.val),
+                    Endpoint(interval.right.is_closed, interval.right.val)
+                )
+                union_intervals.append(new_union_interval)
+        debg = False
     return union_intervals
 
 
 def union_of_intervals(intervals: List[Interval]) -> List[Interval]:
-    # TODO - you fill in here.
-    return []
+    return union_of_intervals_v1(intervals)
 
 
 @enable_executor_hook
@@ -105,6 +130,14 @@ def str_to_interval(intervals: List[str]) -> List[Interval]:
         parsed_intervals.append(Interval(left_endpoint, right_endpoint))
     return parsed_intervals
 
+
+def to_str(interval: Interval) -> str:
+    left_bracket = "[" if interval.left.is_closed else "("
+    right_bracket = "]" if interval.right.is_closed else ")"
+    return (f"{left_bracket}{str(interval.left.val)}, "
+            f"{str(interval.right.val)}{right_bracket}")
+
+
 def interval_to_str(intervals: List[Interval]) -> List[str]:
     '''
     Parse intervals in string and convert to Interval
@@ -130,7 +163,7 @@ def wrapper_union_of_intervals_v1(intervals: List[str]) -> List[str]:
 
 if __name__ == '__main__':
     TestIntervalUnion(wrapper_union_of_intervals_v1).run_tests()
-    # exit(
-    #     generic_test.generic_test_main('intervals_union.py',
-    #                                    'intervals_union.tsv',
-    #                                    union_of_intervals_wrapper))
+    exit(
+        generic_test.generic_test_main('intervals_union.py',
+                                       'intervals_union.tsv',
+                                       union_of_intervals_wrapper))
