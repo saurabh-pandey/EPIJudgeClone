@@ -1,6 +1,7 @@
 import collections
 import functools
 
+from dataclasses import dataclass
 from typing import List
 
 from test_framework import generic_test
@@ -12,6 +13,11 @@ from tests.test_intervals_union import TestIntervalUnion
 Endpoint = collections.namedtuple('Endpoint', ('is_closed', 'val'))
 Interval = collections.namedtuple('Interval', ('left', 'right'))
 
+@dataclass
+class NewEndpoint:
+    is_closed: bool
+    val: int
+
 left_interval_map = {"(": False, "[": True}
 right_interval_map = {")": False, "]": True}
 
@@ -20,7 +26,47 @@ def union_of_intervals_v1(intervals: List[Interval]) -> List[Interval]:
     '''
     My version
     '''
-    return []
+    def is_less(ep0: Endpoint, ep1: Endpoint) -> bool:
+        if ep0.val < ep1.val:
+            return True
+        if (ep0.val == ep1.val
+        and ep0.is_closed == False and ep1.is_closed == True):
+            return True
+        return False
+    
+    def is_equal(ep0: Endpoint, ep1: Endpoint) -> bool:
+        if ep0.val != ep1.val:
+            return False
+        if ep0.is_closed != ep1.is_closed:
+            return False
+        return True
+    
+    if not intervals:
+        return []
+    intervals.sort(key=lambda i: (i.left.val,
+                                  i.left.is_closed,
+                                  i.right.val,
+                                  i.right.is_closed))
+    union_intervals = [
+        Interval(
+            Endpoint(intervals[0].left.is_closed, intervals[0].left.val),
+            Endpoint(intervals[0].right.is_closed, intervals[0].right.val)
+        )
+    ]
+    for interval in intervals[1:]:
+        curr_interval = union_intervals[-1]
+        if (is_less(curr_interval.right, interval.left)
+        or  is_equal(curr_interval.right, interval.left)):
+            if is_less(curr_interval.right, interval.right):
+                curr_interval.right.val = interval.right.val
+                curr_interval.right.is_closed = interval.right.is_closed
+        else:
+            new_union_interval = Interval(
+                Endpoint(intervals[0].left.is_closed, intervals[0].left.val),
+                Endpoint(intervals[0].right.is_closed, intervals[0].right.val)
+            )
+            union_intervals.append(new_union_interval)
+    return union_intervals
 
 
 def union_of_intervals(intervals: List[Interval]) -> List[Interval]:
@@ -77,15 +123,9 @@ def wrapper_union_of_intervals_v1(intervals: List[str]) -> List[str]:
     Parse intervals in string and convert to Interval
     '''
     # TODO: Is a good place to use decorators?
-    # print(intervals)
     parsed_intervals: List[Interval] = str_to_interval(intervals)
-    # print(parsed_intervals)
-    # result: List[Interval] = union_of_intervals_v1(parsed_intervals)
-    original_intervals = interval_to_str(parsed_intervals)
-    # print(original_intervals)
-    if any(i != j for i, j in zip(intervals, original_intervals)):
-        print("#### Mismatch ####")
-    # return interval_to_str(parsed_intervals)
+    result: List[Interval] = union_of_intervals_v1(parsed_intervals)
+    return interval_to_str(result)
 
 
 if __name__ == '__main__':
