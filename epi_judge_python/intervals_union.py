@@ -24,7 +24,7 @@ right_interval_map = {")": False, "]": True}
 
 def union_of_intervals_v1(intervals: List[Interval]) -> List[Interval]:
     '''
-    My version
+    My version with O(nlog(n)) runtime
     '''
     def is_less(ep0: Endpoint, ep1: Endpoint) -> bool:
         if ep0.val < ep1.val:
@@ -124,7 +124,6 @@ def wrapper_union_of_intervals_v1(intervals: List[str]) -> List[str]:
     '''
     Parse intervals in string and convert to Interval
     '''
-    # TODO: Is a good place to use decorators?
     parsed_intervals: List[Interval] = str_to_interval(intervals)
     result: List[Interval] = union_of_intervals_v1(parsed_intervals)
     return interval_to_str(result)
