@@ -44,7 +44,7 @@ def union_of_intervals_v1(intervals: List[Interval]) -> List[Interval]:
     if not intervals:
         return []
     intervals.sort(key=lambda i: (i.left.val,
-                                  i.left.is_closed,
+                                  not i.left.is_closed,
                                   i.right.val,
                                   i.right.is_closed))
     union_intervals = [
@@ -55,43 +55,19 @@ def union_of_intervals_v1(intervals: List[Interval]) -> List[Interval]:
     ]
     for interval in intervals[1:]:
         curr_interval = union_intervals[-1]
-        debg = False
-        if curr_interval.left.val == 176 and curr_interval.left.is_closed == False and curr_interval.right.val == 183 and curr_interval.right.is_closed == False:
-            debg = True
-            print("FOUND!!")
-            print(f"curr = {to_str(curr_interval)}")
-            print(f"interval = {to_str(interval)}")
-            print(f"is_less = {is_less(interval.left, curr_interval.right)}")
-            print(f"is_equal = {is_equal(interval.left, curr_interval.right)}")
         if (curr_interval.left.val == interval.left.val
         and (curr_interval.left.is_closed or interval.left.is_closed)):
             curr_interval.left.is_closed = True
-            if debg:
-                print("Case 1")
         if (is_less(interval.left, curr_interval.right)
         or  is_equal(interval.left, curr_interval.right)):
-            if debg:
-                print("Case 2")
             if is_less(curr_interval.right, interval.right):
-                if debg:
-                    print(" Case 2.1")
                 curr_interval.right.val = interval.right.val
                 curr_interval.right.is_closed = interval.right.is_closed
         else:
-            if debg:
-                print("Case 3")
-            while (curr_interval.right.val == interval.left.val
-                   and curr_interval.right.is_closed == False
-                   and interval.left.is_closed == True):
-                curr_interval.right.val = interval.right.val
-                curr_interval.right.is_closed = interval.right.is_closed
-            else:
-                new_union_interval = Interval(
-                    Endpoint(interval.left.is_closed, interval.left.val),
-                    Endpoint(interval.right.is_closed, interval.right.val)
-                )
-                union_intervals.append(new_union_interval)
-        debg = False
+            union_intervals.append(Interval(
+                Endpoint(interval.left.is_closed, interval.left.val),
+                Endpoint(interval.right.is_closed, interval.right.val)
+            ))
     return union_intervals
 
 
@@ -129,13 +105,6 @@ def str_to_interval(intervals: List[str]) -> List[Interval]:
         right_endpoint = Endpoint(is_right_bracket_closed, right_num)
         parsed_intervals.append(Interval(left_endpoint, right_endpoint))
     return parsed_intervals
-
-
-def to_str(interval: Interval) -> str:
-    left_bracket = "[" if interval.left.is_closed else "("
-    right_bracket = "]" if interval.right.is_closed else ")"
-    return (f"{left_bracket}{str(interval.left.val)}, "
-            f"{str(interval.right.val)}{right_bracket}")
 
 
 def interval_to_str(intervals: List[Interval]) -> List[str]:
