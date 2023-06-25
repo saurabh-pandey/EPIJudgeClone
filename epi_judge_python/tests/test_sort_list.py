@@ -15,7 +15,7 @@ class TestSortList(TestBase):
     
     def test_random(self):
         for sz in range(1, 100):
-            for _ in (10):
+            for _ in range(10):
                 random_list = [random.randint(0, sz) for _ in range(sz)]
                 l_list: ListNode = linked_list.create(random_list)
                 result: ListNode = self.solve(l_list)
