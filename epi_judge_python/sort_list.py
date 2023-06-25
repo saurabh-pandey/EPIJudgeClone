@@ -12,7 +12,7 @@ def stable_sort_list_v1(L: ListNode) -> Optional[ListNode]:
     O(n^2) bubble sort of a linked list
     '''
     is_swapped = True
-    head = ListNode(-1, L)
+    head = ListNode(None, L)
     while is_swapped:
         is_swapped = False
         prev = head
