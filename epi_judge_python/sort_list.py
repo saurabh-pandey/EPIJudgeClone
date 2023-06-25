@@ -28,6 +28,13 @@ def stable_sort_list_v1(L: ListNode) -> Optional[ListNode]:
     return head.next
 
 
+def stable_sort_list_v2(L: ListNode) -> Optional[ListNode]:
+    '''
+    Try insertion sort just for practice here
+    '''
+    pass    
+
+
 def stable_sort_list(L: ListNode) -> Optional[ListNode]:
     return stable_sort_list_v1(L)
 
