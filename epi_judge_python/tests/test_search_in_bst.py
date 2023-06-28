@@ -9,7 +9,10 @@ class TestSearchInBst(TestBase):
     def test_example1(self):
         tree: BstNode = Factory.three_layered()
         print(tree)
-        # value = 4
-        # node: Optional[BstNode] = self.solve(tree, value)
-        # assert node is not None, f"Expected not None node"
-        # assert node.data == value, f"Expected {value} != {node.data} result"
+        for i in range(1, 8):
+            node: Optional[BstNode] = self.solve(tree, i)
+            assert node is not None, f"Expected not None node"
+            assert node.data == i, f"Expected {i} != {node.data} result"
+        for i in (0, 8, 9):
+            node: Optional[BstNode] = self.solve(tree, i)
+            assert node is None, f"Expected node to be None"
