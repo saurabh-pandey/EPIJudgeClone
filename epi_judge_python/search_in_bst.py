@@ -3,6 +3,15 @@ from typing import Optional
 from bst_node import BstNode
 from test_framework import generic_test
 
+from tests.test_search_in_bst import TestSearchInBst
+
+
+def search_bst_v1(tree: BstNode, key: int) -> Optional[BstNode]:
+    '''
+    My version
+    '''
+    return None
+
 
 def search_bst(tree: BstNode, key: int) -> Optional[BstNode]:
     # TODO - you fill in here.
@@ -15,6 +24,7 @@ def search_bst_wrapper(tree, key):
 
 
 if __name__ == '__main__':
-    exit(
-        generic_test.generic_test_main('search_in_bst.py', 'search_in_bst.tsv',
-                                       search_bst_wrapper))
+    TestSearchInBst(search_bst_v1).run_tests()
+    # exit(
+    #     generic_test.generic_test_main('search_in_bst.py', 'search_in_bst.tsv',
+    #                                    search_bst_wrapper))
