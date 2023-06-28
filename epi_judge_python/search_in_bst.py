@@ -20,8 +20,18 @@ def search_bst_v1(tree: BstNode, key: int) -> Optional[BstNode]:
         return search_bst_v1(tree.right, key)
 
 
+def search_bst_v2(tree: BstNode, key: int) -> Optional[BstNode]:
+    '''
+    Book's one liner version with same runtime
+    '''
+    return (tree if tree is None or tree.data == key
+            else search_bst_v1(tree.left, key)
+            if key < tree.data else search_bst_v1(tree.right, key))
+
+
 def search_bst(tree: BstNode, key: int) -> Optional[BstNode]:
-    return search_bst_v1(tree, key)
+    # return search_bst_v1(tree, key)
+    return search_bst_v2(tree, key)
 
 
 def search_bst_wrapper(tree, key):
@@ -31,6 +41,7 @@ def search_bst_wrapper(tree, key):
 
 if __name__ == '__main__':
     TestSearchInBst(search_bst_v1).run_tests()
+    TestSearchInBst(search_bst_v2).run_tests()
     exit(
         generic_test.generic_test_main('search_in_bst.py', 'search_in_bst.tsv',
                                        search_bst_wrapper))

@@ -8,7 +8,6 @@ from tests.utils.bst import Factory
 class TestSearchInBst(TestBase):
     def test_example1(self):
         tree: BstNode = Factory.three_layered()
-        print(tree)
         for i in range(1, 8):
             node: Optional[BstNode] = self.solve(tree, i)
             assert node is not None, f"Expected not None node"
