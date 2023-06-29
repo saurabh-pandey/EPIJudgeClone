@@ -1,47 +1,53 @@
+from typing import Type, Union
+
+from binary_tree_node import BinaryTreeNode
 from bst_node import BstNode
+
+TreeNode = Union[BstNode, BinaryTreeNode]
+
 
 class Factory:
     '''
     Factory for some standard Binary Search Trees used in tests
     '''
     @staticmethod
-    def single_node() -> BstNode:
-        tree = BstNode(1)
+    def single_node(cls: Type[TreeNode]) -> TreeNode:
+        tree = cls(1)
         return tree
     
     @staticmethod
-    def simple_even() -> BstNode:
-        tree = BstNode(4,
-            BstNode(2),
-            BstNode(6),
+    def simple_even(cls: Type[TreeNode]) -> TreeNode:
+        tree = cls(4,
+            cls(2),
+            cls(6),
         )
         return tree
 
     @staticmethod
-    def left_leaning() -> BstNode:
-        tree = BstNode(2,
-            BstNode(1)
+    def left_leaning(cls: Type[TreeNode]) -> TreeNode:
+        tree = cls(2,
+            cls(1)
         )
         return tree
     
     @staticmethod
-    def right_leaning() -> BstNode:
-        tree = BstNode(2,
+    def right_leaning(cls: Type[TreeNode]) -> TreeNode:
+        tree = cls(2,
             None,
-            BstNode(3)
+            cls(3)
         )
         return tree
 
     @staticmethod
-    def three_layered() -> BstNode:
-        tree = BstNode(4,
-            BstNode(2,
-                BstNode(1),
-                BstNode(3)
+    def three_layered(cls: Type[TreeNode]) -> TreeNode:
+        tree = cls(4,
+            cls(2,
+                cls(1),
+                cls(3)
             ),
-            BstNode(6,
-                BstNode(5),
-                BstNode(7)
+            cls(6,
+                cls(5),
+                cls(7)
             ),
         )
         return tree
