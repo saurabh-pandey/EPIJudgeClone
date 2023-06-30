@@ -1,5 +1,6 @@
 import json
 import os
+import pdb
 import sys
 
 from test_framework.generic_test_handler import GenericTestHandler
@@ -22,7 +23,8 @@ def generic_test_main(test_file,
                       test_func,
                       comparator=None,
                       res_printer=None,
-                      program_config=None):
+                      program_config=None,
+                      debug_test_no=None):
     """
     The main test starter.
 
@@ -50,14 +52,14 @@ def generic_test_main(test_file,
         set_output_opts(config.tty_mode, config.color_mode)
 
         test_handler = GenericTestHandler(test_func, comparator)
-        return run_tests(test_handler, config, res_printer)
+        return run_tests(test_handler, config, res_printer, debug_test_no)
     except RuntimeError as e:
         print('\nCritical error({}): {}'.format(e.__class__.__name__, e),
               file=sys.stderr)
         return TestResult.RUNTIME_ERROR
 
 
-def run_tests(handler, config, res_printer):
+def run_tests(handler, config, res_printer, debug_test_no = None):
     test_data = split_tsv_file(
         os.path.join(config.test_data_dir, config.test_data_file))
     handler.parse_signature(test_data[0])
@@ -82,6 +84,11 @@ def run_tests(handler, config, res_printer):
         test_failure = TestFailure()
 
         try:
+            if debug_test_no is not None:
+                print(f"\nRunning Test number = {test_nr}")
+                if test_nr == debug_test_no:
+                    print(f"  Entering debug mode for test no. {test_nr}")
+                    pdb.set_trace()
             test_output = handler.run_test(config.timeout_seconds,
                                            config.metrics_override, test_case)
             result = TestResult.PASSED
