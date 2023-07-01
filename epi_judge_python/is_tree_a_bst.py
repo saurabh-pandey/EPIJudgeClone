@@ -31,12 +31,35 @@ def is_binary_tree_bst_v1(tree: BinaryTreeNode) -> bool:
     return check_bst_property(tree)[0]
 
 
+def is_binary_tree_bst_v2(tree: BinaryTreeNode) -> bool:
+    '''
+    Using the fact that inorder traversal of a BST is always a sorted array.
+    '''
+    def inorder_traversal(node: Optional[BinaryTreeNode],
+                          prev: Optional[BinaryTreeNode]) -> bool:
+        if node:
+            is_left_tree_bst = inorder_traversal(node.left, None)
+            if not is_left_tree_bst:
+                return False
+            if not prev:
+                if node.left and node.left.data > node.data:
+                    return False
+            else:
+                if prev.data > node.data:
+                    return False
+            return inorder_traversal(node.right, node)
+        return True
+    return inorder_traversal(tree, None)
+
+
 def is_binary_tree_bst(tree: BinaryTreeNode) -> bool:
-    return is_binary_tree_bst_v1(tree)
+    # return is_binary_tree_bst_v1(tree)
+    return is_binary_tree_bst_v2(tree)
 
 
 if __name__ == '__main__':
     TestIsTreeBst(is_binary_tree_bst_v1).run_tests()
+    TestIsTreeBst(is_binary_tree_bst_v2).run_tests()
     exit(
         generic_test.generic_test_main('is_tree_a_bst.py',
                                        'is_tree_a_bst.tsv',
