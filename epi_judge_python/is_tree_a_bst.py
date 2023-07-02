@@ -35,21 +35,24 @@ def is_binary_tree_bst_v2(tree: BinaryTreeNode) -> bool:
     '''
     Using the fact that inorder traversal of a BST is always a sorted array.
     '''
-    def inorder_traversal(node: Optional[BinaryTreeNode],
-                          prev: Optional[BinaryTreeNode]) -> bool:
+    def inorder_traversal(
+                node: Optional[BinaryTreeNode],
+                prev: Optional[BinaryTreeNode]
+            ) -> Tuple[bool, Optional[BinaryTreeNode]] :
         if node:
-            is_left_tree_bst = inorder_traversal(node.left, None)
+            is_left_tree_bst, last_left_node = inorder_traversal(node.left, 
+                                                                 prev)
             if not is_left_tree_bst:
-                return False
-            if not prev:
-                if node.left and node.left.data > node.data:
-                    return False
-            else:
-                if prev.data > node.data:
-                    return False
-            return inorder_traversal(node.right, node)
-        return True
-    return inorder_traversal(tree, None)
+                return (False, None)
+            if last_left_node and last_left_node.data > node.data:
+                return (False, None)
+            is_right_tree_bst, last_right_node = inorder_traversal(node.right,
+                                                                   node)
+            if not is_right_tree_bst:
+                return (False, None)
+            return (True, last_right_node or node)
+        return (True, prev)
+    return inorder_traversal(tree, None)[0]
 
 
 def is_binary_tree_bst(tree: BinaryTreeNode) -> bool:
