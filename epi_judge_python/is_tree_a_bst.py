@@ -1,6 +1,8 @@
 import sys
 
-from typing import Optional, Tuple
+from collections import deque
+from dataclasses import dataclass
+from typing import Deque, Optional, Tuple
 
 from binary_tree_node import BinaryTreeNode
 
@@ -36,6 +38,7 @@ def is_binary_tree_bst_v1(tree: BinaryTreeNode) -> bool:
 def is_binary_tree_bst_v2(tree: BinaryTreeNode) -> bool:
     '''
     Using the fact that inorder traversal of a BST is always a sorted array.
+    O(n) time and O(h) space
     '''
     def inorder_traversal(
                 node: Optional[BinaryTreeNode],
@@ -59,7 +62,7 @@ def is_binary_tree_bst_v2(tree: BinaryTreeNode) -> bool:
 
 def is_binary_tree_bst_v3(tree: BinaryTreeNode) -> bool:
     '''
-    Range based checking of BST property
+    Book's range based checking of BST property. O(n) time and O(h) space.
     '''
     def check_range(node: Optional[BinaryTreeNode], min: int, max: int) -> bool:
         if not node:
@@ -73,16 +76,50 @@ def is_binary_tree_bst_v3(tree: BinaryTreeNode) -> bool:
     return check_range(tree, -sys.maxsize, sys.maxsize)
 
 
+@dataclass
+class NodeRange:
+    node: BinaryTreeNode
+    min: int
+    max: int
+
+def is_binary_tree_bst_v4(tree: BinaryTreeNode) -> bool:
+    '''
+    Book's version combining above range based checking but using BFS. This
+    helps detect violations near root faster. O(n) time and O(n) space
+    '''
+    if not tree:
+        return True
+    nodes_queue: Deque[NodeRange] = deque([NodeRange(tree,
+                                                     -sys.maxsize,
+                                                     sys.maxsize)])
+    while nodes_queue:
+        node_range: NodeRange = nodes_queue.popleft()
+        if (node_range.node.data < node_range.min
+                or node_range.node.data > node_range.max):
+            return False
+        if node_range.node.left:
+            nodes_queue.append(NodeRange(node_range.node.left,
+                                         node_range.min,
+                                         node_range.node.data))
+        if node_range.node.right:
+            nodes_queue.append(NodeRange(node_range.node.right,
+                                         node_range.node.data,
+                                         node_range.max))
+    return True
+
+
 def is_binary_tree_bst(tree: BinaryTreeNode) -> bool:
     # return is_binary_tree_bst_v1(tree)
     # return is_binary_tree_bst_v2(tree)
-    return is_binary_tree_bst_v3(tree)
+    # return is_binary_tree_bst_v3(tree)
+    return is_binary_tree_bst_v4(tree)
 
 
 if __name__ == '__main__':
     TestIsTreeBst(is_binary_tree_bst_v1).run_tests()
     TestIsTreeBst(is_binary_tree_bst_v2).run_tests()
     TestIsTreeBst(is_binary_tree_bst_v3).run_tests()
+    TestIsTreeBst(is_binary_tree_bst_v4).run_tests()
     exit(
         generic_test.generic_test_main('is_tree_a_bst.py',
                                        'is_tree_a_bst.tsv',
