@@ -1,3 +1,5 @@
+import sys
+
 from typing import Optional, Tuple
 
 from binary_tree_node import BinaryTreeNode
@@ -55,14 +57,32 @@ def is_binary_tree_bst_v2(tree: BinaryTreeNode) -> bool:
     return inorder_traversal(tree, None)[0]
 
 
+def is_binary_tree_bst_v3(tree: BinaryTreeNode) -> bool:
+    '''
+    Range based checking of BST property
+    '''
+    def check_range(node: Optional[BinaryTreeNode], min: int, max: int) -> bool:
+        if not node:
+            return True
+        if node.data < min or node.data > max:
+            return False
+        is_left_subtree_bst = check_range(node.left, min, node.data)
+        if not is_left_subtree_bst:
+            return False
+        return check_range(node.right, node.data, max)
+    return check_range(tree, -sys.maxsize, sys.maxsize)
+
+
 def is_binary_tree_bst(tree: BinaryTreeNode) -> bool:
     # return is_binary_tree_bst_v1(tree)
-    return is_binary_tree_bst_v2(tree)
+    # return is_binary_tree_bst_v2(tree)
+    return is_binary_tree_bst_v3(tree)
 
 
 if __name__ == '__main__':
     TestIsTreeBst(is_binary_tree_bst_v1).run_tests()
     TestIsTreeBst(is_binary_tree_bst_v2).run_tests()
+    TestIsTreeBst(is_binary_tree_bst_v3).run_tests()
     exit(
         generic_test.generic_test_main('is_tree_a_bst.py',
                                        'is_tree_a_bst.tsv',
