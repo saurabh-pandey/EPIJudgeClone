@@ -9,14 +9,21 @@ from tests.test_search_first_greater_value_in_bst import (
 
 def find_first_greater_than_k_v1(tree: BstNode, k: int) -> Optional[BstNode]:
     '''
-    My version
+    My version with O(h) where h is the max tree height and O(1) space
     '''
-    return None
+    last_found_greater: Optional[BstNode] = None
+    node = tree
+    while node:
+        if k < node.data:
+            last_found_greater = node
+            node = node.left
+        else:
+            node = node.right
+    return last_found_greater
 
 
 def find_first_greater_than_k(tree: BstNode, k: int) -> Optional[BstNode]:
-    # TODO - you fill in here.
-    return None
+    return find_first_greater_than_k_v1(tree, k)
 
 
 def find_first_greater_than_k_wrapper(tree, k):
