@@ -28,12 +28,29 @@ def find_k_largest_in_bst_v1(tree: BstNode, k: int) -> List[int]:
     return result
 
 
+def find_k_largest_in_bst_v2(tree: BstNode, k: int) -> List[int]:
+    '''
+    Book's version with same space and time complexity.
+    '''
+    def reverse_inorder(node: Optional[BstNode], k: int) -> bool:
+        if node and len(k_largest) < k:
+            reverse_inorder(node.right, k)
+            if len(k_largest) < k:
+                k_largest.append(node.data)
+                reverse_inorder(node.left, k)
+    k_largest = []
+    reverse_inorder(tree, k)
+    return k_largest
+
+
 def find_k_largest_in_bst(tree: BstNode, k: int) -> List[int]:
-    return find_k_largest_in_bst_v1(tree, k)
+    # return find_k_largest_in_bst_v1(tree, k)
+    return find_k_largest_in_bst_v2(tree, k)
 
 
 if __name__ == '__main__':
     TestKLargestInBst(find_k_largest_in_bst_v1).run_tests()
+    TestKLargestInBst(find_k_largest_in_bst_v2).run_tests()
     exit(
         generic_test.generic_test_main('k_largest_values_in_bst.py',
                                        'k_largest_values_in_bst.tsv',
