@@ -1,4 +1,4 @@
-from typing import Type, Union
+from typing import Optional, Type, Union
 
 from binary_tree_node import BinaryTreeNode
 from bst_node import BstNode
@@ -51,3 +51,18 @@ class Factory:
             ),
         )
         return tree
+
+
+def find_node(tree: Optional[BstNode], key: int) -> Optional[BstNode]:
+    '''
+    Find node with key in a binary search tree
+    '''
+    node = tree
+    while node:
+        if node.data == key:
+            return node
+        elif key < node.data:
+            node = node.left
+        else:
+            node = node.right
+    return None

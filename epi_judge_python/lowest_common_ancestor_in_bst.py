@@ -7,6 +7,16 @@ from test_framework.binary_tree_utils import must_find_node
 from test_framework.test_failure import TestFailure
 from test_framework.test_utils import enable_executor_hook
 
+from tests.test_lowest_common_ancestor_in_bst import (
+    TestLowestCommonAncestorInBst)
+
+
+def find_lca_v1(tree: BstNode, s: BstNode, b: BstNode) -> Optional[BstNode]:
+    '''
+    My version
+    '''
+    return None
+
 
 # Input nodes are nonempty and the key at s is less than or equal to that at b.
 def find_lca(tree: BstNode, s: BstNode, b: BstNode) -> Optional[BstNode]:
@@ -25,7 +35,8 @@ def lca_wrapper(executor, tree, s, b):
 
 
 if __name__ == '__main__':
-    exit(
-        generic_test.generic_test_main('lowest_common_ancestor_in_bst.py',
-                                       'lowest_common_ancestor_in_bst.tsv',
-                                       lca_wrapper))
+    TestLowestCommonAncestorInBst(find_lca_v1).run_tests()
+    # exit(
+    #     generic_test.generic_test_main('lowest_common_ancestor_in_bst.py',
+    #                                    'lowest_common_ancestor_in_bst.tsv',
+    #                                    lca_wrapper))
