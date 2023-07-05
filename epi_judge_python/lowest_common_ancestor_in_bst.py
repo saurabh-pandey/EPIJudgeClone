@@ -13,15 +13,34 @@ from tests.test_lowest_common_ancestor_in_bst import (
 
 def find_lca_v1(tree: BstNode, s: BstNode, b: BstNode) -> Optional[BstNode]:
     '''
-    My version
+    My version with O(log(n)) time and O(log(n)) space
     '''
-    return None
+    nodes_in_path = set()
+    node: BstNode = tree
+    while node:
+        nodes_in_path.add(node.data)
+        if s.data == node.data:
+            break
+        elif s.data < node.data:
+            node = node.left
+        else:
+            node = node.right
+    prev = None
+    node: BstNode = tree
+    while node and node.data in nodes_in_path:
+        prev = node
+        if b.data == node.data:
+            break
+        elif b.data < node.data:
+            node = node.left
+        else:
+            node = node.right
+    return prev
 
 
 # Input nodes are nonempty and the key at s is less than or equal to that at b.
 def find_lca(tree: BstNode, s: BstNode, b: BstNode) -> Optional[BstNode]:
-    # TODO - you fill in here.
-    return None
+    return find_lca_v1(tree, s, b)
 
 
 @enable_executor_hook
@@ -36,7 +55,7 @@ def lca_wrapper(executor, tree, s, b):
 
 if __name__ == '__main__':
     TestLowestCommonAncestorInBst(find_lca_v1).run_tests()
-    # exit(
-    #     generic_test.generic_test_main('lowest_common_ancestor_in_bst.py',
-    #                                    'lowest_common_ancestor_in_bst.tsv',
-    #                                    lca_wrapper))
+    exit(
+        generic_test.generic_test_main('lowest_common_ancestor_in_bst.py',
+                                       'lowest_common_ancestor_in_bst.tsv',
+                                       lca_wrapper))
