@@ -38,9 +38,25 @@ def find_lca_v1(tree: BstNode, s: BstNode, b: BstNode) -> Optional[BstNode]:
     return prev
 
 
+def find_lca_v2(tree: BstNode, s: BstNode, b: BstNode) -> Optional[BstNode]:
+    '''
+    My version with O(log(n)) time and O(1) space
+    '''
+    node: BstNode = tree
+    while node:
+        if s.data < node.data and b.data < node.data:
+            node = node.left
+        elif s.data > node.data and b.data > node.data:
+            node = node.right
+        else:
+            break
+    return node
+
+
 # Input nodes are nonempty and the key at s is less than or equal to that at b.
 def find_lca(tree: BstNode, s: BstNode, b: BstNode) -> Optional[BstNode]:
-    return find_lca_v1(tree, s, b)
+    # return find_lca_v1(tree, s, b)
+    return find_lca_v2(tree, s, b)
 
 
 @enable_executor_hook
@@ -55,6 +71,7 @@ def lca_wrapper(executor, tree, s, b):
 
 if __name__ == '__main__':
     TestLowestCommonAncestorInBst(find_lca_v1).run_tests()
+    TestLowestCommonAncestorInBst(find_lca_v2).run_tests()
     exit(
         generic_test.generic_test_main('lowest_common_ancestor_in_bst.py',
                                        'lowest_common_ancestor_in_bst.tsv',
