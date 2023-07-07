@@ -1,4 +1,4 @@
-from typing import Optional, Type, Union
+from typing import List, Optional, Type, Union
 
 from binary_tree_node import BinaryTreeNode
 from bst_node import BstNode
@@ -66,3 +66,11 @@ def find_node(tree: Optional[BstNode], key: int) -> Optional[BstNode]:
         else:
             node = node.right
     return None
+
+def generate_preorder(tree: Optional[BstNode], key: int) -> List[int]:
+    preorder_traversal = []
+    if tree:
+        preorder_traversal.extend(generate_preorder(tree.left))
+        preorder_traversal.append(tree.data)
+        preorder_traversal.extend(generate_preorder(tree.right))
+    return preorder_traversal
