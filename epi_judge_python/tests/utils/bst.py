@@ -67,10 +67,10 @@ def find_node(tree: Optional[BstNode], key: int) -> Optional[BstNode]:
             node = node.right
     return None
 
-def generate_preorder(tree: Optional[BstNode], key: int) -> List[int]:
+def generate_preorder(tree: Optional[BstNode]) -> List[int]:
     preorder_traversal = []
     if tree:
-        preorder_traversal.extend(generate_preorder(tree.left))
         preorder_traversal.append(tree.data)
+        preorder_traversal.extend(generate_preorder(tree.left))
         preorder_traversal.extend(generate_preorder(tree.right))
     return preorder_traversal
