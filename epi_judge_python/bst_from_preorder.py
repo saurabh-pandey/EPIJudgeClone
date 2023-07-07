@@ -10,7 +10,7 @@ from tests.test_bst_from_preorder import TestBstFromPreorder
 def rebuild_bst_from_preorder_v1(
         preorder_sequence: List[int]) -> Optional[BstNode]:
     '''
-    My version with O(n) time and O(log(n)) space
+    My version with O(n^2) time and O(log(n)) space
     '''
     if not preorder_sequence:
         return None
@@ -26,13 +26,33 @@ def rebuild_bst_from_preorder_v1(
     return node
 
 
+def rebuild_bst_from_preorder_v2(
+        preorder_sequence: List[int]) -> Optional[BstNode]:
+    '''
+    Book's recursive version with same constants
+    '''
+    if not preorder_sequence:
+        return None
+    left_subarr_end = 1
+    while (left_subarr_end < len(preorder_sequence)
+           and preorder_sequence[left_subarr_end] < preorder_sequence[0]):
+        left_subarr_end += 1
+    return BstNode(preorder_sequence[0],
+                   rebuild_bst_from_preorder_v2(
+                        preorder_sequence[1:left_subarr_end]),
+                   rebuild_bst_from_preorder_v2(
+                        preorder_sequence[left_subarr_end:]))
+
+
 def rebuild_bst_from_preorder(preorder_sequence: List[int]
                               ) -> Optional[BstNode]:
-    return rebuild_bst_from_preorder_v1(preorder_sequence)
+    # return rebuild_bst_from_preorder_v1(preorder_sequence)
+    return rebuild_bst_from_preorder_v2(preorder_sequence)
 
 
 if __name__ == '__main__':
     TestBstFromPreorder(rebuild_bst_from_preorder_v1).run_tests()
+    TestBstFromPreorder(rebuild_bst_from_preorder_v2).run_tests()
     exit(
         generic_test.generic_test_main('bst_from_preorder.py',
                                        'bst_from_preorder.tsv',
