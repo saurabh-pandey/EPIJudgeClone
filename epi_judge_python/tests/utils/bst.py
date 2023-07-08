@@ -67,6 +67,7 @@ def find_node(tree: Optional[BstNode], key: int) -> Optional[BstNode]:
             node = node.right
     return None
 
+
 def generate_preorder(tree: Optional[BstNode]) -> List[int]:
     preorder_traversal = []
     if tree:
@@ -74,3 +75,13 @@ def generate_preorder(tree: Optional[BstNode]) -> List[int]:
         preorder_traversal.extend(generate_preorder(tree.left))
         preorder_traversal.extend(generate_preorder(tree.right))
     return preorder_traversal
+
+
+def max_depth(tree: Optional[BstNode]) -> int:
+    def calc_depth(node: Optional[BstNode], depth_so_far: int) -> int:
+        if node is None:
+            return depth_so_far
+        left_subtree_depth = calc_depth(node.left, depth_so_far + 1)
+        right_subtree_depth = calc_depth(node.right, depth_so_far + 1)
+        return max(left_subtree_depth, right_subtree_depth)
+    return calc_depth(tree, 0)
