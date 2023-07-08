@@ -48,7 +48,49 @@ class Factory:
             cls(6,
                 cls(5),
                 cls(7)
+            )
+        )
+        return tree
+    
+    @staticmethod
+    def three_depth_1(cls: Type[TreeNode]) -> TreeNode:
+        tree = cls(4,
+            cls(2,
+                cls(1)
             ),
+            cls(6)
+        )
+        return tree
+
+    @staticmethod
+    def three_depth_2(cls: Type[TreeNode]) -> TreeNode:
+        tree = cls(4,
+            cls(2,
+                None,
+                cls(3)
+            ),
+            cls(6)
+        )
+        return tree
+    
+    @staticmethod
+    def three_depth_3(cls: Type[TreeNode]) -> TreeNode:
+        tree = cls(4,
+            cls(2),
+            cls(6,
+                cls(5)
+            )
+        )
+        return tree
+    
+    @staticmethod
+    def three_depth_4(cls: Type[TreeNode]) -> TreeNode:
+        tree = cls(4,
+            cls(2),
+            cls(6,
+                None,
+                cls(7)
+            )
         )
         return tree
 
