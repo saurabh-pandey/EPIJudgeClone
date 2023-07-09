@@ -14,7 +14,7 @@ from tests.test_bst_from_sorted_array import TestBstFromSortedArray
 def build_min_height_bst_from_sorted_array_v1(
         A: List[int]) -> Optional[BstNode]:
     '''
-    My version
+    My version with O(n) time and O(log(n)) space complexity
     '''
     if not A:
         return None
@@ -25,8 +25,24 @@ def build_min_height_bst_from_sorted_array_v1(
                        build_min_height_bst_from_sorted_array_v1(A[mid + 1:]))
 
 
+def build_min_height_bst_from_sorted_array_v2(
+        A: List[int]) -> Optional[BstNode]:
+    '''
+    Book's version with same complexity
+    '''
+    def build_min_height_bst_rec(start: int, finish: int) -> Optional[BstNode]:
+        if start == finish:
+            return None
+        else:
+            mid = (start + finish) // 2
+            return BstNode(A[mid],
+                           build_min_height_bst_rec(start, mid),
+                           build_min_height_bst_rec(mid + 1, finish))
+    return build_min_height_bst_rec(0, len(A))
+
 def build_min_height_bst_from_sorted_array(A: List[int]) -> Optional[BstNode]:
-    return build_min_height_bst_from_sorted_array_v1(A)
+    # return build_min_height_bst_from_sorted_array_v1(A)
+    return build_min_height_bst_from_sorted_array_v2(A)
 
 
 @enable_executor_hook
@@ -42,6 +58,8 @@ def build_min_height_bst_from_sorted_array_wrapper(executor, A):
 if __name__ == '__main__':
     TestBstFromSortedArray(
         build_min_height_bst_from_sorted_array_v1).run_tests()
+    TestBstFromSortedArray(
+        build_min_height_bst_from_sorted_array_v2).run_tests()
     exit(
         generic_test.generic_test_main(
             'bst_from_sorted_array.py', 'bst_from_sorted_array.tsv',
