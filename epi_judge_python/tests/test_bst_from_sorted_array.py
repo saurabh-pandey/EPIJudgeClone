@@ -10,7 +10,7 @@ from tests.utils import bst
 
 class TestBstFromSortedArray(TestBase):
     def test_unique(self):
-        for sz in range(1, 100):
+        for sz in range(1, 1000):
             A = [i for i in range(sz)]
             result: Optional[BstNode] = self.solve(A)
             max_depth = bst.max_depth(result)
@@ -18,7 +18,7 @@ class TestBstFromSortedArray(TestBase):
                 f"Failed for A = {A}")
     
     def test_random(self):
-        for sz in range(1, 100):
+        for sz in range(1, 1000):
             A = [random.randint(0, sz) for i in range(sz)]
             A.sort()
             result: Optional[BstNode] = self.solve(A)
