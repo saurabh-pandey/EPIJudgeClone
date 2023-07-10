@@ -10,3 +10,10 @@ class TestEuclideanGcd(TestBase):
                 result = self.solve(i, j)
                 expected = math.gcd(i, j)
                 assert result == expected, f"{expected} != {result} result"
+    
+    def test_zero(self):
+        x = 42
+        y = 0
+        result = self.solve(x, y)
+        expected = math.gcd(x, y)
+        assert result == expected, f"{expected} != {result} result"

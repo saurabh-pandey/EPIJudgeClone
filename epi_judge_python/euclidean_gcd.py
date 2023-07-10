@@ -4,12 +4,22 @@ from tests.test_euclidean_gcd import TestEuclideanGcd
 
 
 def gcd_v1(x: int, y: int) -> int:
-    return 0
+    '''
+    My version with O(log(max(x, y))) time and space complexity
+    '''
+    bigger, smaller = x, y
+    if bigger < smaller:
+        bigger, smaller = smaller, bigger
+    if smaller == 0:
+        return bigger
+    mod = bigger % smaller
+    if mod == 0:
+        return smaller
+    return gcd(smaller, mod)
 
 
 def gcd(x: int, y: int) -> int:
-    # TODO - you fill in here.
-    return 0
+    return gcd_v1(x, y)
 
 
 if __name__ == '__main__':
