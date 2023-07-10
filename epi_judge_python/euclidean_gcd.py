@@ -18,10 +18,19 @@ def gcd_v1(x: int, y: int) -> int:
     return gcd(smaller, mod)
 
 
+def gcd_v2(x: int, y: int) -> int:
+    '''
+    Book's version with same complexity
+    '''
+    return x if y == 0 else gcd_v2(y, x % y)
+
+
 def gcd(x: int, y: int) -> int:
-    return gcd_v1(x, y)
+    # return gcd_v1(x, y)
+    return gcd_v2(x, y)
 
 
 if __name__ == '__main__':
     TestEuclideanGcd(gcd_v1).run_tests()
+    TestEuclideanGcd(gcd_v2).run_tests()
     exit(generic_test.generic_test_main('euclidean_gcd.py', 'gcd.tsv', gcd))
