@@ -5,7 +5,17 @@ from test_framework import generic_test
 from test_framework.test_failure import TestFailure
 from test_framework.test_utils import enable_executor_hook
 
+from tests.test_hanoi import TestHanoi
+
+
 NUM_PEGS = 3
+
+
+def compute_tower_hanoi_v1(num_rings: int) -> List[List[int]]:
+    '''
+    My version
+    '''
+    return []
 
 
 def compute_tower_hanoi(num_rings: int) -> List[List[int]]:
@@ -32,6 +42,7 @@ def compute_tower_hanoi_wrapper(executor, num_rings):
 
 
 if __name__ == '__main__':
+    TestHanoi(compute_tower_hanoi_v1).run_tests()
     exit(
         generic_test.generic_test_main('hanoi.py', 'hanoi.tsv',
                                        compute_tower_hanoi_wrapper))
