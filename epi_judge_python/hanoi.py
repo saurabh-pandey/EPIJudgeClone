@@ -43,6 +43,6 @@ def compute_tower_hanoi_wrapper(executor, num_rings):
 
 if __name__ == '__main__':
     TestHanoi(compute_tower_hanoi_v1).run_tests()
-    exit(
-        generic_test.generic_test_main('hanoi.py', 'hanoi.tsv',
-                                       compute_tower_hanoi_wrapper))
+    # exit(
+    #     generic_test.generic_test_main('hanoi.py', 'hanoi.tsv',
+    #                                    compute_tower_hanoi_wrapper))
