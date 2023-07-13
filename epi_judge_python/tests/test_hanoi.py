@@ -14,8 +14,8 @@ class TestHanoi(TestBase):
     def replay_steps(num_rings: int, steps: List[List[int]]) -> bool:
         pegs: List[List[int]] = [[] for _ in range(TestHanoi.NUM_PEGS)]
         for i in range(num_rings, 0, -1):
+            # It is assumed that rings are initially assembled at peg 0
             pegs[0].append(i)
-        print(f"Pegs before = {pegs}")
         for step in steps:
             if step:
                 from_peg, to_peg = step
@@ -25,25 +25,96 @@ class TestHanoi(TestBase):
                 if pegs[to_peg] and not (pegs[to_peg][-1] > moved_ring):
                         return False
                 pegs[to_peg].append(moved_ring)
-        empty_pegs_count = sum(1 for peg in pegs if not peg)
-        if num_rings == 0:
-            if empty_pegs_count != TestHanoi.NUM_PEGS:
-                return False
-        elif empty_pegs_count != TestHanoi.NUM_PEGS - 1:
+        if pegs[0]:
+            # It is assumed to be moved from peg 0
             return False
-        for peg in pegs:
-            if peg:
-                if len(peg) != num_rings:
-                    return False
-                if any(peg[i] <= peg[i + 1] for i in range(num_rings - 1)):
-                    return False
-        print(f"Pegs after = {pegs}")
+        filled_peg, empty_peg = pegs[1], pegs[2]
+        if not filled_peg:
+            filled_peg, empty_peg = empty_peg, filled_peg
+        if len(filled_peg) != num_rings:
+            return False
+        if any(filled_peg[i] <= filled_peg[i + 1]
+               for i in range(num_rings - 1)):
+            return False
         return True
     
-    def test_replay(self):
+    def test_replay_0_ring(self):
+        num_rings = 0
+        steps = [[]]
+        assert TestHanoi.replay_steps(num_rings, steps), (
+            f"Failed replay {num_rings} rings")
+        steps = [[0, 1]]
+        assert TestHanoi.replay_steps(num_rings, steps) == False, (
+            f"Failed replay {num_rings} rings")
+    
+    def test_replay_1_ring(self):
+        num_rings = 1
+        steps = [[0, 1]]
+        assert TestHanoi.replay_steps(num_rings, steps), (
+            f"Failed replay {num_rings} rings")
+        steps = [[0, 2]]
+        assert TestHanoi.replay_steps(num_rings, steps), (
+            f"Failed replay {num_rings} rings")
+        steps = [[1, 0]]
+        assert TestHanoi.replay_steps(num_rings, steps) == False, (
+            f"Failed replay {num_rings} rings")
+        steps = [[]]
+        assert TestHanoi.replay_steps(num_rings, steps) == False, (
+            f"Failed replay {num_rings} rings")
+    
+    def test_replay_2_ring(self):
+        num_rings = 2
+        steps = [[0, 2], [0, 1], [2, 1]]
+        assert TestHanoi.replay_steps(num_rings, steps), (
+            f"Failed replay {num_rings} rings")
+        steps = [[0, 1], [0, 2], [1, 2]]
+        assert TestHanoi.replay_steps(num_rings, steps), (
+            f"Failed replay {num_rings} rings")
+        steps = [[0, 2], [0, 1]]
+        assert TestHanoi.replay_steps(num_rings, steps) == False, (
+            f"Failed replay {num_rings} rings")
+        steps = [[0, 2]]
+        assert TestHanoi.replay_steps(num_rings, steps) == False, (
+            f"Failed replay {num_rings} rings")
+        steps = [[]]
+        assert TestHanoi.replay_steps(num_rings, steps) == False, (
+            f"Failed replay {num_rings} rings")
+
+    def test_replay_3_ring(self):
+        num_rings = 3
         steps = [[0, 1], [0, 2], [1, 2], [0, 1], [2, 0], [2, 1], [0, 1]]
-        print(TestHanoi.replay_steps(3, steps))
-        return
+        assert TestHanoi.replay_steps(num_rings, steps), (
+            f"Failed replay {num_rings} rings")
+        steps = [[0, 2], [0, 1], [2, 1], [0, 2], [1, 0], [1, 2], [0, 2]]
+        assert TestHanoi.replay_steps(num_rings, steps), (
+            f"Failed replay {num_rings} rings")
+        steps = [[0, 1], [0, 2], [1, 2], [0, 1], [2, 0], [2, 1], [0, 2]]
+        assert TestHanoi.replay_steps(num_rings, steps) == False, (
+            f"Failed replay {num_rings} rings")
+        steps = [[0, 1], [0, 2], [1, 2], [0, 1], [2, 0], [2, 1]]
+        assert TestHanoi.replay_steps(num_rings, steps) == False, (
+            f"Failed replay {num_rings} rings")
+        steps = [[0, 2], [1, 2], [0, 1], [2, 0], [2, 1], [0, 1]]
+        assert TestHanoi.replay_steps(num_rings, steps) == False, (
+            f"Failed replay {num_rings} rings")
+        steps = [[0, 1], [0, 2], [0, 1], [2, 0], [2, 1], [0, 1]]
+        assert TestHanoi.replay_steps(num_rings, steps) == False, (
+            f"Failed replay {num_rings} rings")
+        steps = [[0, 1], [0, 2], [1, 2], [0, 1], [2, 1], [2, 1], [0, 1]]
+        assert TestHanoi.replay_steps(num_rings, steps) == False, (
+            f"Failed replay {num_rings} rings")
+        steps = [[0, 1], [0, 1], [0, 1]]
+        assert TestHanoi.replay_steps(num_rings, steps) == False, (
+            f"Failed replay {num_rings} rings")
+        steps = [[0, 1], [0, 2]]
+        assert TestHanoi.replay_steps(num_rings, steps) == False, (
+            f"Failed replay {num_rings} rings")
+        steps = [[0, 1]]
+        assert TestHanoi.replay_steps(num_rings, steps) == False, (
+            f"Failed replay {num_rings} rings")
+        steps = [[]]
+        assert TestHanoi.replay_steps(num_rings, steps) == False, (
+            f"Failed replay {num_rings} rings")
 
     def test_all(self):
         return
