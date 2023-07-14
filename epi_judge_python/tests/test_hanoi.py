@@ -117,10 +117,10 @@ class TestHanoi(TestBase):
             f"Failed replay {num_rings} rings")
 
     def test_all(self):
-        return
-        for num_rings in range(10):
+        for num_rings in range(20):
             result: List[List[int]] = self.solve(num_rings)
             expected_size = TestHanoi.steps_count(num_rings)
             assert len(result) == expected_size, (
                 f"Incorrect size expected {expected_size} != {len(result)}")
-            assert TestHanoi.replay_steps(result), f"Fail {num_rings} rings"
+            assert TestHanoi.replay_steps(num_rings, result), (
+                f"Fail {num_rings} rings")
