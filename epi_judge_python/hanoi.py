@@ -43,8 +43,33 @@ def compute_tower_hanoi_v1(num_rings: int) -> List[List[int]]:
         return steps
     return hanoi_steps(num_rings, 0, 1)
 
+
+def compute_tower_hanoi_v2(num_rings: int) -> List[List[int]]:
+    '''
+    Book's version with same time and space complexity
+    '''
+    def compute_tower_hanoi_steps(num_rings_to_move: int,
+                                  from_peg: int,
+                                  to_peg: int,
+                                  use_peg: int) -> None:
+        if num_rings_to_move > 0:
+            compute_tower_hanoi_steps(num_rings_to_move - 1,
+                                      from_peg,
+                                      use_peg,
+                                      to_peg)
+            result.append([from_peg, to_peg])
+            compute_tower_hanoi_steps(num_rings_to_move - 1,
+                                      use_peg,
+                                      to_peg,
+                                      from_peg)
+    result = []
+    compute_tower_hanoi_steps(num_rings, 0, 1, 2)
+    return result
+
+
 def compute_tower_hanoi(num_rings: int) -> List[List[int]]:
-    return compute_tower_hanoi_v1(num_rings)
+    # return compute_tower_hanoi_v1(num_rings)
+    return compute_tower_hanoi_v2(num_rings)
 
 
 @enable_executor_hook
@@ -67,6 +92,7 @@ def compute_tower_hanoi_wrapper(executor, num_rings):
 
 if __name__ == '__main__':
     TestHanoi(compute_tower_hanoi_v1).run_tests()
+    TestHanoi(compute_tower_hanoi_v2).run_tests()
     exit(
         generic_test.generic_test_main('hanoi.py', 'hanoi.tsv',
                                        compute_tower_hanoi_wrapper))
