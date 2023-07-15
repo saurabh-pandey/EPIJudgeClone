@@ -19,13 +19,22 @@ CYCLIC_PEGS = [2, 1, 0]
 
 def compute_tower_hanoi_v1(num_rings: int) -> List[List[int]]:
     '''
-    My version
+    My version. The general recurrence relation for 3 pegs hanoi is:
+    N(x, y) = N-1(x, z) + <x, y> + N-1(z, y)
+    where:
+    x, y, z are the three pegs
+    N(x, y) holds the steps to solve N rings Tower of Hanoi. It depends on 
+    solving N-1(x, z) and N-1(z, y). Thus solving N ring depends on solving 1
+    less ring problem but twice. Once from initial position to the third 
+    position. Next moving the N the ring from initial to final position.
+    Finally solving N-1 rings again but from third position to the final 
+    position.
+    Also N = 0 is always empty thus N(x, y) = 0 for N = 0.
+    Time complexity is O(2^n)
     '''
     def hanoi_steps(ring: int, origin: int, dest: int) -> List[List[int]]:
         if ring == 0:
             return []
-        elif ring == 1:
-            return [[origin, dest]]
         steps = []
         remain_peg = CYCLIC_PEGS[origin + dest - 1]
         steps.extend(hanoi_steps(ring - 1, origin, remain_peg))
