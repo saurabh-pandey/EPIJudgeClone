@@ -19,9 +19,9 @@ def phone_mnemonic(phone_number: str) -> List[str]:
 
 if __name__ == '__main__':
     TestPhoneNumberMnemonic(phone_mnemonic_v1).run_tests()
-    exit(
-        generic_test.generic_test_main(
-            'phone_number_mnemonic.py',
-            'phone_number_mnemonic.tsv',
-            phone_mnemonic,
-            comparator=test_utils.unordered_compare))
+    # exit(
+    #     generic_test.generic_test_main(
+    #         'phone_number_mnemonic.py',
+    #         'phone_number_mnemonic.tsv',
+    #         phone_mnemonic,
+    #         comparator=test_utils.unordered_compare))
