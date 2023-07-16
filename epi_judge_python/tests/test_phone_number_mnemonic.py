@@ -7,13 +7,12 @@ from tests.test_base import TestBase
 
 
 class TestPhoneNumberMnemonic(TestBase):
-    PHONE_NUM_CHAR_MAP = ["", "", "ABC", "DEF", "GHI", "JKL", "MNO", "PQRS",
+    PHONE_NUM_CHAR_MAP = ["0", "1", "ABC", "DEF", "GHI", "JKL", "MNO", "PQRS",
                           "TUV", "WXYZ"]
     
     def expected_mnemonic(self, phone_number: str) -> List[str]:
         digits = [int(c) for c in phone_number]
-        chars = [TestPhoneNumberMnemonic.PHONE_NUM_CHAR_MAP[i]
-                 for i in digits if i > 1]
+        chars = [TestPhoneNumberMnemonic.PHONE_NUM_CHAR_MAP[i] for i in digits]
         expected = []
         for prod in itertools.product(*chars):
             expected.append("".join(prod))
