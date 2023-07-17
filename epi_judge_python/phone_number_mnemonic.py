@@ -24,12 +24,32 @@ def phone_mnemonic_v1(phone_number: str) -> List[str]:
     return result
 
 
+def phone_mnemonic_v2(phone_number: str) -> List[str]:
+    '''
+    Book's version with same time complexity
+    '''
+    def phone_mnemonic_recursive(i: int) -> None:
+        if i == len(phone_number):
+            result.append("".join(word))
+        else:
+            num = int(phone_number[i])
+            for c in TestPhoneNumberMnemonic.PHONE_NUM_CHAR_MAP[num]:
+                word[i] = c
+                phone_mnemonic_recursive(i + 1)
+    result = []
+    word = ['0'] * len(phone_number)
+    phone_mnemonic_recursive(0)
+    return result
+
+
 def phone_mnemonic(phone_number: str) -> List[str]:
-    return phone_mnemonic_v1(phone_number)
+    # return phone_mnemonic_v1(phone_number)
+    return phone_mnemonic_v2(phone_number)
 
 
 if __name__ == '__main__':
     TestPhoneNumberMnemonic(phone_mnemonic_v1).run_tests()
+    TestPhoneNumberMnemonic(phone_mnemonic_v2).run_tests()
     exit(
         generic_test.generic_test_main(
             'phone_number_mnemonic.py',
