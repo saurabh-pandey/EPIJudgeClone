@@ -7,6 +7,7 @@ class TestNQueens(TestBase):
         n = 4
         expected: List[List[int]] = [[1, 3, 0, 2], [2, 0, 3, 1]]
         result = self.solve(n)
+        assert all(self.check_n_queens_solution(n, res) for res in result)
         assert expected == result, f"Expected {expected} != {result} result"
 
     def check_n_queens_solution(self, n: int, solution: List[int]) -> bool:
