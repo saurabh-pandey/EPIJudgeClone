@@ -2,6 +2,7 @@ from typing import List
 
 from tests.test_base import TestBase
 
+
 class TestNQueens(TestBase):
     def test_example1(self):
         n = 4
@@ -9,6 +10,12 @@ class TestNQueens(TestBase):
         result = self.solve(n)
         assert all(self.check_n_queens_solution(n, res) for res in result)
         assert expected == result, f"Expected {expected} != {result} result"
+    
+    def test_all(self):
+        for n in range(0, 10):
+            result = self.solve(n)
+            print(f"N = {n}, num_solutions = {len(result)}")
+            assert all(self.check_n_queens_solution(n, res) for res in result)
 
     def check_n_queens_solution(self, n: int, solution: List[int]) -> bool:
         if len(solution) != n:

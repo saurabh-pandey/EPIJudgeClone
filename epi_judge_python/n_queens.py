@@ -18,25 +18,25 @@ def n_queens_v1(n: int) -> List[List[int]]:
         for i in range(col):
             diag_row, diag_col = queens[i] - 1, i - 1
             while diag_row >= 0 and diag_col >= 0:
-                if row == diag_row:
+                if row == diag_row and col == diag_col:
                     return False
                 diag_row -= 1
                 diag_col -= 1
             diag_row, diag_col = queens[i] - 1, i + 1
             while diag_row >= 0 and diag_col <= col:
-                if row == diag_row:
+                if row == diag_row and col == diag_col:
                     return False
                 diag_row -= 1
                 diag_col += 1
             diag_row, diag_col = queens[i] + 1, i - 1
             while diag_row < n and diag_col >= 0:
-                if row == diag_row:
+                if row == diag_row and col == diag_col:
                     return False
                 diag_row += 1
                 diag_col -= 1
             diag_row, diag_col = queens[i] + 1, i + 1
             while diag_row < n and diag_col <= col:
-                if row == diag_row:
+                if row == diag_row and col == diag_col:
                     return False
                 diag_row += 1
                 diag_col += 1
@@ -57,7 +57,6 @@ def n_queens_v1(n: int) -> List[List[int]]:
 
 
 def n_queens(n: int) -> List[List[int]]:
-    # TODO - you fill in here.
     return n_queens_v1(n)
 
 
@@ -67,6 +66,6 @@ def comp(a, b):
 
 if __name__ == '__main__':
     TestNQueens(n_queens_v1).run_tests()
-    # exit(
-    #     generic_test.generic_test_main('n_queens.py', 'n_queens.tsv', n_queens,
-    #                                    comp))
+    exit(
+        generic_test.generic_test_main('n_queens.py', 'n_queens.tsv', n_queens,
+                                       comp))
