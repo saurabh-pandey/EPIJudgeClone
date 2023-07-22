@@ -1,3 +1,5 @@
+import time
+
 from typing import List
 
 from tests.test_base import TestBase
@@ -12,9 +14,10 @@ class TestNQueens(TestBase):
         assert expected == result, f"Expected {expected} != {result} result"
     
     def test_all(self):
-        for n in range(0, 10):
+        for n in range(0, 11):
+            start = time.time()
             result = self.solve(n)
-            print(f"N = {n}, num_solutions = {len(result)}")
+            print(f"N = {n}, num_solutions = {len(result)}, time = {time.time() - start}")
             assert all(self.check_n_queens_solution(n, res) for res in result)
 
     def check_n_queens_solution(self, n: int, solution: List[int]) -> bool:
