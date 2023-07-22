@@ -92,9 +92,33 @@ def n_queens_v2(n: int) -> List[List[int]]:
     return solutions
 
 
+def n_queens_v3(n: int) -> List[List[int]]:
+    '''
+    Book's version
+    '''
+    def n_queens_recursive(col: int) -> None:
+        if col == n:
+            solutions.append(queens[:])
+        else:
+            for row in range(n):
+                if all(
+                    abs(r - row) not in (0, col - i)
+                    for i, r in enumerate(queens[:col])
+                ):
+                    queens[col] = row
+                    n_queens_recursive(col + 1)
+                    queens[col] = -1
+    solutions = []
+    queens = [0] * n
+    n_queens_recursive(0)
+    return solutions
+
+
+
 def n_queens(n: int) -> List[List[int]]:
     # return n_queens_v1(n)
-    return n_queens_v2(n)
+    # return n_queens_v2(n)
+    return n_queens_v3(n)
 
 
 def comp(a, b):
@@ -104,6 +128,7 @@ def comp(a, b):
 if __name__ == '__main__':
     TestNQueens(n_queens_v1).run_tests()
     TestNQueens(n_queens_v2).run_tests()
+    TestNQueens(n_queens_v3).run_tests()
     exit(
         generic_test.generic_test_main('n_queens.py', 'n_queens.tsv', n_queens,
                                        comp))
