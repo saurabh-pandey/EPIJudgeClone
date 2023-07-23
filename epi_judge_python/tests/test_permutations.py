@@ -11,6 +11,7 @@ class TestPermutations(TestBase):
         expected = [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2],
                     [3, 2, 1]]
         result = self.solve(A)
+        result.sort()
         assert expected == result, f"Expected {expected} != {result} result"
     
     def test_all(self):
