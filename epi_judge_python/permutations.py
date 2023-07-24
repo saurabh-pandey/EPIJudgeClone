@@ -26,6 +26,7 @@ def permutations_v1(A: List[int]) -> List[List[int]]:
     permutations_recursive(0)
     return permutations
 
+
 def permutations_v2(A: List[int]) -> List[List[int]]:
     '''
     Book's version
@@ -40,6 +41,21 @@ def permutations_v2(A: List[int]) -> List[List[int]]:
             A[i], A[j] = A[j], A[i]
     permutations = []
     permutations_recursive(0)
+    return permutations
+
+
+def permutations_v3(A: List[int]) -> List[List[int]]:
+    '''
+    Another Book's version
+    '''
+    def next_permutation() -> List[int]:
+        pass
+    permutations = []
+    while True:
+        permutations.append(A[:])
+        A = next_permutation()
+        if not A:
+            break
     return permutations
 
 
