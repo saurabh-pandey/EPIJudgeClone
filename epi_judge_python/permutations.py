@@ -49,7 +49,16 @@ def permutations_v3(A: List[int]) -> List[List[int]]:
     Another Book's version
     '''
     def next_permutation() -> List[int]:
-        pass
+        '''
+        Idea is to see A and find the smallest bigger number that can be formed
+        by just rearranging. If A is already in descending order then we have to
+        return empty list. This will mark the end of search.
+        General idea to find the next bigger permutation is to find the 
+        furthest point where a subsequent bigger number can be used. Once that
+        bigger number is placed in that place everything later is to be in
+        ascending order.
+        '''
+        return []
     permutations = []
     while True:
         permutations.append(A[:])
