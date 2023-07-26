@@ -57,6 +57,19 @@ def permutations_v3(A: List[int]) -> List[List[int]]:
         furthest point where a subsequent bigger number can be used. Once that
         bigger number is placed in that place everything later is to be in
         ascending order.
+        An algorithm that might do the trick is as follows:
+        1. Find the furthest number whose next number is bigger. Call it pivot.
+        2. Next replace this pivot with the next bigger subsequent number.
+        3. Now everything next to pivot should be arranged in ascending order.
+        4. Above sorting can be simplified as the smallest number is the pivot.
+        5. Everything else after pivot has to be in descending order to begin 
+        with otherwise the choice of pivot is wrong.
+        6. Thus ascending order is pivot followed by last number and then 
+        progressing in reverse until reaching next to the pivot point.
+
+        If all the numbers are in descending order then we won't be able to 
+        find the pivot element. This means we fail at step 1 of the above algo. 
+        In such a situation we return empty list.
         '''
         return []
     permutations = []
