@@ -22,5 +22,6 @@ class TestPermutations(TestBase):
     
     def check_permutations(self, A: List[int], result: List[List[int]]):
         expected: List[List[int]] = [list(p) for p in itertools.permutations(A)]
+        expected.sort()
         result.sort()
         assert expected == result, f"Expected {expected} != {result} result"

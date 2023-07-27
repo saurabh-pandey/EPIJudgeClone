@@ -71,7 +71,20 @@ def permutations_v3(A: List[int]) -> List[List[int]]:
         find the pivot element. This means we fail at step 1 of the above algo. 
         In such a situation we return empty list.
         '''
-        return []
+        pivot_index = -1
+        for i in range(len(A) - 1):
+            if A[i] < A[i + 1]:
+                pivot_index = i
+        if pivot_index == -1:
+            return []
+        next_bigger_index = len(A) - 1
+        for i in range(len(A) - 1, pivot_index, -1):
+            if A[i] > A[pivot_index]:
+                next_bigger_index = i
+                break
+        A[pivot_index], A[next_bigger_index] = A[next_bigger_index], A[pivot_index]
+        A[pivot_index + 1:] = sorted(A[pivot_index + 1:])
+        return A
     permutations = []
     while True:
         permutations.append(A[:])
@@ -83,12 +96,13 @@ def permutations_v3(A: List[int]) -> List[List[int]]:
 
 def permutations(A: List[int]) -> List[List[int]]:
     # return permutations_v1(A)
-    return permutations_v2(A)
-
+    # return permutations_v2(A)
+    return permutations_v3(A)
 
 if __name__ == '__main__':
     TestPermutations(permutations_v1).run_tests()
     TestPermutations(permutations_v2).run_tests()
+    TestPermutations(permutations_v3).run_tests()
     exit(
         generic_test.generic_test_main('permutations.py', 'permutations.tsv',
                                        permutations,
