@@ -61,8 +61,14 @@ def permutations_v3(A: List[int]) -> List[List[int]]:
                 next_bigger_index = i
                 break
         A[pivot_index], A[next_bigger_index] = A[next_bigger_index], A[pivot_index]
-        # This sort step might be improved
-        A[pivot_index + 1:] = sorted(A[pivot_index + 1:])
+        # The array beyond pivot is sorted in descending so just swap to sort in
+        # ascending
+        i = pivot_index + 1
+        j = len(A) - 1
+        while i < j:
+            A[i], A[j] = A[j], A[i]
+            i += 1
+            j -= 1
         return A
     permutations = []
     while True:
