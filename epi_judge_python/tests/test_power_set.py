@@ -14,5 +14,7 @@ class TestPowerSet(TestBase):
     def test_all(self):
         for sz in range(6):
             input_set = list(range(sz))
-            pow_set = powerset(input_set)
-            print(f"{input_set} => {pow_set}")
+            expected = powerset(input_set)
+            result = self.solve(input_set)
+            # print(f"{input_set} => {result}")
+            assert result == expected, f"Expected {expected} != {result}"
