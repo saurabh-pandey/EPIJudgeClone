@@ -46,7 +46,7 @@ def permutations_v2(A: List[int]) -> List[List[int]]:
 
 def permutations_v3(A: List[int]) -> List[List[int]]:
     '''
-    Another Book's version
+    Another Book's version with my version of next permutation
     '''
     def next_permutation() -> List[int]:
         pivot_index = -1
@@ -79,15 +79,44 @@ def permutations_v3(A: List[int]) -> List[List[int]]:
     return permutations
 
 
+def permutations_v4(A: List[int]) -> List[List[int]]:
+    '''
+    Complete Book's version
+    '''
+    def next_permutation() -> List[int]:
+        inversion_point = len(A) - 2
+        while (inversion_point >= 0
+               and A[inversion_point] >= A[inversion_point + 1]):
+            inversion_point -= 1
+        if inversion_point == -1:
+            return []
+        for i in reversed(range(inversion_point + 1, len(A))):
+            if A[i] > A[inversion_point]:
+                A[inversion_point], A[i] = A[i], A[inversion_point]
+                break
+        A[inversion_point + 1:] = reversed(A[inversion_point + 1:])
+        return A
+
+    permutations = []
+    while True:
+        permutations.append(A[:])
+        A = next_permutation()
+        if not A:
+            break
+    return permutations
+
+
 def permutations(A: List[int]) -> List[List[int]]:
     # return permutations_v1(A)
     # return permutations_v2(A)
-    return permutations_v3(A)
+    # return permutations_v3(A)
+    return permutations_v4(A)
 
 if __name__ == '__main__':
     TestPermutations(permutations_v1).run_tests()
     TestPermutations(permutations_v2).run_tests()
     TestPermutations(permutations_v3).run_tests()
+    TestPermutations(permutations_v4).run_tests()
     exit(
         generic_test.generic_test_main('permutations.py', 'permutations.tsv',
                                        permutations,
