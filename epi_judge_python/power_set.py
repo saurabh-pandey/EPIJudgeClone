@@ -28,12 +28,31 @@ def generate_power_set_v1(input_set: List[int]) -> List[List[int]]:
     return power_set
 
 
+def generate_power_set_v2(input_set: List[int]) -> List[List[int]]:
+    '''
+    Book's one version
+    '''
+    def directed_power_set(to_be_selected, selected_so_far):
+        if to_be_selected == len(input_set):
+            power_set.append(selected_so_far)
+            return
+        directed_power_set(to_be_selected + 1, selected_so_far)
+        directed_power_set(to_be_selected + 1,
+                           selected_so_far + [input_set[to_be_selected]])
+    
+    power_set: List[List[int]] = []
+    directed_power_set(0, [])
+    return power_set
+
+
 def generate_power_set(input_set: List[int]) -> List[List[int]]:
-    return generate_power_set_v1(input_set)
+    # return generate_power_set_v1(input_set)
+    return generate_power_set_v2(input_set)
 
 
 if __name__ == '__main__':
     TestPowerSet(generate_power_set_v1).run_tests()
+    TestPowerSet(generate_power_set_v2).run_tests()
     exit(
         generic_test.generic_test_main('power_set.py', 'power_set.tsv',
                                        generate_power_set,

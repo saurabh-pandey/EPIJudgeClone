@@ -15,6 +15,8 @@ class TestPowerSet(TestBase):
         for sz in range(6):
             input_set = list(range(sz))
             expected = powerset(input_set)
-            result = self.solve(input_set)
+            result: List[List[int]] = self.solve(input_set)
+            expected.sort()
+            result.sort()
             # print(f"{input_set} => {result}")
             assert result == expected, f"Expected {expected} != {result}"
