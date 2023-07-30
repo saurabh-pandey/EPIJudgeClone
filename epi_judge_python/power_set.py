@@ -7,7 +7,7 @@ from tests.test_power_set import TestPowerSet
 
 def generate_power_set_v1(input_set: List[int]) -> List[List[int]]:
     '''
-    My version
+    My version using combination for each size
     '''
     def combination(A: List[int], size: int) -> List[List[int]]:
         def combination_recursive(index: int) -> None:
@@ -22,15 +22,15 @@ def generate_power_set_v1(input_set: List[int]) -> List[List[int]]:
         combi = []
         combination_recursive(0)
         return combinations
-    power_set = [[]]
-    for sz in range(1, len(input_set) + 1):
+    power_set = []
+    for sz in range(0, len(input_set) + 1):
         power_set.extend(combination(input_set, sz))
     return power_set
 
 
 def generate_power_set_v2(input_set: List[int]) -> List[List[int]]:
     '''
-    Book's one version
+    Book's brute force version
     '''
     def directed_power_set(to_be_selected, selected_so_far):
         if to_be_selected == len(input_set):

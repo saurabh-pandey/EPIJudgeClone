@@ -18,5 +18,4 @@ class TestPowerSet(TestBase):
             result: List[List[int]] = self.solve(input_set)
             expected.sort()
             result.sort()
-            # print(f"{input_set} => {result}")
             assert result == expected, f"Expected {expected} != {result}"
