@@ -7,6 +7,15 @@ from test_framework import generic_test
 from test_framework.test_failure import TestFailure
 from test_framework.test_utils import enable_executor_hook
 
+from tests.test_sudoku_solve import TestSudokuSolve
+
+
+def solve_sudoku_v1(partial_assignment: List[List[int]]) -> bool:
+    '''
+    My version
+    '''
+    return True
+
 
 def solve_sudoku(partial_assignment: List[List[int]]) -> bool:
     # TODO - you fill in here.
@@ -59,6 +68,7 @@ def solve_sudoku_wrapper(executor, partial_assignment):
 
 
 if __name__ == '__main__':
-    exit(
-        generic_test.generic_test_main('sudoku_solve.py', 'sudoku_solve.tsv',
-                                       solve_sudoku_wrapper))
+    TestSudokuSolve(solve_sudoku_v1).run_tests()
+    # exit(
+    #     generic_test.generic_test_main('sudoku_solve.py', 'sudoku_solve.tsv',
+    #                                    solve_sudoku_wrapper))

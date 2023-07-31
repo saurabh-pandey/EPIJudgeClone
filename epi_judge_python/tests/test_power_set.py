@@ -11,6 +11,7 @@ def powerset(input_set: List[int]) -> List[List[int]]:
         power_set.append(list(subset))
     return power_set
 
+
 class TestPowerSet(TestBase):
     def test_all(self):
         for sz in range(6):
