@@ -3,6 +3,7 @@ from typing import List
 
 from tests.test_base import TestBase
 
+
 def powerset(input_set: List[int]) -> List[List[int]]:
     power_set = []
     for subset in chain.from_iterable(

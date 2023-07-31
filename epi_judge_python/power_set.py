@@ -45,14 +45,29 @@ def generate_power_set_v2(input_set: List[int]) -> List[List[int]]:
     return power_set
 
 
+def generate_power_set_v3(input_set: List[int]) -> List[List[int]]:
+    '''
+    Simpler brute force version
+    '''
+    power_set: List[List[int]] = [[]]
+    for s in input_set:
+        prev_power_set = power_set[:]
+        for subset in prev_power_set:
+            new_subset = subset[:] + [s]
+            power_set.append(new_subset)
+    return power_set
+
+
 def generate_power_set(input_set: List[int]) -> List[List[int]]:
     # return generate_power_set_v1(input_set)
-    return generate_power_set_v2(input_set)
+    # return generate_power_set_v2(input_set)
+    return generate_power_set_v3(input_set)
 
 
 if __name__ == '__main__':
     TestPowerSet(generate_power_set_v1).run_tests()
     TestPowerSet(generate_power_set_v2).run_tests()
+    TestPowerSet(generate_power_set_v3).run_tests()
     exit(
         generic_test.generic_test_main('power_set.py', 'power_set.tsv',
                                        generate_power_set,
