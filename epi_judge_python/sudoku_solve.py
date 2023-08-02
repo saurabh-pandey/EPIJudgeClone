@@ -14,12 +14,42 @@ def solve_sudoku_v1(partial_assignment: List[List[int]]) -> bool:
     '''
     My version
     '''
-    return True
+    def is_valid(row, col, num) -> bool:
+        for i in range(9):
+            row_val = partial_assignment[row][i]
+            if row_val > 0 and row_val == num:
+                return False
+            col_val = partial_assignment[i][col]
+            if col_val > 0 and col_val == num:
+                return False
+        subgrid_row = 3 * (row // 3)
+        subgrid_col = 3 * (col // 3)
+        for i in range(subgrid_row, subgrid_row + 3):
+            for j in range(subgrid_col, subgrid_col + 3):
+                subgrid_val = partial_assignment[i][j]
+                if subgrid_val > 0 and subgrid_val == num:
+                    return False
+        return True
+    def solve_sudoku(cell: int) -> None:
+        if cell == 81:
+            return True
+        i = cell // 9
+        j = cell % 9
+        if partial_assignment[i][j] > 0:
+            return solve_sudoku(cell + 1)
+        for num in range(1, 10):
+            if is_valid(i, j, num):
+                partial_assignment[i][j] = num
+                if solve_sudoku(cell + 1):
+                    return True
+                else:
+                    partial_assignment[i][j] = 0
+        return False
+    return solve_sudoku(0)
 
 
 def solve_sudoku(partial_assignment: List[List[int]]) -> bool:
-    # TODO - you fill in here.
-    return True
+    return solve_sudoku_v1(partial_assignment)
 
 
 def assert_unique_seq(seq):
@@ -69,6 +99,6 @@ def solve_sudoku_wrapper(executor, partial_assignment):
 
 if __name__ == '__main__':
     TestSudokuSolve(solve_sudoku_v1).run_tests()
-    # exit(
-    #     generic_test.generic_test_main('sudoku_solve.py', 'sudoku_solve.tsv',
-    #                                    solve_sudoku_wrapper))
+    exit(
+        generic_test.generic_test_main('sudoku_solve.py', 'sudoku_solve.tsv',
+                                       solve_sudoku_wrapper))

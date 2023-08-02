@@ -24,16 +24,23 @@ class TestSudokuSolve(TestBase):
     ]
 
     
-    def test_example1(self):
+    def test_sudoku(self):
         solved_sudoku = self.generate_solved_sudoku()
-        sudoku_puzzle_easy = self.generate_sudoku_puzzle(solved_sudoku)
-        print(f"Easy is solved = {self.is_solved(sudoku_puzzle_easy, solved_sudoku)}")
-        sudoku_puzzle_med = self.generate_sudoku_puzzle(solved_sudoku,
-                                                        Level.MEDIUM)
-        print(f"Medium is solved = {self.is_solved(sudoku_puzzle_med, solved_sudoku)}")
-        sudoku_puzzle_hard = self.generate_sudoku_puzzle(solved_sudoku,
-                                                         Level.HARD)
-        print(f"Hard is solved = {self.is_solved(sudoku_puzzle_hard, solved_sudoku)}")
+        puzzle = self.generate_sudoku_puzzle(solved_sudoku, Level.HARD)
+        original_puzzle = copy.deepcopy(puzzle)
+        result = self.solve(puzzle)
+        print(f"Is solved = {result}")
+        # print(f"Easy solution = {sudoku_puzzle_easy}")
+        for line in puzzle: print(line)
+        assert self.is_solved(original_puzzle, puzzle), (
+            f"Puzzle {original_puzzle} not solved correctly")
+        # print(f"Easy is solved = {self.is_solved(sudoku_puzzle_easy, solved_sudoku)}")
+        # sudoku_puzzle_med = self.generate_sudoku_puzzle(solved_sudoku,
+        #                                                 Level.MEDIUM)
+        # print(f"Medium is solved = {self.is_solved(sudoku_puzzle_med, solved_sudoku)}")
+        # sudoku_puzzle_hard = self.generate_sudoku_puzzle(solved_sudoku,
+        #                                                  Level.HARD)
+        # print(f"Hard is solved = {self.is_solved(sudoku_puzzle_hard, solved_sudoku)}")
 
         # sudoku_puzzle = self.generate_sudoku_puzzle()
         # result = self.solve(sudoku_puzzle)
