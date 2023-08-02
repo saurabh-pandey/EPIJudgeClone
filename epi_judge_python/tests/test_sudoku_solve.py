@@ -25,27 +25,19 @@ class TestSudokuSolve(TestBase):
 
     
     def test_sudoku(self):
-        solved_sudoku = self.generate_solved_sudoku()
-        puzzle = self.generate_sudoku_puzzle(solved_sudoku, Level.HARD)
-        original_puzzle = copy.deepcopy(puzzle)
-        result = self.solve(puzzle)
-        print(f"Is solved = {result}")
-        # print(f"Easy solution = {sudoku_puzzle_easy}")
-        for line in puzzle: print(line)
-        assert self.is_solved(original_puzzle, puzzle), (
-            f"Puzzle {original_puzzle} not solved correctly")
-        # print(f"Easy is solved = {self.is_solved(sudoku_puzzle_easy, solved_sudoku)}")
-        # sudoku_puzzle_med = self.generate_sudoku_puzzle(solved_sudoku,
-        #                                                 Level.MEDIUM)
-        # print(f"Medium is solved = {self.is_solved(sudoku_puzzle_med, solved_sudoku)}")
-        # sudoku_puzzle_hard = self.generate_sudoku_puzzle(solved_sudoku,
-        #                                                  Level.HARD)
-        # print(f"Hard is solved = {self.is_solved(sudoku_puzzle_hard, solved_sudoku)}")
+        def run_and_check(level: Level):
+            puzzle = self.generate_sudoku_puzzle(solved_sudoku, level)
+            original_puzzle = copy.deepcopy(puzzle)
+            result = self.solve(puzzle)
+            print(f"Is solved = {result}")
+            for line in puzzle: print(line)
+            assert self.is_solved(original_puzzle, puzzle), (
+                f"Puzzle {original_puzzle} not solved correctly")
+        for _ in range(3):
+            solved_sudoku = self.generate_solved_sudoku()
+            for level in Level:
+                run_and_check(level)
 
-        # sudoku_puzzle = self.generate_sudoku_puzzle()
-        # result = self.solve(sudoku_puzzle)
-        # assert self.is_solved(sudoku_puzzle, result), (
-        #     f"Puzzle {sudoku_puzzle} not solved correctly")
     
     def generate_solved_sudoku(self) -> List[List[int]]:
         '''
