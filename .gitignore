@@ -30,3 +30,6 @@ epi_judge_java/java_build/
 
 # Python virtual env
 venv
+
+# VS Code
+.vscode/
