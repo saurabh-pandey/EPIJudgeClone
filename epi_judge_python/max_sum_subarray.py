@@ -22,7 +22,7 @@ def find_maximum_subarray_v1(A: List[int]) -> int:
 
 def find_maximum_subarray_v2(A: List[int]) -> int:
     '''
-    O(n^2) version
+    O(n^2) version with O(n) space
     '''
     max_sum = 0
     sum_array = [0 for _ in range(len(A) + 1)]
@@ -33,6 +33,14 @@ def find_maximum_subarray_v2(A: List[int]) -> int:
             subarray_sum = sum_array[j + 1] - sum_array[i]
             if subarray_sum > max_sum:
                 max_sum = subarray_sum
+    return max_sum
+
+
+def find_maximum_subarray_v3(A: List[int]) -> int:
+    '''
+    O(n*log(n)) version using divide and conquer
+    '''
+    max_sum = 0
     return max_sum
 
 
