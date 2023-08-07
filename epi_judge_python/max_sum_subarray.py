@@ -40,8 +40,18 @@ def find_maximum_subarray_v3(A: List[int]) -> int:
     '''
     O(n*log(n)) version using divide and conquer
     '''
-    max_sum = 0
-    return max_sum
+    def maximum_subarray_recursive(subarray: List[int]) -> int:
+        if len(subarray) == 0:
+            return 0
+        elif len(subarray) == 1:
+            if subarray[0] < 1:
+                return 0
+        max_left = maximum_subarray_recursive(subarray[: len(subarray) // 2])
+        max_right = maximum_subarray_recursive(subarray[len(subarray) // 2 :])
+        # TODO: Merge here
+        max_merge = 0
+        return max(max_left, max_right, max_merge)
+    return maximum_subarray_recursive(A)
 
 
 
